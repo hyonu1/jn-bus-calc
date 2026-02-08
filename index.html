@@ -52,15 +52,19 @@
             transform: translateY(-1px);
         }
         
+        /* 캐릭터 움직임 애니메이션 */
         @keyframes wiggle {
-            0%, 100% { transform: rotate(-8deg); }
-            50% { transform: rotate(8deg); }
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
         }
         .icon-wiggle {
             display: inline-block;
             animation: wiggle 1.5s ease-in-out infinite;
-            transform-origin: center bottom;
+            transform-origin: bottom center;
+            margin-left: 4px;
+            font-style: normal;
         }
+
         @keyframes float-boat {
             0%, 100% { transform: translateY(0) rotate(0deg); }
             25% { transform: translateY(1px) rotate(1deg); }
@@ -85,6 +89,13 @@
             scrollbar-width: thin;
             -webkit-overflow-scrolling: touch;
         }
+        .suggestions-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .suggestions-list::-webkit-scrollbar-thumb {
+            background-color: #CBD5E0;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-3 sm:p-4">
@@ -93,7 +104,7 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
-        // --- 유틸리티 ---
+        // --- 유틸리티: 한글 처리 엔진 ---
         const CHOSUNG = ["ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ","ㅅ","ㅆ","ㅇ","ㅈ","ㅉ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
         const JUNGSUNG = ["ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅗ","ㅘ","ㅙ","ㅚ","ㅛ","ㅜ","ㅝ","ㅞ","ㅟ","ㅠ","ㅡ","ㅢ","ㅣ"];
         const JONGSUNG = ["","ㄱ","ㄲ","ㄳ","ㄴ","ㄵ","ㄶ","ㄷ","ㄹ","ㄺ","ㄻ","ㄼ","ㄽ","ㄾ","ㄿ","ㅀ","ㅁ","ㅂ","ㅄ","ㅅ","ㅆ","ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
@@ -160,7 +171,9 @@
         const REGION_ICONS = {
             "광주": "🍉", "목포": "⚓", "여수": "🎤", "순천": "🌾", "나주": "🍐",
             "광양": "⚽", "담양": "🎋", "곡성": "🚂", "구례": "🐻", "고흥": "🚀",
-            "보성": "🍵", "화순": "🗿", "장흥": "🍄", "강진": "🏺", "해남": "🦖",
+            "보성": "🍵", "화순": "🗿", 
+            "장흥": "🐮", // 한우(소)
+            "강진": "🏺", "해남": "🦖",
             "영암": "🏎️", "무안": "🧅", "함평": "🦋", "영광": "🐟", "장성": "🍂",
             "완도": "🐚", "진도": "🐕", "신안": "🧂", "남악": "🏛️",
             "지도": "🧂", "압해": "🐙", "증도": "🚲", "임자": "🌷",
@@ -192,20 +205,17 @@
         const RegionSymbol = ({ name }) => {
             const symbol = REGION_ICONS[name];
             if (!symbol) return null;
-            return <span className="ml-1 text-[13px] icon-wiggle" title={name}>{symbol}</span>;
+            return <span className="icon-wiggle" title={name}>{symbol}</span>;
         };
 
         // --- 자동완성 입력 컴포넌트 ---
         const AutocompleteInput = ({ value, onChange, onSelect, placeholder, label, cityList, onEnter, onShowModal }) => {
             const [suggestions, setSuggestions] = useState([]);
             const [showSuggestions, setShowSuggestions] = useState(false);
-            const [activeIndex, setActiveIndex] = useState(-1); // 키보드 선택 인덱스
+            const [activeIndex, setActiveIndex] = useState(-1);
             const inputRef = useRef(null);
 
             useEffect(() => {
-                // 검색 결과가 바뀌면 선택 인덱스 초기화
-                setActiveIndex(-1);
-
                 const inputVal = value.trim();
                 if (!inputVal) {
                     setSuggestions([]);
@@ -226,6 +236,7 @@
                 });
 
                 let fuzzyMatches = [];
+                // 오타 교정 (완성형일 때만)
                 if (exactMatches.length === 0 && inputVal.length >= 2 && !isChosungOnly) {
                     cityList.forEach(city => {
                         const cityJamo = disassembleHangul(city);
@@ -246,18 +257,23 @@
                     return a.localeCompare(b);
                 });
 
+                // [자동 선택 로직]
                 if (finalSuggestions.length === 1) {
                     const match = finalSuggestions[0];
+                    
+                    // 1. 이미 완성된 단어일 경우 목록 닫기
                     if (match === inputVal) {
-                        setSuggestions([]);
-                        setShowSuggestions(false);
-                        return;
+                         setSuggestions([]);
+                         setShowSuggestions(false);
+                         return;
                     }
+                    
+                    // 2. 초성 검색이고 유일한 결과일 경우 자동 선택 (ex: 'ㅁㅍ' -> '목포')
+                    // 단, 2글자 이상 초성 입력 시에만
                     if (isChosungOnly && getChosung(match) === inputVal) {
-                        onSelect(match);
-                        setSuggestions([]);
-                        setShowSuggestions(false);
-                        return;
+                         onSelect(match);
+                         // 상태 업데이트 후 리렌더링 되므로 여기서 종료
+                         return;
                     }
                 }
 
@@ -584,7 +600,7 @@
                                             {modalState.data.map(city => (
                                                 <button key={city} onClick={() => handleModalSelect(city)} className="flex items-center justify-between px-4 py-3 rounded-xl bg-gray-50 border border-gray-100 text-sm font-bold text-gray-700 hover:bg-teal-50 hover:text-teal-700 hover:border-teal-200 transition-all">
                                                     <span>{city}</span>
-                                                    {REGION_ICONS[city] && <span className="text-lg">{REGION_ICONS[city]}</span>}
+                                                    {REGION_ICONS[city] && <span className="text-lg icon-wiggle">{REGION_ICONS[city]}</span>}
                                                 </button>
                                             ))}
                                         </div>
@@ -630,7 +646,8 @@
                         <div className="mt-3 main-container rounded-3xl p-5 w-full shadow-lg animate-in fade-in slide-in-from-bottom-2 duration-500 border-t-4 border-t-teal-600 font-sans">
                             {result.type === 'intraCity' && (
                                 <div className="text-center">
-                                    <div className="flex items-center justify-center gap-2 mb-4 bg-gray-50 py-2 px-4 rounded-xl text-sm"><span className="font-bold text-gray-800 text-base">{origin}</span><span className="text-[12px] font-bold text-orange-600 bg-orange-100 px-2 py-0.5 rounded-full">관내</span><span className="font-bold text-gray-800 text-base">{destination}</span></div>
+                                    <div className="flex items-center justify-center gap-2 mb-4 bg-gray-50 py-2 px-4 rounded-xl text-sm"><span className="font-bold text-gray-800 text-base">{origin}</span><RegionSymbol name={origin} />
+                                    <span className="text-[12px] font-bold text-orange-600 bg-orange-100 px-2 py-0.5 rounded-full mx-2">관내</span><span className="font-bold text-gray-800 text-base">{destination}</span><RegionSymbol name={destination} /></div>
                                     <div className="space-y-2 mb-4"><div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100 text-sm"><span className="font-medium text-gray-600">4시간 이하</span><span className="font-bold text-gray-800">{fmt(result.short)}</span></div><div className="flex items-center justify-between p-3 bg-teal-50 rounded-xl border border-teal-100 text-sm"><span className="font-medium text-teal-800">4시간 이상</span><span className="text-lg font-extrabold text-teal-700">{fmt(result.long)}</span></div></div>
                                     <div className="bg-yellow-50 p-3 rounded-xl text-[14px] text-yellow-800 flex items-start gap-1.5 leading-tight border border-yellow-100"><Icons.Info size={18} className="shrink-0 text-yellow-600" /><p className="text-left font-semibold">{result.note}</p></div>
                                 </div>
@@ -638,10 +655,10 @@
                             {result.type === 'internal' && (
                                 <div>
                                     <div className="flex items-center justify-center gap-2 mb-5 bg-gray-50 py-2 px-4 rounded-xl text-sm">
-                                        <div className="flex items-center gap-1"><span className="font-bold text-gray-800 text-base">{origin}</span>{result.startIsShip && <Icons.Ship size={14} className="text-blue-500 ship-body" />}</div>
+                                        <div className="flex items-center gap-1"><span className="font-bold text-gray-800 text-base">{origin}</span><RegionSymbol name={origin} />{result.startIsShip && <Icons.Ship size={14} className="text-blue-500 ship-body" />}</div>
                                         <Icons.ArrowRight size={14} className="text-gray-300" />
                                         {result.routeType === 'transfer' && <><span className="text-[11px] font-bold text-orange-600 bg-orange-100 px-1.5 py-0.5 rounded-full">{result.viaPoint}</span><Icons.ArrowRight size={14} className="text-gray-300" /></>}
-                                        <div className="flex items-center gap-1"><span className="font-bold text-gray-800 text-base">{destination}</span>{result.endIsShip && <Icons.Ship size={14} className="text-blue-500 ship-body" />}</div>
+                                        <div className="flex items-center gap-1"><span className="font-bold text-gray-800 text-base">{destination}</span><RegionSymbol name={destination} />{result.endIsShip && <Icons.Ship size={14} className="text-blue-500 ship-body" />}</div>
                                     </div>
                                     {result.isShipOnlyRoute ? (
                                         <div className="text-center py-6 bg-blue-50 rounded-xl mb-3 border border-blue-100"><Icons.Ship size={36} className="text-blue-500 mx-auto mb-2 ship-body" /><p className="font-bold text-gray-700">여객선 이용 구간</p><p className="text-[11px] text-gray-500 font-medium tracking-wide">선박운임 적용</p></div>
