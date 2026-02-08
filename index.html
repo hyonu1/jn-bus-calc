@@ -185,11 +185,11 @@
         const REGION_ICONS = {
             "광주": "🍉", "목포": "⚓", "여수": "🎤", "순천": "🌾", "나주": "🍐",
             "광양": "⚽", "담양": "🎋", "곡성": "🚂", "구례": "🐻", "고흥": "🚀",
-            "보성": "🍵", "화순": "🗿", 
-            "장흥": "🐮", // 한우
+            "보성": "🍵", "화순": "🪨", 
+            "장흥": "🍄‍🟫", 
             "강진": "🏺", "해남": "🦖",
             "영암": "🏎️", "무안": "🧅", "함평": "🦋", "영광": "🐟", "장성": "🍂",
-            "완도": "🐚", "진도": "🐕", "신안": "🧂", "남악": "🏛️",
+            "완도": "🐚", "진도": "🐕", "신안": "🪽", "남악": "🏛️",
             "지도": "🧂", "압해": "🐙", "증도": "🚲", "임자": "🌷",
             "자은": "🐚", "안좌": "💜", "팔금": "🌞", "암태": "🌉",
             "비금": "💖", "도초": "🌿", "흑산": "🐟", "하의": "🕊️",
@@ -623,7 +623,7 @@
                             <div className="main-container modal-content rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl">
                                 <div className="bg-teal-600 p-4 flex items-center justify-between text-white">
                                     <h2 className="font-bold">
-                                        {modalState.type === 'selection' ? '검색 결과 선택' : '신안 세부지역 선택'}
+                                        {modalState.type === 'selection' ? '검색 결과 선택' : '신안 읍/면 선택'}
                                     </h2>
                                     <button onClick={() => setModalState({ type: null, data: [] })}><Icons.X size={18} /></button>
                                 </div>
