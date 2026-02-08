@@ -117,6 +117,7 @@
         };
 
         const getChosung = (str) => {
+            if (!str) return "";
             let result = "";
             for (let i = 0; i < str.length; i++) {
                 const code = str.charCodeAt(i) - 44032;
@@ -127,10 +128,12 @@
         };
 
         const resolveComplexJamo = (str) => {
+            if (!str) return "";
             return str.split('').map(char => COMPLEX_JAMO_MAP[char] || char).join('');
         };
 
         const disassembleHangul = (str) => {
+            if (!str) return "";
             let result = "";
             for (let i = 0; i < str.length; i++) {
                 const charCode = str.charCodeAt(i);
@@ -176,7 +179,7 @@
             return 99;
         };
 
-        const normalize = (text) => text.replace(/(시|군|읍|면|터미널|종합|공용|\s)/g, "");
+        const normalize = (text) => text ? text.replace(/(시|군|읍|면|터미널|종합|공용|\s)/g, "") : "";
         const fmt = (num) => num ? num.toLocaleString() + '원' : '-';
 
         const REGION_ICONS = {
@@ -227,14 +230,16 @@
         };
 
         // --- 자동완성 입력 컴포넌트 ---
-        const AutocompleteInput = ({ value, onChange, onSelect, placeholder, label, cityList, onEnter, onShowModal }) => {
+        // FIX: value에 기본값 '' 추가 및 내부에서 trim 호출 시 안전장치 마련
+        const AutocompleteInput = ({ value = '', onChange, onSelect, placeholder, label, cityList, onEnter, onShowModal }) => {
             const [suggestions, setSuggestions] = useState([]);
             const [showSuggestions, setShowSuggestions] = useState(false);
             const [activeIndex, setActiveIndex] = useState(-1);
             const inputRef = useRef(null);
 
             useEffect(() => {
-                const inputVal = value.trim();
+                // FIX: value가 undefined/null일 경우를 대비해 (value || '') 사용
+                const inputVal = (value || '').trim();
                 if (!inputVal) {
                     setSuggestions([]);
                     return;
@@ -294,7 +299,7 @@
                     return a.localeCompare(b);
                 });
 
-                // 자동 선택 로직
+                // 자동 선택 로직 (타이핑 중 1개 남았을 때)
                 if (finalSuggestions.length === 1) {
                     const match = finalSuggestions[0];
                     // 초성 검색이고 유일한 결과일 때 자동 선택
@@ -328,6 +333,12 @@
                         setActiveIndex(prev => (prev > 0 ? prev - 1 : suggestions.length - 1));
                     }
                 } else if (e.key === 'Enter') {
+                    // FIX: value 안전하게 처리
+                    const safeValue = value || '';
+                    // 입력값 분석 (초성인지 완성형인지)
+                    const resolvedInput = resolveComplexJamo(safeValue);
+                    const isChosungOnly = /^[ㄱ-ㅎ]+$/.test(resolvedInput);
+
                     if (suggestions.length >= 4) {
                         if(onShowModal) onShowModal(suggestions);
                         setShowSuggestions(false);
@@ -335,13 +346,18 @@
                         return;
                     }
 
-                    if (suggestions.length > 0) {
-                        if (activeIndex >= 0) {
-                            handleSelect(suggestions[activeIndex]);
-                        } else {
-                            handleSelect(suggestions[0]);
-                        }
-                    } 
+                    if (suggestions.length > 0 && activeIndex >= 0) {
+                        // 1. 방향키로 특정 항목을 선택한 경우 -> 해당 항목 선택
+                        handleSelect(suggestions[activeIndex]);
+                    } else if (isChosungOnly && suggestions.length > 0) {
+                        // 2. 초성만 입력한 경우 (예: "ㄱㅈ") -> 첫 번째 추천어 자동 선택
+                        handleSelect(suggestions[0]);
+                    } else {
+                        // 3. 완성된 글자를 입력한 경우 (예: "서울") -> 추천어가 있더라도 사용자 입력값 유지
+                        // DB에 없는 지역이라도 강제로 바꾸지 않고 입력값 그대로 사용
+                        onSelect(safeValue);
+                        setShowSuggestions(false);
+                    }
                     
                     if(onEnter) onEnter();
                     setShowSuggestions(false);
@@ -361,7 +377,7 @@
                             type="text" 
                             placeholder={placeholder} 
                             className="w-full bg-transparent outline-none font-bold text-gray-700 text-base" 
-                            value={value} 
+                            value={value || ''} 
                             onChange={(e) => { onChange(e.target.value); setShowSuggestions(true); }}
                             onFocus={() => setShowSuggestions(true)}
                             onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
@@ -724,7 +740,6 @@
                                     <h3 className="text-base font-bold text-gray-800 mb-1 tracking-tight">DB 미등록 구간</h3>
                                     <p className="text-[12px] text-gray-500 mb-4 font-medium leading-relaxed">입력하신 구간은 DB에 없습니다.</p>
                                     <div className="flex flex-col gap-2">
-                                        <a href={`https://map.naver.com/p/directions/-/transit`} target="_blank" className="flex items-center justify-center gap-2 p-3 rounded-xl bg-[#03C75A] text-white font-bold text-sm shadow-sm transition-transform active:scale-95">네이버 지도 길찾기</a>
                                         <a href={`https://map.kakao.com/?target=car`} target="_blank" className="flex items-center justify-center gap-2 p-3 rounded-xl bg-[#FEE500] text-[#191919] font-bold text-sm shadow-sm transition-transform active:scale-95">카카오맵 길찾기 열기</a>
                                     </div>
                                 </div>
