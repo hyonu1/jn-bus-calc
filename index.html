@@ -207,6 +207,22 @@
         const GROUP_6000 = ["임자", "지도", "증도"];
         const SHIP_ONLY_AREAS = ["장산", "신의", "하의", "도초", "비금", "흑산"];
 
+        // 신안군 권역 정의 (Zone 1~8)
+        const SHINAN_ZONES = [
+            ['압해'], // 0 (1권역)
+            ['자은', '암태', '팔금', '안좌'], // 1 (2권역)
+            ['증도', '지도', '임자'], // 2 (3권역)
+            ['장산'], // 3
+            ['하의'], // 4
+            ['신의'], // 5
+            ['비금', '도초'], // 6
+            ['흑산'] // 7
+        ];
+
+        const getShinanZoneIndex = (city) => {
+            return SHINAN_ZONES.findIndex(zone => zone.includes(city));
+        };
+
         const Icons = {
             MapPin: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>,
             Search: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>,
@@ -504,7 +520,7 @@
 
                 if (!from || !to) return;
 
-                // 신안-신안 검색 시 바로 관내여비 표시
+                // 신안-신안 검색 시 바로 관내여비 표시 (generic '신안')
                 if (from === "신안" && to === "신안") {
                     setResult({ type: 'intraCity', short: 10000, long: 20000, note: "※ 관내 여비(정액)에는 교통비와 식비가 포함되어 있습니다." });
                     return;
@@ -512,10 +528,41 @@
 
                 setResult(null);
 
+                // [신안군 내부 이동 로직]
+                const fromZoneIdx = getShinanZoneIndex(from);
+                const toZoneIdx = getShinanZoneIndex(to);
+
+                // 둘 다 신안군 소속(구체적 지명)인 경우
+                if (fromZoneIdx !== -1 && toZoneIdx !== -1) {
+                    // 연륙 권역(1, 2, 3권역) 체크: 0=압해, 1=중부권(자은 등), 2=북부권(증도 등)
+                    // 이 3개 권역은 서로 연륙되어 있으므로 내부 이동으로 간주
+                    const isConnectedFrom = fromZoneIdx <= 2;
+                    const isConnectedTo = toZoneIdx <= 2;
+
+                    // 1. 같은 권역 내 이동 OR 연륙 권역 간 이동 -> 관내 여비
+                    if (fromZoneIdx === toZoneIdx || (isConnectedFrom && isConnectedTo)) {
+                        setResult({ type: 'intraCity', short: 10000, long: 20000, note: "※ 관내 여비(정액)에는 교통비와 식비가 포함되어 있습니다." });
+                        return;
+                    } 
+                    // 2. 다른 권역 간 이동 (섬 지역 포함) -> 관외/여객선 지역 (금액 미표시)
+                    else {
+                        setResult({
+                            type: 'internal',
+                            data: { gen: 0, pre: null, note: "" }, // 금액 0 처리
+                            specialNote: "※ 여객선 운행 지역 (육상 교통비 외 선박 운임 별도)",
+                            isShipOnlyRoute: true,
+                            startIsShip: true,
+                            endIsShip: true,
+                            hideFare: true // 금액 표시 숨김 플래그
+                        });
+                        return;
+                    }
+                }
+
                 const isFromShinanArea = ALL_SHINAN_AREAS.includes(from);
                 const isToShinanArea = ALL_SHINAN_AREAS.includes(to);
 
-                if (from === to || (isFromShinanArea && isToShinanArea)) {
+                if (from === to) {
                     setResult({ type: 'intraCity', short: 10000, long: 20000, note: "※ 관내 여비(정액)에는 교통비와 식비가 포함되어 있습니다." });
                     return;
                 }
@@ -532,9 +579,9 @@
                 if (checkRoute('목포', '영암')) specialNote = "※ 독천터미널 이용 시 3,900원";
                 else if (checkRoute('목포', '광양')) specialNote = "※ 동광양중마버스터미널 이용 시 20,100원(일반 15,500원)";
                 else if (checkRoute('광주', '영암')) specialNote = "※ 진월동시외버스터미널 이용 시 7,700원";
-                else if (checkRoute('광양', '여수')) specialNote = "※ 이순신대교 방면 이용 시 5,600원";
-                else if (checkRoute('순천', '곡성')) specialNote = "※ ITX(도시간특급열차) 이용 시 7,100원";
-                else if (SHIP_ONLY_AREAS.includes(from) || SHIP_ONLY_AREAS.includes(to)) specialNote = "※ 육상 교통비 외 선박 운임이 별도로 추가됩니다.";
+                else if (checkRoute('광양', '여수')) specialNote = "※ 이순신대교방면 이용 시 5,600원";
+                else if (checkRoute('순천', '곡성')) specialNote = "※ ITX(도시간 특급 열차) 이용 시 7,100원";
+                else if (SHIP_ONLY_AREAS.includes(from) || SHIP_ONLY_AREAS.includes(to)) specialNote = "※ 여객선 운행 지역 (육상 교통비 외 선박 운임 별도)";
 
                 let searchFrom = from;
                 let searchTo = to;
@@ -554,28 +601,28 @@
                 if (GROUP_3000.includes(from)) {
                     surcharge += 3000;
                     searchFrom = "목포";
-                    isIslandRoute = true;
-                    customNoteText = (to === '목포') ? "신안군농어촌버스(일반) 요금 적용, 3,000원" : "신안군농어촌버스(일반) 요금 가산, 3,000원";
+                    if (!SHIP_ONLY_AREAS.includes(to)) isIslandRoute = true;
+                    customNoteText = (to === '목포') ? "신안군농어촌버스 요금(일반) 적용: 3,000원" : "신안군농어촌버스 요금(일반) 요금 가산: 3,000원";
                 }
                 if (GROUP_3000.includes(to)) {
                     surcharge += 3000;
                     searchTo = "목포";
-                    isIslandRoute = true;
-                    customNoteText = (from === '목포') ? "신안군농어촌버스(일반) 요금 적용, 3,000원" : "신안군농어촌버스(일반) 요금 가산, 3,000원";
+                    if (!SHIP_ONLY_AREAS.includes(from)) isIslandRoute = true;
+                    customNoteText = (from === '목포') ? "신안군농어촌버스 요금(일반) 요금 적용: 3,000원" : "신안군농어촌버스 요금(일반) 요금 가산: 3,000원";
                 }
 
                 // 6000 Zone Logic
                 if (GROUP_6000.includes(from)) {
                     surcharge += 6000;
                     searchFrom = "목포";
-                    isIslandRoute = true;
-                    customNoteText = (to === '목포') ? "신안군농어촌버스(일반) 요금 적용, 6,000원" : "신안군농어촌버스(일반) 요금 가산, 6,000원";
+                    if (!SHIP_ONLY_AREAS.includes(to)) isIslandRoute = true;
+                    customNoteText = (to === '목포') ? "신안군농어촌버스 요금(일반) 요금 적용: 6,000원" : "신안군농어촌버스 요금(일반) 요금 가산: 6,000원";
                 }
                 if (GROUP_6000.includes(to)) {
                     surcharge += 6000;
                     searchTo = "목포";
-                    isIslandRoute = true;
-                    customNoteText = (from === '목포') ? "신안군농어촌버스(일반) 요금 적용, 6,000원" : "신안군농어촌버스(일반) 요금 가산, 6,000원";
+                    if (!SHIP_ONLY_AREAS.includes(from)) isIslandRoute = true;
+                    customNoteText = (from === '목포') ? "신안군농어촌버스 요금(일반) 요금 적용: 6,000원" : "신안군농어촌버스 요금(일반) 요금 가산: 6,000원";
                 }
 
                 // Ap-hae Logic
@@ -584,18 +631,18 @@
                     surcharge += 1200; 
                     isIslandRoute = true; 
                     customSource = "신안군청 홈페이지, 시외버스 인가내역 등"; 
-                    if (!customNoteText) customNoteText = "신안군농어촌버스(일반) 1,200원 가산"; 
+                    if (!customNoteText) customNoteText = "신안군농어촌버스 요금(일반) 가산: 1,200원"; 
                 }
                 if (to === '압해' && from !== '목포') { 
                     searchTo = '목포'; 
                     surcharge += 1200; 
                     isIslandRoute = true; 
                     customSource = "신안군청 홈페이지, 시외버스 인가내역 등"; 
-                    if (!customNoteText) customNoteText = "신안군농어촌버스(일반) 1,200원 가산"; 
+                    if (!customNoteText) customNoteText = "신안군농어촌버스 요금(일반) 가산: 1,200원"; 
                 }
 
                 if ((from === '목포' && to === '압해') || (from === '압해' && to === '목포')) {
-                    foundData = { gen: 1200, pre: null, note: "신안군농어촌버스(일반) 1,200원 가산" };
+                    foundData = { gen: 1200, pre: null, note: "신안군농어촌버스 요금(일반) 가산: 1,200원" };
                     customSource = "신안군청 홈페이지, 시외버스 인가내역 등";
                     routeType = 'direct';
                 } else if (busDataState[searchFrom]?.[searchTo] || (searchFrom === searchTo && isIslandRoute)) { 
@@ -618,7 +665,7 @@
                 if (foundData) {
                     setResult({
                         type: 'internal', data: foundData, routeType, viaPoint, specialNote,
-                        source: customSource || "시군별 시외버스요금 인가내역(2026.1.1.)",
+                        source: customSource || "2026.1.1.자 시군별 시외버스요금 인가내역",
                         startIsShip, endIsShip, isShipOnlyRoute, hasShipCost
                     });
                 } else {
@@ -678,8 +725,9 @@
 
                     <div className={`main-container rounded-3xl p-5 sm:p-6 w-full relative ${result ? 'has-result' : ''}`}>
                         <div className="text-center mb-6"><h1 className="text-xl font-bold text-gray-800 tracking-tight">yeobi-easy for JNE</h1></div>
-                        <div className="flex justify-end mb-1 px-1">
-                            <span className="text-[10px] text-gray-400 font-medium tracking-tighter">※ 초성 검색 가능 (ㄱㅈ, ㅁㅍ)</span>
+                        <div className="flex flex-col items-end mb-2 px-1 gap-0.5">
+                            <span className="text-[11px] text-gray-500 font-medium tracking-tighter">초성 검색 가능 (ㄱㅈ, ㅁㅍ, ㄴㅇ 등)</span>
+                            <span className="text-[11px] text-gray-500 font-medium tracking-tighter">신안 : 입력 후 팝업에서 읍/면 선택</span>
                         </div>
                         <div className="space-y-3 mb-5 relative z-10">
                             <AutocompleteInput 
@@ -694,7 +742,7 @@
                             />
                             <AutocompleteInput 
                                 label="Destination" 
-                                placeholder="예: 목포" 
+                                placeholder="예: 남악" 
                                 value={destination} 
                                 onChange={setDestination} 
                                 onSelect={setDestination}
@@ -704,7 +752,7 @@
                             />
                         </div>
                         <button onClick={() => performCalculation()} className="w-full py-3.5 rounded-xl font-bold btn-action text-base shadow-lg shadow-teal-100 flex items-center justify-center gap-2 active:scale-[0.98] transition-all relative z-0">
-                            <Icons.Search size={18} /> 교통비(편도) 조회
+                            <Icons.Search size={18} /> 교통비 조회
                         </button>
                     </div>
 
@@ -757,7 +805,7 @@
                             )}
                         </div>
                     )}
-                    <footer className="mt-5 text-center text-gray-500 text-[14px] font-extrabold leading-relaxed font-sans mb-4 tracking-tight px-4 underline decoration-gray-300 underline-offset-4">전현우(우수영🏫,📱050-6715-2727)</footer>
+                    <footer className="mt-5 text-center text-gray-500 text-[14px] font-extrabold leading-relaxed font-sans mb-4 tracking-tight px-4 underline decoration-gray-300 underline-offset-4">전현우, 우수영초 ⌐■_■ 050-6715-2727</footer>
                 </div>
             );
         };
@@ -767,5 +815,3 @@
     </script>
 </body>
 </html>
-
-
