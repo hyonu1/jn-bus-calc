@@ -229,16 +229,16 @@
         const fmt = (num) => num ? num.toLocaleString() + '원' : '-';
 
         const REGION_ICONS = {
-            "광주": "🐯", "목포": "⚓", "여수": "🎤", "순천": "🌾", "나주": "🍐",
+            "광주": "🍉", "목포": "⚓", "여수": "🎤", "순천": "🌾", "나주": "🍐",
             "광양": "⚽", "담양": "🎋", "곡성": "🚂", "구례": "🐻", "고흥": "🚀",
             "보성": "🍵", "화순": "🪨", 
             "장흥": "🍄‍🟫", 
-            "강진": "🏺", "해남": "🦕",
+            "강진": "🏺", "해남": "🦖",
             "영암": "🏎️", "무안": "🧅", "함평": "🦋", "영광": "🐟", "장성": "🍂",
-            "완도": "🐚", "진도": "🐕", "신안": "🪽", "남악": "🏛️",
+            "완도": "🦪", "진도": "🐕", "신안": "🪽", "남악": "🏛️",
             "지도": "🧂", "압해": "🐙", "증도": "🚲", "임자": "🌷",
-            "자은": "🐚", "안좌": "💜", "팔금": "🌞", "암태": "🌉",
-            "비금": "💖", "도초": "🌿", "흑산": "🐟", "하의": "🕊️",
+            "자은": "🐚", "안좌": "🪽", "팔금": "🌞", "암태": "🌉",
+            "비금": "💖", "도초": "🌿", "흑산": "🎣", "하의": "🕊️",
             "신의": "🧂", "장산": "🏔️"
         };
 
@@ -595,7 +595,7 @@
                         setResult({
                             type: 'internal',
                             data: { gen: 0, pre: null, note: "" }, // 금액 0 처리
-                            specialNote: "※ 여객선 운행 지역 (육상 교통비 외 선박 운임 별도)",
+                            specialNote: "여객선 운행 지역 (육상교통비 외 선박운임 별도)",
                             isShipOnlyRoute: true,
                             startIsShip: true,
                             endIsShip: true,
@@ -622,11 +622,11 @@
 
                 const checkRoute = (a, b) => (from === a && to === b) || (from === b && to === a);
 
-                if (checkRoute('목포', '영암')) specialNote = "※ 독천터미널 이용 시 3,900원";
-                else if (checkRoute('목포', '광양')) specialNote = "※ 동광양중마버스터미널 이용 시 20,100원(일반 15,500원)";
-                else if (checkRoute('광주', '영암')) specialNote = "※ 진월동시외버스터미널 이용 시 7,700원";
-                else if (checkRoute('광양', '여수')) specialNote = "※ 이순신대교방면 이용 시 5,600원";
-                else if (checkRoute('순천', '곡성')) specialNote = "※ ITX(도시간 특급 열차) 이용 시 7,100원";
+                if (checkRoute('목포', '영암')) specialNote = "독천터미널 이용 시 3,900원";
+                else if (checkRoute('목포', '광양')) specialNote = "동광양중마버스터미널 이용 시 20,100원(일반 15,500원)";
+                else if (checkRoute('광주', '영암')) specialNote = "진월동시외버스터미널 이용 시 7,700원";
+                else if (checkRoute('광양', '여수')) specialNote = "이순신대교방면 이용 시 5,600원";
+                else if (checkRoute('순천', '곡성')) specialNote = "ITX(도시간특급열차) 이용 시 7,100원";
                 else if (SHIP_ONLY_AREAS.includes(from) || SHIP_ONLY_AREAS.includes(to)) specialNote = "※ 여객선 운행 지역 (육상 교통비 외 선박 운임 별도)";
 
                 let searchFrom = from;
@@ -648,13 +648,13 @@
                     surcharge += 3000;
                     searchFrom = "목포";
                     if (!SHIP_ONLY_AREAS.includes(to)) isIslandRoute = true;
-                    customNoteText = (to === '목포') ? "신안군농어촌버스 요금(일반) 적용: 3,000원" : "신안군농어촌버스 요금(일반) 요금 가산: 3,000원";
+                    customNoteText = (to === '목포') ? "신안군농어촌버스 요금 적용: 3,000원" : "신안군농어촌버스 요금 가산: 3,000원";
                 }
                 if (GROUP_3000.includes(to)) {
                     surcharge += 3000;
                     searchTo = "목포";
                     if (!SHIP_ONLY_AREAS.includes(from)) isIslandRoute = true;
-                    customNoteText = (from === '목포') ? "신안군농어촌버스 요금(일반) 요금 적용: 3,000원" : "신안군농어촌버스 요금(일반) 요금 가산: 3,000원";
+                    customNoteText = (from === '목포') ? "신안군농어촌버스 요금 적용: 3,000원" : "신안군농어촌버스 요금 가산: 3,000원";
                 }
 
                 // 6000 Zone Logic
@@ -662,13 +662,13 @@
                     surcharge += 6000;
                     searchFrom = "목포";
                     if (!SHIP_ONLY_AREAS.includes(to)) isIslandRoute = true;
-                    customNoteText = (to === '목포') ? "신안군농어촌버스 요금(일반) 요금 적용: 6,000원" : "신안군농어촌버스 요금(일반) 요금 가산: 6,000원";
+                    customNoteText = (to === '목포') ? "신안군농어촌버스 요금 적용: 6,000원" : "신안군농어촌버스 요금 가산: 6,000원";
                 }
                 if (GROUP_6000.includes(to)) {
                     surcharge += 6000;
                     searchTo = "목포";
                     if (!SHIP_ONLY_AREAS.includes(from)) isIslandRoute = true;
-                    customNoteText = (from === '목포') ? "신안군농어촌버스 요금(일반) 요금 적용: 6,000원" : "신안군농어촌버스 요금(일반) 요금 가산: 6,000원";
+                    customNoteText = (from === '목포') ? "신안군농어촌버스 요금 적용: 6,000원" : "신안군농어촌버스 요금 가산: 6,000원";
                 }
 
                 // Ap-hae Logic
@@ -677,18 +677,18 @@
                     surcharge += 1200; 
                     isIslandRoute = true; 
                     customSource = "신안군청 홈페이지, 시외버스 인가내역 등"; 
-                    if (!customNoteText) customNoteText = "신안군농어촌버스 요금(일반) 가산: 1,200원"; 
+                    if (!customNoteText) customNoteText = "신안군농어촌버스 요금 가산: 1,200원"; 
                 }
                 if (to === '압해' && from !== '목포') { 
                     searchTo = '목포'; 
                     surcharge += 1200; 
                     isIslandRoute = true; 
                     customSource = "신안군청 홈페이지, 시외버스 인가내역 등"; 
-                    if (!customNoteText) customNoteText = "신안군농어촌버스 요금(일반) 가산: 1,200원"; 
+                    if (!customNoteText) customNoteText = "신안군농어촌버스 요금 가산: 1,200원"; 
                 }
 
                 if ((from === '목포' && to === '압해') || (from === '압해' && to === '목포')) {
-                    foundData = { gen: 1200, pre: null, note: "신안군농어촌버스 요금(일반) 가산: 1,200원" };
+                    foundData = { gen: 1200, pre: null, note: "신안군농어촌버스 요금 가산: 1,200원" };
                     customSource = "신안군청 홈페이지, 시외버스 인가내역 등";
                     routeType = 'direct';
                 } else if (busDataState[searchFrom]?.[searchTo] || (searchFrom === searchTo && isIslandRoute)) { 
@@ -711,7 +711,7 @@
                 if (foundData) {
                     setResult({
                         type: 'internal', data: foundData, routeType, viaPoint, specialNote,
-                        source: customSource || "2026.1.1.자 시군별 시외버스요금 인가내역",
+                        source: customSource || "2026.1.1.자 시군별 시외버스요금 인가내역(서경종님)",
                         startIsShip, endIsShip, isShipOnlyRoute, hasShipCost
                     });
                 } else {
@@ -727,7 +727,7 @@
                             <div className="main-container modal-content rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl">
                                 <div className="bg-teal-600 p-4 flex items-center justify-between text-white">
                                     <h2 className="font-bold font-gmarket">
-                                        {modalState.type === 'selection' ? '검색 결과 선택' : '신안 읍/면 선택'}
+                                        {modalState.type === 'selection' ? '검색 결과 선택' : '읍/면 선택'}
                                     </h2>
                                     <button onClick={() => setModalState({ type: null, data: [] })}><Icons.X size={18} /></button>
                                 </div>
@@ -851,8 +851,8 @@
                             )}
                         </div>
                     )}
-                    <footer className="mt-4 mb-6 text-center text-[11px] text-gray-400 font-bold font-gmarket tracking-[0.15em] select-none drop-shadow-sm">
-                        crafted with passion by 전현우@우수영초등학교
+                    <footer className="mt-4 mb-6 text-center text-[10px] text-gray-400 font-bold font-gmarket tracking-[0.15em] select-none drop-shadow-sm">
+                        CRAFTED WITH PASSION BY 전현우@우수영초등학교
                     </footer>
                 </div>
             );
