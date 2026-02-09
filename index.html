@@ -12,14 +12,60 @@
     <!-- Babel -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
-        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        /* Pretendard Variable CDN (Web Fallback) */
+        @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
         
+        /* --- Font Declarations --- */
+        
+        /* 1. Pretendard (Body/UI) */
+        @font-face {
+            font-family: 'Pretendard Variable';
+            font-weight: 45 920;
+            font-style: normal;
+            font-display: swap;
+            src: local('Pretendard Variable'), 
+                 url('./PretendardVariable.ttf') format('truetype-variations'),
+                 url('./PretendardVariable.ttf') format('truetype');
+        }
+        /* Pretendard Fallbacks */
+        @font-face { font-family: 'Pretendard'; font-weight: 900; src: local('Pretendard Black'), url('./Pretendard-Black.otf') format('opentype'); }
+        @font-face { font-family: 'Pretendard'; font-weight: 700; src: local('Pretendard Bold'), url('./Pretendard-Bold.otf') format('opentype'); }
+        @font-face { font-family: 'Pretendard'; font-weight: 400; src: local('Pretendard Regular'), url('./Pretendard-Regular.otf') format('opentype'); }
+
+        /* 2. Gmarket Sans (Titles/Points) */
+        @font-face {
+            font-family: 'GmarketSans';
+            font-weight: 700;
+            font-display: swap;
+            src: local('Gmarket Sans Bold'), url('./GmarketSansBold.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'GmarketSans';
+            font-weight: 500;
+            font-display: swap;
+            src: local('Gmarket Sans Medium'), url('./GmarketSansMedium.otf') format('opentype');
+        }
+        @font-face {
+            font-family: 'GmarketSans';
+            font-weight: 300;
+            font-display: swap;
+            src: local('Gmarket Sans Light'), url('./GmarketSansLight.otf') format('opentype');
+        }
+        
+        /* Base Styles */
         body { 
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; 
+            /* Default to Pretendard for readability */
+            font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; 
             background-color: #F0F2F0;
             color: #4A5568; 
             overflow-x: hidden;
         }
+
+        /* Utility Classes for Fonts */
+        .font-gmarket {
+            font-family: 'GmarketSans', sans-serif;
+        }
+
         .main-container {
             background-color: #FFFFFF;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
@@ -680,7 +726,7 @@
                         <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
                             <div className="main-container modal-content rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl">
                                 <div className="bg-teal-600 p-4 flex items-center justify-between text-white">
-                                    <h2 className="font-bold">
+                                    <h2 className="font-bold font-gmarket">
                                         {modalState.type === 'selection' ? '검색 결과 선택' : '신안 읍/면 선택'}
                                     </h2>
                                     <button onClick={() => setModalState({ type: null, data: [] })}><Icons.X size={18} /></button>
@@ -724,7 +770,7 @@
                     )}
 
                     <div className={`main-container rounded-3xl p-5 sm:p-6 w-full relative ${result ? 'has-result' : ''}`}>
-                        <div className="text-center mb-6"><h1 className="text-xl font-bold text-gray-800 tracking-tight">yeobi-easy for JNE</h1></div>
+                        <div className="text-center mb-6"><h1 className="text-xl font-bold font-gmarket text-gray-800 tracking-tight">yeobi-easy for JNE</h1></div>
                         <div className="flex flex-col items-end mb-2 px-1 gap-0.5">
                             <span className="text-[11px] text-gray-500 font-medium tracking-tighter">초성 검색 가능 (ㄱㅈ, ㅁㅍ, ㄴㅇ 등)</span>
                             <span className="text-[11px] text-gray-500 font-medium tracking-tighter">신안 : 입력 후 팝업에서 읍/면 선택</span>
@@ -805,7 +851,9 @@
                             )}
                         </div>
                     )}
-                    <footer className="mt-5 text-center text-gray-500 text-[14px] font-extrabold leading-relaxed font-sans mb-4 tracking-tight px-4 underline decoration-gray-300 underline-offset-4">Crafted by 전현우@우수영초등학교</footer>
+                    <footer className="mt-8 mb-6 text-center text-[11px] text-gray-400 font-bold font-gmarket tracking-[0.15em] select-none">
+                        CRAFTED BY 전현우@우수영초등학교
+                    </footer>
                 </div>
             );
         };
