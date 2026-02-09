@@ -532,8 +532,8 @@
                 if (checkRoute('목포', '영암')) specialNote = "※ 독천터미널 이용 시 3,900원";
                 else if (checkRoute('목포', '광양')) specialNote = "※ 동광양중마버스터미널 이용 시 20,100원(일반 15,500원)";
                 else if (checkRoute('광주', '영암')) specialNote = "※ 진월동시외버스터미널 이용 시 7,700원";
-                else if (checkRoute('광양', '여수')) specialNote = "※ 이순신대교방면 이용 시 5,600원";
-                else if (checkRoute('순천', '곡성')) specialNote = "※ ITX(도시간 특급 열차) 이용 시 7,100원";
+                else if (checkRoute('광양', '여수')) specialNote = "※ 이순신대교 방면 이용 시 5,600원";
+                else if (checkRoute('순천', '곡성')) specialNote = "※ ITX(도시간특급열차) 이용 시 7,100원";
                 else if (SHIP_ONLY_AREAS.includes(from) || SHIP_ONLY_AREAS.includes(to)) specialNote = "※ 육상 교통비 외 선박 운임이 별도로 추가됩니다.";
 
                 let searchFrom = from;
@@ -555,13 +555,13 @@
                     surcharge += 3000;
                     searchFrom = "목포";
                     isIslandRoute = true;
-                    customNoteText = (to === '목포') ? "신안군 농어촌 버스(일반) 요금 적용, 3,000원" : "신안군 농어촌 버스(일반) 요금 가산, 3,000원";
+                    customNoteText = (to === '목포') ? "신안군농어촌버스(일반) 요금 적용, 3,000원" : "신안군농어촌버스(일반) 요금 가산, 3,000원";
                 }
                 if (GROUP_3000.includes(to)) {
                     surcharge += 3000;
                     searchTo = "목포";
                     isIslandRoute = true;
-                    customNoteText = (from === '목포') ? "신안군 농어촌 버스(일반) 요금 적용, 3,000원" : "신안군 농어촌 버스(일반) 요금 가산, 3,000원";
+                    customNoteText = (from === '목포') ? "신안군농어촌버스(일반) 요금 적용, 3,000원" : "신안군농어촌버스(일반) 요금 가산, 3,000원";
                 }
 
                 // 6000 Zone Logic
@@ -569,13 +569,13 @@
                     surcharge += 6000;
                     searchFrom = "목포";
                     isIslandRoute = true;
-                    customNoteText = (to === '목포') ? "신안군 농어촌 버스(일반) 요금 적용, 6,000원" : "신안군 농어촌 버스(일반) 요금 가산, 6,000원";
+                    customNoteText = (to === '목포') ? "신안군농어촌버스(일반) 요금 적용, 6,000원" : "신안군농어촌버스(일반) 요금 가산, 6,000원";
                 }
                 if (GROUP_6000.includes(to)) {
                     surcharge += 6000;
                     searchTo = "목포";
                     isIslandRoute = true;
-                    customNoteText = (from === '목포') ? "신안군 농어촌 버스(일반) 요금 적용, 6,000원" : "신안군 농어촌 버스(일반) 요금 가산, 6,000원";
+                    customNoteText = (from === '목포') ? "신안군농어촌버스(일반) 요금 적용, 6,000원" : "신안군농어촌버스(일반) 요금 가산, 6,000원";
                 }
 
                 // Ap-hae Logic
@@ -584,18 +584,18 @@
                     surcharge += 1200; 
                     isIslandRoute = true; 
                     customSource = "신안군청 홈페이지, 시외버스 인가내역 등"; 
-                    if (!customNoteText) customNoteText = "신안군 농어촌 버스(일반) 가산"; 
+                    if (!customNoteText) customNoteText = "신안군농어촌버스(일반) 1,200원 가산"; 
                 }
                 if (to === '압해' && from !== '목포') { 
                     searchTo = '목포'; 
                     surcharge += 1200; 
                     isIslandRoute = true; 
                     customSource = "신안군청 홈페이지, 시외버스 인가내역 등"; 
-                    if (!customNoteText) customNoteText = "신안군 농어촌 버스(일반) 가산"; 
+                    if (!customNoteText) customNoteText = "신안군농어촌버스(일반) 1,200원 가산"; 
                 }
 
                 if ((from === '목포' && to === '압해') || (from === '압해' && to === '목포')) {
-                    foundData = { gen: 1200, pre: null, note: "신안군 농어촌 버스(일반) 가산" };
+                    foundData = { gen: 1200, pre: null, note: "신안군농어촌버스(일반) 1,200원 가산" };
                     customSource = "신안군청 홈페이지, 시외버스 인가내역 등";
                     routeType = 'direct';
                 } else if (busDataState[searchFrom]?.[searchTo] || (searchFrom === searchTo && isIslandRoute)) { 
@@ -618,7 +618,7 @@
                 if (foundData) {
                     setResult({
                         type: 'internal', data: foundData, routeType, viaPoint, specialNote,
-                        source: customSource || "시군별 시외버스요금 인가내역",
+                        source: customSource || "시군별 시외버스요금 인가내역(2026.1.1.)",
                         startIsShip, endIsShip, isShipOnlyRoute, hasShipCost
                     });
                 } else {
