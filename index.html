@@ -350,6 +350,7 @@
             const [busDataState, setBusDataState] = useState({});
             const [modalState, setModalState] = useState({ type: null, data: [] });
             const [availableCities, setAvailableCities] = useState([]);
+            const [showNotice, setShowNotice] = useState(true);
 
             // Data Initialization (Same as before)
             useEffect(() => {
@@ -519,6 +520,55 @@
 
             return (
                 <div className="main-wrapper relative p-5">
+                    {/* Notice Modal */}
+                    {showNotice && (
+                        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300" onClick={() => setShowNotice(false)}>
+                            <div className="bg-white rounded-2xl w-full max-w-sm overflow-hidden shadow-2xl relative" onClick={e => e.stopPropagation()}>
+                                <div className="bg-teal-startup p-6 text-white text-center">
+                                    <h1 className="font-bold font-suit text-xl mb-1">yeobi-easy for JNE</h1>
+                                    <p className="text-teal-100 text-xs font-pretendard opacity-90">여비 업무 지원을 위한 APP</p>
+                                </div>
+
+                                <div className="p-6 space-y-5">
+                                    <div className="space-y-2">
+                                        <p className="text-sm text-gray-600 leading-relaxed font-pretendard text-justify">
+                                            여비 업무에 활용되는 <span className="font-bold text-teal-600">시외버스요금 인가내역</span>을 PC/모바일에서도 편리하게 조회할 수 있도록 만든 Web APP 입니다.
+                                        </p>
+                                    </div>
+
+                                    <ul className="space-y-2.5">
+                                        <li className="flex items-start gap-3 text-sm text-gray-700">
+                                            <span className="flex-shrink-0 w-5 h-5 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5">1</span>
+                                            <span className="font-pretendard">출발/목적지의 시·군의 명칭으로 검색해 주세요.</span>
+                                        </li>
+                                        <li className="flex items-start gap-3 text-sm text-gray-700">
+                                            <span className="flex-shrink-0 w-5 h-5 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5">2</span>
+                                            <span className="font-pretendard">출발/목적지의 초성만 입력해도 자동완성됩니다.</span>
+                                        </li>
+                                        <li className="flex items-start gap-3 text-sm text-gray-700">
+                                            <span className="flex-shrink-0 w-5 h-5 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5">3</span>
+                                            <span className="font-pretendard">「신안」 입력 → 읍/면 선택 팝업이 활성화됩니다.</span>
+                                        </li>
+                                        <li className="flex items-start gap-3 text-sm text-gray-700">
+                                            <span className="flex-shrink-0 w-5 h-5 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5">4</span>
+                                            <span className="font-pretendard">오류나 개선 사항이 있으시면 <span className="font-bold text-gray-900 underline decoration-teal-200 decoration-2 underline-offset-2">전현우(우수영초등학교)</span>에게 메신저나 유선으로 편하게 알려주세요.</span>
+                                        </li>
+                                    </ul>
+
+                                    <div className="pt-2 text-center">
+                                        <p className="text-xs text-gray-400 font-gmarket mb-4">업무에 부디 도움이 되길 바랍니다 🙏</p>
+                                        <button 
+                                            onClick={() => setShowNotice(false)}
+                                            className="w-full py-3.5 bg-gray-900 text-white rounded-xl font-bold font-suit text-sm shadow-lg hover:bg-gray-800 transition-all active:scale-95 flex items-center justify-center gap-2"
+                                        >
+                                            시작하기 <Icons.ArrowRight size={16} />
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Modal */}
                     {modalState.type && (
                         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
