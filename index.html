@@ -586,18 +586,18 @@
                                 <div className="p-6 space-y-5">
                                     <div className="space-y-2">
                                         <p className="text-sm text-gray-600 leading-relaxed font-pretendard text-justify">
-                                            <span className="font-bold text-teal-600">관외여비에 교통비</span>를 PC/모바일에서 조회할 수 있도록 만든 Web APP 입니다.
+                                            <span className="font-bold text-teal-600">관외여비의 교통비</span>를 PC/모바일에서 조회할 수 있도록 만든 Web APP 입니다.
                                         </p>
                                     </div>
 
                                     <ul className="space-y-2.5">
                                         <li className="flex items-start gap-3 text-sm text-gray-700">
                                             <span className="flex-shrink-0 w-5 h-5 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5">1</span>
-                                            <span className="font-pretendard">출발/목적지의 시·군의 명칭으로 검색해 주세요.</span>
+                                            <span className="font-pretendard">시·군의 명칭으로 검색해 주세요.</span>
                                         </li>
                                         <li className="flex items-start gap-3 text-sm text-gray-700">
                                             <span className="flex-shrink-0 w-5 h-5 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5">2</span>
-                                            <span className="font-pretendard">시·군의 초성만 입력하셔도 자동완성 됩니다.</span>
+                                            <span className="font-pretendard">초성만 검색 지원합니다.</span>
                                         </li>
                                         <li className="flex items-start gap-3 text-sm text-gray-700">
                                             <span className="flex-shrink-0 w-5 h-5 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5">3</span>
@@ -605,8 +605,13 @@
                                         </li>
                                         <li className="flex items-start gap-3 text-sm text-gray-700">
                                             <span className="flex-shrink-0 w-5 h-5 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5">4</span>
-                                            <span className="font-pretendard">오류나 개선사항은 <span className="font-bold text-gray-900 underline decoration-teal-200 decoration-2 underline-offset-2">전현우(우수영초)</span>에게 편하게 알려주세요.</span>
+                                            <span className="font-pretendard">오류나 개선사항은 <span className="font-bold text-gray-900 underline decoration-teal-200 decoration-2 underline-offset-2">전현우(우수영초)</span>에게</span>
                                         </li>
+                                        <li className="flex items-start gap-3 text-sm text-gray-700">
+                                            <span className="flex-shrink-0 w-5 h-5 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5">5</span>
+                                            <span className="font-pretendard">여비계산은 감액없는 참고용입니다. 관용차 여부나 출장 근거 공문 등에 따라 감액하십시오.</span>
+                                        </li>
+                                        
                                     </ul>
 
                                     <div className="pt-2 text-center">
@@ -808,11 +813,11 @@
                                                 <div className="space-y-2">
                                                     <p className="text-xs text-teal-800 font-pretendard leading-relaxed">
                                                         <span className="font-bold text-teal-600 mr-1">1.</span>
-                                                        <span className="font-bold">교통비</span>·<span className="font-bold">숙박비</span>는 실비정산제 → <span className="font-bold">증빙</span> 없으면 정산 X
+                                                        <span className="font-bold">교통비</span>·<span className="font-bold">숙박비</span>는 실비정산제 → <span className="font-bold">증빙</span> 없으면 정산X
                                                     </p>
                                                     <p className="text-xs text-teal-800 font-pretendard leading-relaxed">
                                                         <span className="font-bold text-teal-600 mr-1">2.</span>
-                                                        여행을 마친날로부터 <span className="font-bold">2주일 이내에 정산</span>
+                                                        여행을 마친날로부터 <span className="font-bold">2주일 이내에 정산서 제출</span>
                                                         <span className="block text-[10px] text-teal-600/70 mt-0.5">
                                                                  「공무원여비규정」 제8조의2(여비의 결제와 정산 등)
                                                         </span>
@@ -910,19 +915,19 @@
                                         <div className="flex items-start gap-1.5">
                                             <span className="text-xs text-red-500 mt-0.5 font-bold">※</span>
                                             <p className="text-xs text-red-600 font-bold font-pretendard leading-tight">
-                                                단체행사 인솔 시 예산으로 숙박·식사 계약체결된 경우 주의
+                                                단체행사 인솔 시 예산으로 숙박·식사계약 체결된 경우 주의
                                             </p>
                                         </div>
                                         <div className="flex items-start gap-1.5">
                                             <span className="text-xs text-gray-600 mt-0.5">※</span>
                                             <p className="text-xs text-gray-600 font-pretendard leading-tight">
-                                                선박운임이 추가된 경우, 증빙(승선권) 확인 후 합계금액에 합산
+                                                선박을 이용한 경우, 승선권 금액 만큼 합계금액에 +
                                             </p>
                                         </div>
                                         <div className="flex items-start gap-1.5">
                                             <span className="text-xs text-gray-600 mt-0.5">※</span>
                                             <p className="text-xs text-gray-600 font-pretendard leading-tight">
-                                                식비 감액 ← 출장지 식사 제공, 업무추진비로 식사, 통상적 식사시간 고려 등
+                                                식비 감액: 출장지 식사 제공, 출장 시 업무추진비로 식사, 통상적 식사시간 고려 등
                                             </p>
                                         </div>
                                     </div>
