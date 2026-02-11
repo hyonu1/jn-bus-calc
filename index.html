@@ -500,14 +500,14 @@
             const MODAL_CONTENT = {
                 daily: {
                     title: "일비",
-                    desc: 출장지(${destination || '도착지명'}) 내에서 소요되는 교통비, 통신비, 음료비 등,
+                    desc: `출장지(${destination || '도착지명'}) 내에서 소요되는 교통비, 통신비, 음료비 등`,
                     items: [
-                        { id: 'gov_vehicle', label: "공용차량(관용차, 임차차량) 이용 : 일비 ½감액" }
+                        { id: 'gov_vehicle', label: "공용차량(관용차, 임차차량) 이용 : 일비의 1/2감액" }
                     ]
                 },
                 meal: {
                     title: "식비",
-                    desc: "식사에 소요되는 비용을 충당하는 여비,대표적 감액사유는", 
+                    desc: "식사(밥값)에 소요되는 비용을 충당", 
                     reasons: [
                         "연수, 협의회, 행사 주최 측에서 식사 제공",
                         "예산(계약)으로 식비가 이미 지출",
@@ -518,7 +518,7 @@
                                    <div className="ml-1">
                                        오전 관내 출장과 오후 관외 출장이 겹치는 경우,<br/>
                                        통상적인 식사 시간과 출장 시간을 고려,<br/>
-                                       관외 출장 식비의 ½ 또는 ⅔를 감액하여 지급.
+                                       관외 출장 식비의 1/2 또는 2/3를 감액하여 지급.
                                    </div>
                                </div>
                             ) 
@@ -536,16 +536,16 @@
                     desc: "목적지로 이동하기 위한 교통수단의 소요 비용",
                     subDesc: (
                         <span>
-                            <span className="font-bold text-gray-700">주유영수증(출장지)</span>, <span className="font-bold text-gray-700">통행영수증(하이패스)</span>, 운임 결재내역이 확인되는 신용카드매출전표, 승차권, 운임지급처에서 발행한 현금영수증/세금계산서 등
+                            <span className="font-bold text-gray-700">주유영수증(출장지)</span>, <span className="font-bold text-gray-700">통행영수증(하이패스)</span>, 운임결재내역이 확인되는 신용카드매출전표, 승차권, 운임 지급처에서 발행한 현금영수증, 세금계산서 등
                         </span>
                     ),
                     items: [
                         { id: 'transport_proof', label: "증거 서류의 부적정" },
-                        { id: 'transport_gov_vehicle', label: "공용차량 임차차량 이용한 경우" },
+                        { id: 'transport_gov_vehicle', label: "공용차량이나 임차차량 이용한 경우" },
                         { 
                             id: 'transport_passenger', 
                             label: "동료의 차량에 동승한 경우", 
-                            subLabel: "(동승자에게는 교통비를 지급하지 않음)" 
+                            subLabel: "(동승자에게는 운임을 지급하지 않음)" 
                         }
                     ]
                 }
@@ -670,10 +670,10 @@
                     const isConnectedFrom = fromZoneIdx <= 2;
                     const isConnectedTo = toZoneIdx <= 2;
                     if (fromZoneIdx === toZoneIdx || (isConnectedFrom && isConnectedTo)) {
-                        setResult({ type: 'intraCity', short: 10000, long: 20000, note: "관내여비는 교통비와 식비 등을 포함한 정액 형태의 비용으로 지급(포인트: ½이 아니라 관용차 이용하면 -10,000/4시간 이하면 -10,000)." });
+                        setResult({ type: 'intraCity', short: 10000, long: 20000, note: "관내여비는 교통비와 식비 등을 포함한 정액 형태의 비용으로 지급." });
                         return;
                     } else {
-                        setResult({ type: 'internal', data: { gen: 0, pre: null, note: "" }, specialNote: "여객선 운행 지역 (육상교통비 + 선박운임)", isShipOnlyRoute: true, startIsShip: true, endIsShip: true, hideFare: true });
+                        setResult({ type: 'internal', data: { gen: 0, pre: null, note: "" }, specialNote: "여객선 운행 지역 (육상교통비 외 선박운임 별도)", isShipOnlyRoute: true, startIsShip: true, endIsShip: true, hideFare: true });
                         return;
                     }
                 }
@@ -891,7 +891,7 @@
                                 <div className="p-6 space-y-5">
                                     <div className="space-y-2">
                                         <p className="text-sm text-gray-600 leading-relaxed font-pretendard text-justify break-keep">
-                                            광주전남권의 교통비 조회와 여비계산을 PC/모바일에서 할 수 있도록 만든 Web App 입니다.
+                                            관외여비 교통비 와 여비 계산을 PC/모바일에서 할 수 있도록 만든 Web App 입니다.
                                         </p>
                                     </div>
 
@@ -901,7 +901,7 @@
                                             <span className="font-pretendard">
                                                 시·군의 명칭으로 검색해 주세요
                                                 <br/>
-                                                <span className="text-gray-400 text-xs">(예: 광주, 신안, 담양, 해남 등)</span>
+                                                <span className="text-gray-400 text-xs">(예: 광주, 남악, 목포, 무안, 해남 등)</span>
                                             </span>
                                         </li>
                                         <li className="flex items-start gap-3 text-sm text-gray-700">
@@ -914,24 +914,24 @@
                                         </li>
                                         <li className="flex items-start gap-3 text-sm text-gray-700">
                                             <span className="flex-shrink-0 w-5 h-5 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5">3</span>
-                                            <span className="font-pretendard">「신안」은 입력 후, 읍/면 선택 팝업에서 선택.</span>
+                                            <span className="font-pretendard">「신안」은 입력 후, 읍/면 선택 팝업을 이용.</span>
                                         </li>
                                         <li className="flex items-start gap-3 text-sm text-gray-700">
                                             <span className="flex-shrink-0 w-5 h-5 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5">4</span>
                                             <span className="font-pretendard">
-                                                오류, 건의사항, 요금정보 등은
+                                                오류, 개선사항, 요금정보 등은
                                                 <br/>
                                                 <span className="font-bold text-gray-900 underline decoration-teal-200 decoration-2 underline-offset-2">전현우@우수영초등학교</span>에게
                                                 <br/>
-                                                메신저 쪽지나 050-6715-2727로 알려주세여.
+                                                메신저쪽지, 050-6715-2727로
                                                 <br/>
-                                                (배포는 많이 부탁드립니다^^ 묻지 않으셔도 됨)
+                                                연락부탁드립니다.
                                             </span>
                                         </li>
                                     </ul>
 
                                     <div className="pt-2 text-center">
-                                        <p className="text-xs text-gray-400 font-gmarket mb-4">부디 업무에 도움되길 바랍니다 🙏</p>
+                                        <p className="text-xs text-gray-400 font-gmarket mb-4">업무에 부디 도움이 되길 바랍니다 🙏</p>
                                         <button 
                                             onClick={() => setShowNotice(false)}
                                             className="w-full py-3.5 bg-gray-900 text-white rounded-xl font-bold font-suit text-sm shadow-lg hover:bg-gray-800 transition-all active:scale-95 flex items-center justify-center gap-2"
@@ -999,7 +999,7 @@
                     <div className="space-y-4 mb-6">
                         <AutocompleteInput
                             label="출발지"
-                            placeholder="예: ㄱㅈ, 광주"
+                            placeholder="예: 광주 또는 ㄱㅈ"
                             value={origin}
                             onChange={setOrigin}
                             onSelect={setOrigin}
@@ -1009,7 +1009,7 @@
                         />
                         <AutocompleteInput
                             label="도착지"
-                            placeholder="예: ㅎㄴ, 해남"
+                            placeholder="예: 남악 또는 ㄴㅇ"
                             value={destination}
                             onChange={setDestination}
                             onSelect={setDestination}
@@ -1194,7 +1194,7 @@
                                             여비계산
                                         </h3>
                                         <p className="text-sm text-gray-500 mt-2 font-pretendard">
-                                            출장자가 {origin} ↔ {destination} {deductions.gov_vehicle ? '관용차량으로' : '자가용으로'} 당일 왕복한 경우
+                                            출장자가 {origin} ↔ {destination} {deductions.gov_vehicle ? '관용차로' : '자가용으로'} 당일 왕복한 경우
                                         </p>
                                     </div>
 
@@ -1267,7 +1267,7 @@
                                                         />
                                                         <span className="text-xs font-normal text-gray-400">원</span>
                                                     </div>
-                                                    <span className="text-[10px] font-bold text-blue-500 font-pretendard mt-0.5">정산서의 승성권 금액을 모두 합</span>
+                                                    <span className="text-[10px] font-bold text-blue-500 font-pretendard mt-0.5">합산 선박운임</span>
                                                 </div>
                                             </div>
                                         )}
@@ -1291,7 +1291,7 @@
                                         <div className="flex items-start gap-1.5">
                                             <span className="text-xs text-gray-600 mt-0.5">※</span>
                                             <p className="text-xs text-gray-600 font-pretendard leading-tight">
-                                                여객선을 이용한 경우, 승선권 금액 만큼 기타교통비 입력
+                                                선박을 이용한 경우, 승선권 금액 만큼 합계금액에 +
                                             </p>
                                         </div>
                                     </div>
@@ -1313,3 +1313,5 @@
     </script>
 </body>
 </html>
+
+
