@@ -1093,48 +1093,53 @@
 
                                     {/* Calculation Rows (Compact) */}
                                     <div className="space-y-2 mb-4 bg-gray-50 p-4 rounded-xl border border-gray-100">
-                                        <div className="flex justify-between items-center py-1">
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-sm font-bold text-gray-600 font-pretendard">일비</span>
+                                        {/* 일비 */}
+                                        <div className="grid grid-cols-[3rem_1fr_auto] items-center py-1 min-h-[40px]">
+                                            <span className="text-sm font-bold text-gray-600 font-pretendard">일비</span>
+                                            <div className="flex justify-center">
                                                 <button 
                                                     onClick={() => setActiveModal('daily')}
-                                                    className="ml-auto px-3 py-1.5 text-xs font-bold text-white bg-[#00BFA5] rounded-lg shadow-[0_3px_0_rgb(0,140,120)] active:shadow-none active:translate-y-[3px] transition-all hover:bg-[#00A891]"
+                                                    className="px-2.5 py-1 text-[11px] font-bold text-white bg-[#00BFA5] rounded-lg transition-all animate-pulse-scale hover:bg-[#00A891]"
                                                 >
                                                     감액조건
                                                 </button>
                                             </div>
-                                            <span className="text-sm font-bold font-suit text-gray-700">{fmt(detailCosts.daily)}<span className="text-xs font-normal text-gray-400 ml-0.5">원</span></span>
+                                            <span className="text-sm font-bold font-suit text-gray-700 text-right">{fmt(detailCosts.daily)}<span className="text-xs font-normal text-gray-400 ml-0.5">원</span></span>
                                         </div>
-                                        <div className="flex justify-between items-center py-1">
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-sm font-bold text-gray-600 font-pretendard">식비</span>
+
+                                        {/* 식비 */}
+                                        <div className="grid grid-cols-[3rem_1fr_auto] items-center py-1 min-h-[40px]">
+                                            <span className="text-sm font-bold text-gray-600 font-pretendard">식비</span>
+                                            <div className="flex justify-center">
                                                 <button 
                                                     onClick={() => setActiveModal('meal')}
-                                                    className="ml-auto px-3 py-1.5 text-xs font-bold text-white bg-[#00BFA5] rounded-lg shadow-[0_3px_0_rgb(0,140,120)] active:shadow-none active:translate-y-[3px] transition-all hover:bg-[#00A891]"
+                                                    className="px-2.5 py-1 text-[11px] font-bold text-white bg-[#00BFA5] rounded-lg transition-all animate-pulse-scale hover:bg-[#00A891]"
                                                 >
                                                     감액조건
                                                 </button>
                                             </div>
-                                            <span className="text-sm font-bold font-suit text-gray-700">{fmt(detailCosts.meal)}<span className="text-xs font-normal text-gray-400 ml-0.5">원</span></span>
+                                            <span className="text-sm font-bold font-suit text-gray-700 text-right">{fmt(detailCosts.meal)}<span className="text-xs font-normal text-gray-400 ml-0.5">원</span></span>
                                         </div>
-                                        {/* 1, 3. 교통비 표시 수정: 선박 운임 추가 표시 */}
-                                        <div className="flex justify-between items-start py-1">
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-sm font-bold text-gray-600 font-pretendard">왕복교통비</span>
+
+                                        {/* 왕복교통비 */}
+                                        <div className="grid grid-cols-[3rem_1fr_auto] items-center py-1 min-h-[40px]">
+                                            <span className="text-sm font-bold text-gray-600 font-pretendard whitespace-nowrap">교통비</span>
+                                            <div className="flex justify-center">
                                                 <button 
                                                     onClick={() => setActiveModal('transport')}
-                                                    className="ml-auto px-3 py-1.5 text-xs font-bold text-white bg-[#00BFA5] rounded-lg shadow-[0_3px_0_rgb(0,140,120)] active:shadow-none active:translate-y-[3px] transition-all hover:bg-[#00A891]"
+                                                    className="px-2.5 py-1 text-[11px] font-bold text-white bg-[#00BFA5] rounded-lg transition-all animate-pulse-scale hover:bg-[#00A891]"
                                                 >
                                                     감액조건
                                                 </button>
                                             </div>
-                                            <div className="flex flex-col items-end">
+                                            <div className="flex flex-col items-end text-right">
                                                 <span className="text-sm font-bold font-suit text-gray-700">{fmt(detailCosts.transport)}<span className="text-xs font-normal text-gray-400 ml-0.5">원</span></span>
                                                 {(result.hasShipCost || result.startIsShip || result.endIsShip) && detailCosts.transport > 0 && (
-                                                    <span className="text-[10px] font-bold text-blue-500 font-pretendard mt-0.5">+ 선박운임(실비)</span>
+                                                    <span className="text-[10px] font-bold text-blue-500 font-pretendard mt-0.5">+ 선박운임</span>
                                                 )}
                                             </div>
                                         </div>
+
                                         <div className="border-t border-gray-200 my-2"></div>
                                         <div className="flex justify-between items-center pt-1">
                                             <span className="text-sm font-bold text-gray-900 font-pretendard">합계</span>
