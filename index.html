@@ -500,14 +500,14 @@
             const MODAL_CONTENT = {
                 daily: {
                     title: "일비",
-                    desc: `출장지(${destination || '도착지명'}) 내에서 소요되는 교통비, 통신비, 음료비 등`,
+                    desc: 출장지(${destination || '도착지명'}) 내에서 소요되는 교통비, 통신비, 음료비 등,
                     items: [
                         { id: 'gov_vehicle', label: "공용차량(관용차, 임차차량) 이용 : 일비 ½감액" }
                     ]
                 },
                 meal: {
                     title: "식비",
-                    desc: "식사에 소요되는 비용을 충당하는 여비", 
+                    desc: "식사에 소요되는 비용을 충당하는 여비,대표적 감액사유는", 
                     reasons: [
                         "연수, 협의회, 행사 주최 측에서 식사 제공",
                         "예산(계약)으로 식비가 이미 지출",
@@ -518,7 +518,7 @@
                                    <div className="ml-1">
                                        오전 관내 출장과 오후 관외 출장이 겹치는 경우,<br/>
                                        통상적인 식사 시간과 출장 시간을 고려,<br/>
-                                       관외 출장 식비의 ½ 또는 ⅔을 감액하여 지급.
+                                       관외 출장 식비의 ½ 또는 ⅔를 감액하여 지급.
                                    </div>
                                </div>
                             ) 
@@ -536,7 +536,7 @@
                     desc: "목적지로 이동하기 위한 교통수단의 소요 비용",
                     subDesc: (
                         <span>
-                            <span className="font-bold text-gray-700">주유영수증(출장지)</span>, <span className="font-bold text-gray-700">통행영수증(하이패스)</span>, 운임결재내역이 확인되는 신용카드매출전표, 승차권, 운임 지급처에서 발행한 현금영수증/세금계산서 등
+                            <span className="font-bold text-gray-700">주유영수증(출장지)</span>, <span className="font-bold text-gray-700">통행영수증(하이패스)</span>, 운임 결재내역이 확인되는 신용카드매출전표, 승차권, 운임지급처에서 발행한 현금영수증/세금계산서 등
                         </span>
                     ),
                     items: [
@@ -673,7 +673,7 @@
                         setResult({ type: 'intraCity', short: 10000, long: 20000, note: "관내여비는 교통비와 식비 등을 포함한 정액 형태의 비용으로 지급(포인트: ½이 아니라 관용차 이용하면 -10,000/4시간 이하면 -10,000)." });
                         return;
                     } else {
-                        setResult({ type: 'internal', data: { gen: 0, pre: null, note: "" }, specialNote: "여객선 운행 지역 (육상교통비 외 선박운임 별도)", isShipOnlyRoute: true, startIsShip: true, endIsShip: true, hideFare: true });
+                        setResult({ type: 'internal', data: { gen: 0, pre: null, note: "" }, specialNote: "여객선 운행 지역 (육상교통비 + 선박운임)", isShipOnlyRoute: true, startIsShip: true, endIsShip: true, hideFare: true });
                         return;
                     }
                 }
@@ -925,7 +925,7 @@
                                                 <br/>
                                                 메신저 쪽지나 050-6715-2727로 알려주세여.
                                                 <br/>
-                                                ^^배포는 마음껏 하십시오. 묻지 않으셔도 되요~
+                                                (배포는 많이 부탁드립니다^^ 묻지 않으셔도 됨)
                                             </span>
                                         </li>
                                     </ul>
@@ -999,7 +999,7 @@
                     <div className="space-y-4 mb-6">
                         <AutocompleteInput
                             label="출발지"
-                            placeholder="예: 광주 또는 ㄱㅈ"
+                            placeholder="예: ㄱㅈ, 광주"
                             value={origin}
                             onChange={setOrigin}
                             onSelect={setOrigin}
@@ -1009,7 +1009,7 @@
                         />
                         <AutocompleteInput
                             label="도착지"
-                            placeholder="예: 순천 또는 ㅅㅊ"
+                            placeholder="예: ㅎㄴ, 해남"
                             value={destination}
                             onChange={setDestination}
                             onSelect={setDestination}
@@ -1194,7 +1194,7 @@
                                             여비계산
                                         </h3>
                                         <p className="text-sm text-gray-500 mt-2 font-pretendard">
-                                            출장자가 {origin} ↔ {destination} {deductions.gov_vehicle ? '관용차로' : '자가용으로'} 당일 왕복한 경우
+                                            출장자가 {origin} ↔ {destination} {deductions.gov_vehicle ? '관용차량으로' : '자가용으로'} 당일 왕복한 경우
                                         </p>
                                     </div>
 
@@ -1267,7 +1267,7 @@
                                                         />
                                                         <span className="text-xs font-normal text-gray-400">원</span>
                                                     </div>
-                                                    <span className="text-[10px] font-bold text-blue-500 font-pretendard mt-0.5">선박운임 합산</span>
+                                                    <span className="text-[10px] font-bold text-blue-500 font-pretendard mt-0.5">정산서의 승성권 금액을 모두 합</span>
                                                 </div>
                                             </div>
                                         )}
