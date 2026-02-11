@@ -502,12 +502,12 @@
                     title: "일비",
                     desc: `출장지(${destination || '도착지명'}) 내에서 소요되는 교통비, 통신비, 음료비 등`,
                     items: [
-                        { id: 'gov_vehicle', label: "공용차량(관용차, 임차차량) 이용 : 일비의 1/2감액" }
+                        { id: 'gov_vehicle', label: "공용차량(관용차, 임차차량) 이용 : 일비 1/2 감액" }
                     ]
                 },
                 meal: {
                     title: "식비",
-                    desc: "식사(밥값)에 소요되는 비용을 충당", 
+                    desc: "식사(밥값)에 소요되는 비용을 충당, 이하 감액 사유", 
                     reasons: [
                         "연수, 협의회, 행사 주최 측에서 식사 제공",
                         "예산(계약)으로 식비가 이미 지출",
@@ -528,7 +528,7 @@
                         { id: 'meal_1', label: "1식 감액" },
                         { id: 'meal_2', label: "2식 감액" },
                         { id: 'meal_3', label: "3식 감액" },
-                        { id: 'meal_half', label: "½ 감액" }
+                        { id: 'meal_half', label: "1/2 감액" }
                     ]
                 },
                 transport: {
@@ -891,7 +891,7 @@
                                 <div className="p-6 space-y-5">
                                     <div className="space-y-2">
                                         <p className="text-sm text-gray-600 leading-relaxed font-pretendard text-justify break-keep">
-                                            관외여비 교통비 와 여비 계산을 PC/모바일에서 할 수 있도록 만든 Web App 입니다.
+                                            광주전남의 교통비 조회와 여비 계산을 PC/모바일에서 할 수 있도록 만든 Web App 입니다.
                                         </p>
                                     </div>
 
@@ -901,7 +901,7 @@
                                             <span className="font-pretendard">
                                                 시·군의 명칭으로 검색해 주세요
                                                 <br/>
-                                                <span className="text-gray-400 text-xs">(예: 광주, 남악, 목포, 무안, 해남 등)</span>
+                                                <span className="text-gray-400 text-xs">(예: 광주, 신안, 담양, 해남 등)</span>
                                             </span>
                                         </li>
                                         <li className="flex items-start gap-3 text-sm text-gray-700">
@@ -919,7 +919,7 @@
                                         <li className="flex items-start gap-3 text-sm text-gray-700">
                                             <span className="flex-shrink-0 w-5 h-5 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5">4</span>
                                             <span className="font-pretendard">
-                                                오류, 개선사항, 요금정보 등은
+                                                오류, 건의사항, 요금정보 등은
                                                 <br/>
                                                 <span className="font-bold text-gray-900 underline decoration-teal-200 decoration-2 underline-offset-2">전현우@우수영초등학교</span>에게
                                                 <br/>
@@ -931,7 +931,7 @@
                                     </ul>
 
                                     <div className="pt-2 text-center">
-                                        <p className="text-xs text-gray-400 font-gmarket mb-4">업무에 부디 도움이 되길 바랍니다 🙏</p>
+                                        <p className="text-xs text-gray-400 font-gmarket mb-4">부디 도움이 되길 바랍니다 🙏</p>
                                         <button 
                                             onClick={() => setShowNotice(false)}
                                             className="w-full py-3.5 bg-gray-900 text-white rounded-xl font-bold font-suit text-sm shadow-lg hover:bg-gray-800 transition-all active:scale-95 flex items-center justify-center gap-2"
@@ -1009,7 +1009,7 @@
                         />
                         <AutocompleteInput
                             label="도착지"
-                            placeholder="예: 남악 또는 ㄴㅇ"
+                            placeholder="예: 해남 또는 ㅎㄴ"
                             value={destination}
                             onChange={setDestination}
                             onSelect={setDestination}
@@ -1091,7 +1091,7 @@
                                                         <Icons.Ship size={24} className="ship-body" />
                                                     </div>
                                                     <h3 className="font-bold text-gray-800 mb-1">여객선 운행 구간</h3>
-                                                    <p className="text-sm text-gray-500">선박운임이 별도로 적용됩니다.</p>
+                                                    <p className="text-sm text-gray-500">선박운임이 적용됩니다.</p>
                                                 </div>
                                             ) : (
                                                 <div className="space-y-3">
@@ -1194,7 +1194,7 @@
                                             여비계산
                                         </h3>
                                         <p className="text-sm text-gray-500 mt-2 font-pretendard">
-                                            출장자가 {origin} ↔ {destination} {deductions.gov_vehicle ? '관용차로' : '자가용으로'} 당일 왕복한 경우
+                                            출장자가 {origin} ↔ {destination} {deductions.gov_vehicle ? '관용차량으로' : '자가용으로'} 당일 왕복한 경우
                                         </p>
                                     </div>
 
@@ -1267,7 +1267,7 @@
                                                         />
                                                         <span className="text-xs font-normal text-gray-400">원</span>
                                                     </div>
-                                                    <span className="text-[10px] font-bold text-blue-500 font-pretendard mt-0.5">합산 선박운임</span>
+                                                    <span className="text-[10px] font-bold text-blue-500 font-pretendard mt-0.5">승선권 합계 입력</span>
                                                 </div>
                                             </div>
                                         )}
@@ -1291,7 +1291,7 @@
                                         <div className="flex items-start gap-1.5">
                                             <span className="text-xs text-gray-600 mt-0.5">※</span>
                                             <p className="text-xs text-gray-600 font-pretendard leading-tight">
-                                                선박을 이용한 경우, 승선권 금액 만큼 합계금액에 +
+                                                여객선을 이용한 경우, 승선권 금액을 기타교통비에 입력
                                             </p>
                                         </div>
                                     </div>
