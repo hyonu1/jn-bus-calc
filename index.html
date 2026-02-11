@@ -322,11 +322,11 @@
                 let final = [...new Set([...exact, ...fuzzy])];
                 final.sort((a, b) => getCityRank(a) - getCityRank(b) || a.localeCompare(b));
                 
-                // Updated logic: Auto-select if unique chosung match
-                if (final.length === 1 && isChosung) { 
-                    onSelect(final[0]); 
-                    return; 
-                }
+                // [수정됨] 자동완성 선택 해제: 사용자가 직접 선택하도록 변경
+                // if (final.length === 1 && isChosung) { 
+                //     onSelect(final[0]); 
+                //     return; 
+                // }
                 setSuggestions(final);
             }, [value, cityList]);
 
@@ -1098,7 +1098,7 @@
                                                 <span className="text-sm font-bold text-gray-600 font-pretendard">일비</span>
                                                 <button 
                                                     onClick={() => setActiveModal('daily')}
-                                                    className="px-2.5 py-1 text-[11px] font-bold text-teal-600 bg-teal-50/50 border border-teal-200 rounded-lg hover:bg-teal-100 transition-all active:scale-95"
+                                                    className="ml-auto px-3 py-1.5 text-xs font-bold text-white bg-[#00BFA5] rounded-lg shadow-[0_3px_0_rgb(0,140,120)] active:shadow-none active:translate-y-[3px] transition-all hover:bg-[#00A891]"
                                                 >
                                                     감액조건
                                                 </button>
@@ -1110,7 +1110,7 @@
                                                 <span className="text-sm font-bold text-gray-600 font-pretendard">식비</span>
                                                 <button 
                                                     onClick={() => setActiveModal('meal')}
-                                                    className="px-2.5 py-1 text-[11px] font-bold text-teal-600 bg-teal-50/50 border border-teal-200 rounded-lg hover:bg-teal-100 transition-all active:scale-95"
+                                                    className="ml-auto px-3 py-1.5 text-xs font-bold text-white bg-[#00BFA5] rounded-lg shadow-[0_3px_0_rgb(0,140,120)] active:shadow-none active:translate-y-[3px] transition-all hover:bg-[#00A891]"
                                                 >
                                                     감액조건
                                                 </button>
@@ -1123,7 +1123,7 @@
                                                 <span className="text-sm font-bold text-gray-600 font-pretendard">왕복교통비</span>
                                                 <button 
                                                     onClick={() => setActiveModal('transport')}
-                                                    className="px-2.5 py-1 text-[11px] font-bold text-teal-600 bg-teal-50/50 border border-teal-200 rounded-lg hover:bg-teal-100 transition-all active:scale-95"
+                                                    className="ml-auto px-3 py-1.5 text-xs font-bold text-white bg-[#00BFA5] rounded-lg shadow-[0_3px_0_rgb(0,140,120)] active:shadow-none active:translate-y-[3px] transition-all hover:bg-[#00A891]"
                                                 >
                                                     감액조건
                                                 </button>
@@ -1142,17 +1142,8 @@
                                         </div>
                                     </div>
 
-                                    {/* Government Vehicle Info */}
-                                    <div className="mt-4 p-4 bg-blue-50 rounded-xl border border-blue-100/50">
-                                        <div className="flex items-center justify-between mb-2">
-                                            <span className="text-xs font-bold text-blue-600 font-pretendard bg-white px-2 py-0.5 rounded border border-blue-100">관용차량 이용 시</span>
-                                            <span className="text-base font-bold font-suit text-blue-700">{fmt(12500 + 25000)}<span className="text-xs font-normal ml-0.5">원</span></span>
-                                        </div>
-                                        <p className="text-[11px] text-blue-600/80 leading-snug font-pretendard">
-                                            일비 50% 감액(12,500원) + 식비(25,000원) + 교통비 없음
-                                        </p>
-                                    </div>
-
+                                    {/* Government Vehicle Info Removed here */}
+                                    
                                     {/* Footer Notes */}
                                     <div className="mt-5 space-y-2">
                                         {/* New Warning Note (First) */}
