@@ -834,7 +834,10 @@
                             <div className="bg-white rounded-2xl w-full max-w-sm overflow-hidden shadow-2xl relative" onClick={e => e.stopPropagation()}>
                                 <div className="bg-teal-startup p-6 text-white text-center">
                                     <h1 className="font-bold font-suit text-xl mb-1">yeobi-easy for JNE</h1>
-                                    <p className="text-teal-100 text-xs font-pretendard opacity-90">2026. 1. 1. 자 국내여비 기준표(서경종@압해초등학교)<br/>기반 제작</p>
+                                    <p className="text-teal-100 text-xs font-pretendard opacity-90 mt-1 leading-relaxed">
+                                        2026. 1. 1. 자 국내여비 기준표 기반 제작<br/>
+                                        <span className="inline-block mt-0.5 font-medium text-teal-50/80">서경종@압해초등학교</span>
+                                    </p>
                                 </div>
                                 <div className="p-6 space-y-5">
                                     <div className="space-y-2">
@@ -1042,16 +1045,24 @@
                                             )}
                                             
                                             <div className="mt-4 p-4 bg-teal-50 border border-teal-100 rounded-xl text-left">
-                                                <div className="space-y-2">
-                                                    <p className="text-xs text-teal-800 font-pretendard leading-relaxed">
-                                                        <span className="font-bold text-teal-600 mr-1">1.</span>
-                                                        <span className="font-bold">교통비</span>·<span className="font-bold">숙박비</span>는 실비정산제 → <span className="font-bold">증빙</span> 없으면 정산 ×
-                                                    </p>
-                                                    <p className="text-xs text-teal-800 font-pretendard leading-relaxed">
-                                                        <span className="font-bold text-teal-600 mr-1">2.</span>
-                                                        여행을 마친날로부터 <span className="font-bold">2주일 이내에 정산서 제출</span>
-                                                        <span className="block text-[10px] text-teal-600/70 mt-0.5">「공무원여비규정」 제8조의2(여비의 결제와 정산 등)</span>
-                                                    </p>
+                                                <div className="space-y-3">
+                                                    <div className="flex items-start gap-1">
+                                                        <span className="font-bold text-teal-600 text-xs mt-0.5 min-w-[12px]">1.</span>
+                                                        <p className="text-xs text-teal-800 font-pretendard leading-relaxed">
+                                                            <span className="font-bold">교통비</span>·<span className="font-bold">숙박비</span>는 실비정산제 → <span className="font-bold">증빙</span> 없으면 정산 ×
+                                                        </p>
+                                                    </div>
+                                                    <div className="flex items-start gap-1">
+                                                        <span className="font-bold text-teal-600 text-xs mt-0.5 min-w-[12px]">2.</span>
+                                                        <div>
+                                                            <p className="text-xs text-teal-800 font-pretendard leading-relaxed">
+                                                                여행을 마친날로부터 <span className="font-bold">2주일 이내에 정산서 제출</span>
+                                                            </p>
+                                                            <p className="text-[10px] text-teal-600/70 mt-0.5 font-pretendard">
+                                                                「공무원여비규정」 제8조의2(여비의 결제와 정산 등)
+                                                            </p>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
 
