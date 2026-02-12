@@ -613,7 +613,7 @@
                 if (!from || !to) return;
 
                 if (from === "신안" && to === "신안") {
-                    setResult({ type: 'intraCity', short: 10000, long: 20000, note: "관내여비는 교통비와 식비 등을 포함한 정액으로 지급함.\n(조건에 따라 -10,000원 씩 감액)" });
+                    setResult({ type: 'intraCity', short: 10000, long: 20000, note: "관내여비는 교통비와 식비 등을 포함 정액 지급.\n(조건에 따라 -10,000원 씩 감액)" });
                     return;
                 }
 
@@ -626,7 +626,7 @@
                     const isConnectedFrom = fromZoneIdx <= 2;
                     const isConnectedTo = toZoneIdx <= 2;
                     if (fromZoneIdx === toZoneIdx || (isConnectedFrom && isConnectedTo)) {
-                        setResult({ type: 'intraCity', short: 10000, long: 20000, note: "관내여비는 교통비와 식비 등을 포함한 정액으로 지급함.\n(조건에 따라 -10,000원 씩 감액)" });
+                        setResult({ type: 'intraCity', short: 10000, long: 20000, note: "관내여비는 교통비와 식비 등을 포함 정액 지급.\n(조건에 따라 -10,000원 씩 감액)" });
                         return;
                     } else {
                         setResult({ type: 'internal', data: { gen: 0, pre: null, note: "" }, specialNote: "여객선 운행 지역 (육상교통비 외 선박운임 별도)", isShipOnlyRoute: true, startIsShip: true, endIsShip: true, hideFare: true });
@@ -638,7 +638,7 @@
                 const isToShinanArea = ALL_SHINAN_AREAS.includes(to);
 
                 if (from === to) {
-                    setResult({ type: 'intraCity', short: 10000, long: 20000, note: "관내여비는 교통비와 식비 등을 포함한 정액으로 지급함.\n(조건에 따라 -10,000원 씩 감액)" });
+                    setResult({ type: 'intraCity', short: 10000, long: 20000, note: "관내여비는 교통비와 식비 등을 포함 정액 지급.\n(조건에 따라 -10,000원 씩 감액)" });
                     return;
                 }
 
