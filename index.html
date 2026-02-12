@@ -33,7 +33,6 @@
             color: var(--color-text-main);
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            /* Prevent pull-to-refresh on mobile */
             overscroll-behavior-y: none;
         }
 
@@ -41,7 +40,7 @@
         .font-suit { font-family: var(--font-suit); }
         .font-pretendard { font-family: var(--font-pretendard); }
         
-        /* Gmarket Sans Font (Local files assumed, using fallback name) */
+        /* Gmarket Sans Font */
         @font-face {
             font-family: 'GmarketSans';
             font-weight: 700;
@@ -60,9 +59,7 @@
             font-display: swap;
             src: local('Gmarket Sans Light'), url('./GmarketSansLight.otf') format('opentype');
         }
-        .font-gmarket {
-            font-family: 'GmarketSans', sans-serif;
-        }
+        .font-gmarket { font-family: 'GmarketSans', sans-serif; }
         
         .text-teal-startup { color: var(--color-teal); }
         .bg-teal-startup { background-color: var(--color-teal); }
@@ -104,7 +101,7 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
             position: relative;
             transform-style: preserve-3d;
-            touch-action: pan-y pinch-zoom; /* Allow vertical scroll, but let JS handle horizontal swipe */
+            touch-action: pan-y pinch-zoom;
         }
 
         /* Animations */
@@ -112,19 +109,14 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .animate-slide-up {
-            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
+        .animate-slide-up { animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         
         @keyframes slideUpModal {
             from { transform: translateY(100%); }
             to { transform: translateY(0); }
         }
-        .animate-slide-up-modal {
-            animation: slideUpModal 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
+        .animate-slide-up-modal { animation: slideUpModal 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-        /* Page Flip Animations */
         @keyframes flipOut {
             0% { transform: rotateY(0deg); opacity: 1; }
             100% { transform: rotateY(-90deg); opacity: 0; }
@@ -143,20 +135,15 @@
             transform-origin: left center;
         }
 
-        /* Pulse Scale Animation for Buttons */
         @keyframes pulse-scale {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
         }
-        .animate-pulse-scale {
-            animation: pulse-scale 2s ease-in-out infinite;
-        }
+        .animate-pulse-scale { animation: pulse-scale 2s ease-in-out infinite; }
 
-        /* Scrollbar */
         .custom-scroll::-webkit-scrollbar { width: 4px; }
         .custom-scroll::-webkit-scrollbar-thumb { background-color: #E5E8EB; border-radius: 4px; }
 
-        /* Icon Animation */
         @keyframes float-boat {
             0%, 100% { transform: translateY(0) rotate(0deg); }
             25% { transform: translateY(1px) rotate(1deg); }
@@ -180,7 +167,6 @@
             font-style: normal;
         }
         
-        /* Custom Input for Ship Fare - Hide Arrows */
         input.ship-fare-input {
             text-align: right;
             border-bottom: 1px solid #E5E8EB;
@@ -192,21 +178,16 @@
             outline: none;
             padding-bottom: 2px;
             transition: all 0.2s;
-            -moz-appearance: textfield; /* Firefox */
+            -moz-appearance: textfield;
             appearance: none;
         }
-        /* Chrome, Safari, Edge, Opera */
         input.ship-fare-input::-webkit-outer-spin-button,
         input.ship-fare-input::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
-        input.ship-fare-input:focus {
-            border-color: var(--color-teal);
-        }
-        input.ship-fare-input::placeholder {
-            color: #E5E8EB;
-        }
+        input.ship-fare-input:focus { border-color: var(--color-teal); }
+        input.ship-fare-input::placeholder { color: #E5E8EB; }
     </style>
 </head>
 <body>
@@ -259,7 +240,7 @@
             return matrix[b.length][a.length];
         };
         const normalize = (text) => text ? text.replace(/(시|군|읍|면|터미널|종합|공용|\s)/g, "") : "";
-        const fmt = (num) => num ? num.toLocaleString() : '-';
+        const fmt = (num) => num ? num.toLocaleString() : '0';
 
         const REGION_ICONS = {
             "광주": "🍉", "목포": "⚓", "여수": "🎤", "순천": "🌾", "나주": "🍐", "광양": "⚽", "담양": "🎋", "곡성": "🚂", "구례": "🐻", "고흥": "🚀", "보성": "🍵", "화순": "🪨", "장흥": "🍄", "강진": "🏺", "해남": "🦖", "영암": "🏎️", "무안": "🧅", "함평": "🦋", "영광": "🐟", "장성": "🍂", "완도": "🐚", "진도": "🐕", "신안": "🪽", "남악": "🏛️", "지도": "🧂", "압해": "🐙", "증도": "🚲", "임자": "🌷", "자은": "🐚", "안좌": "💜", "팔금": "🌞", "암태": "🌉", "비금": "💖", "도초": "🌿", "흑산": "🐟", "하의": "🕊️", "신의": "🧂", "장산": "🏔️",
@@ -275,22 +256,13 @@
         const SHINAN_ZONES = [['압해'], ['자은', '암태', '팔금', '안좌'], ['증도', '지도', '임자'], ['장산'], ['하의'], ['신의'], ['비금', '도초'], ['흑산']];
         const getShinanZoneIndex = (city) => SHINAN_ZONES.findIndex(zone => zone.includes(city));
         const getCityRank = (name) => {
-            // 1. 신안 최우선 (ㅅㅇ 검색 시 서울보다 먼저 나오게)
             if (name === "신안") return 0;
-            
-            // 2. 광주 (지역 핵심 거점)
             if (name === "광주") return 1;
-
-            // 3. 전라남도 시/군 (가나다 순 나열, 주요 도시 포함)
             if (["목포", "여수", "순천", "나주", "광양", "담양", "곡성", "구례", "고흥", "보성", "화순", "장흥", "강진", "해남", "영암", "무안", "함평", "영광", "장성", "완도", "진도", "남악"].includes(name)) return 2;
-
-            // 4. 타 시도 주요 도시
             if (["서울", "부산", "대구", "인천", "대전", "울산", "세종", "제주"].includes(name)) return 3;
-
             return 99;
         };
 
-        // Icons Component
         const Icons = {
             MapPin: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>,
             Search: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>,
@@ -448,37 +420,27 @@
             const [availableCities, setAvailableCities] = useState([]);
             const [showNotice, setShowNotice] = useState(true);
             const [showDetail, setShowDetail] = useState(false);
+            
+            // Transport & Deductions States
             const [shipFare, setShipFare] = useState(0); 
+            const [customTransport, setCustomTransport] = useState('');
+            const [intraDeductions, setIntraDeductions] = useState({ shortTime: false, govVehicle: false });
             
             // Swipe handlers ref
             const touchStartX = useRef(null);
             const touchEndX = useRef(null);
 
-            // Swipe Handlers (Defined here to avoid ReferenceError)
-            const onTouchStart = (e) => {
-                touchStartX.current = e.targetTouches[0].clientX;
-            };
-
-            const onTouchMove = (e) => {
-                touchEndX.current = e.targetTouches[0].clientX;
-            };
-
+            const onTouchStart = (e) => { touchStartX.current = e.targetTouches[0].clientX; };
+            const onTouchMove = (e) => { touchEndX.current = e.targetTouches[0].clientX; };
             const onTouchEnd = () => {
                 if (!touchStartX.current || !touchEndX.current) return;
                 const distance = touchStartX.current - touchEndX.current;
                 const isLeftSwipe = distance > 50;
                 const isRightSwipe = distance < -50;
 
-                // Swipe Left: Show Detail
-                if (isLeftSwipe && !showDetail && result && result.type !== 'intraCity') {
-                    setShowDetail(true);
-                }
-                // Swipe Right: Show Result (Back)
-                if (isRightSwipe && showDetail) {
-                    setShowDetail(false);
-                }
+                if (isLeftSwipe && !showDetail && result) setShowDetail(true);
+                if (isRightSwipe && showDetail) setShowDetail(false);
 
-                // Reset
                 touchStartX.current = null;
                 touchEndX.current = null;
             };
@@ -490,7 +452,7 @@
                 meal_1: false,
                 meal_2: false,
                 meal_3: false,
-                meal_half: false, // 4th option for 1/2 reduction
+                meal_half: false,
                 transport_proof: false,
                 transport_gov_vehicle: false,
                 transport_passenger: false
@@ -501,9 +463,7 @@
                 daily: {
                     title: "일비",
                     desc: `출장지(${destination || '도착지명'}) 내에서 소요되는 교통비, 통신비, 음료비 등`,
-                    items: [
-                        { id: 'gov_vehicle', label: "공용차량(관용차, 임차차량) 이용 : 일비 1/2 감액" }
-                    ]
+                    items: [ { id: 'gov_vehicle', label: "공용차량(관용차, 임차차량) 이용 : 일비 1/2 감액" } ]
                 },
                 meal: {
                     title: "식비",
@@ -542,11 +502,7 @@
                     items: [
                         { id: 'transport_proof', label: "증거 서류의 부적정" },
                         { id: 'transport_gov_vehicle', label: "공용차량이나 임차차량 이용한 경우" },
-                        { 
-                            id: 'transport_passenger', 
-                            label: "동료의 차량에 동승한 경우", 
-                            subLabel: "(동승자에게는 운임을 지급하지 않음)" 
-                        }
+                        { id: 'transport_passenger', label: "동료의 차량에 동승한 경우", subLabel: "(동승자에게는 운임을 지급하지 않음)" }
                     ]
                 }
             };
@@ -554,26 +510,12 @@
             const toggleDeduction = (id) => {
                 setDeductions(prev => {
                     const newState = { ...prev };
-                    
                     if (['meal_1', 'meal_2', 'meal_3', 'meal_half'].includes(id)) {
-                        if (!prev[id]) {
-                            newState['meal_1'] = false;
-                            newState['meal_2'] = false;
-                            newState['meal_3'] = false;
-                            newState['meal_half'] = false;
-                        }
+                        if (!prev[id]) { newState['meal_1'] = false; newState['meal_2'] = false; newState['meal_3'] = false; newState['meal_half'] = false; }
                     }
-                    
                     newState[id] = !prev[id];
-
-                    // Sync gov_vehicle logic
-                    if (id === 'gov_vehicle') {
-                        newState['transport_gov_vehicle'] = newState[id];
-                    }
-                    if (id === 'transport_gov_vehicle') {
-                        newState['gov_vehicle'] = newState[id];
-                    }
-
+                    if (id === 'gov_vehicle') newState['transport_gov_vehicle'] = newState[id];
+                    if (id === 'transport_gov_vehicle') newState['gov_vehicle'] = newState[id];
                     return newState;
                 });
             };
@@ -647,12 +589,14 @@
                     meal_1: false,
                     meal_2: false,
                     meal_3: false,
-                    meal_half: false, // Reset new state
+                    meal_half: false,
                     transport_proof: false,
                     transport_gov_vehicle: false,
                     transport_passenger: false
                 });
                 setShipFare(0); 
+                setIntraDeductions({ shortTime: false, govVehicle: false });
+                setCustomTransport('');
 
                 if (!from || !to) return;
 
@@ -759,20 +703,22 @@
             const calculateDetailedCost = () => {
                 if (!result) return { daily: 0, meal: 0, transport: 0, total: 0 };
                 
-                // 1. Daily Allowance
-                let daily = 25000;
-                if (deductions.gov_vehicle) {
-                    daily = 12500;
+                if (result.type === 'intraCity') {
+                    let total = 20000;
+                    if (intraDeductions.shortTime) total -= 10000;
+                    if (intraDeductions.govVehicle) total -= 10000;
+                    return { daily: 0, meal: 0, transport: 0, total: Math.max(0, total) };
                 }
 
-                // 2. Meal Allowance
+                let daily = 25000;
+                if (deductions.gov_vehicle) daily = 12500;
+
                 let meal = 25000;
                 if (deductions.meal_1) meal = 16660;
                 else if (deductions.meal_2) meal = 8330;
                 else if (deductions.meal_3) meal = 0;
                 else if (deductions.meal_half) meal = 12500;
 
-                // 3. Transportation
                 let transport = 0;
                 const isTransportDeducted = deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger;
 
@@ -780,8 +726,8 @@
                     if (result.type === 'internal') {
                         const oneWayFare = result.data.pre ? result.data.pre : result.data.gen;
                         transport = oneWayFare * 2;
-                    } else if (result.type === 'intraCity') {
-                        transport = result.long;
+                    } else if (result.type === 'external') {
+                        transport = Number(customTransport) || 0;
                     }
                 } else {
                     transport = 0;
@@ -796,19 +742,16 @@
             };
 
             const detailCosts = calculateDetailedCost();
+            const isTransportDeducted = deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger;
 
             return (
                 <div className="main-wrapper relative p-5">
-                    {/* Deduction Modal Overlay */}
                     {activeModal && (
                         <div 
                             className="fixed inset-0 z-[300] flex items-end justify-center sm:items-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
                             onClick={() => setActiveModal(null)}
                         >
-                            <div 
-                                className="bg-white w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl animate-slide-up-modal" 
-                                onClick={e => e.stopPropagation()}
-                            >
+                            <div className="bg-white w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl animate-slide-up-modal" onClick={e => e.stopPropagation()}>
                                 <div className="p-6">
                                     <div className="flex justify-between items-start mb-2">
                                         <h3 className="font-bold font-suit text-xl text-gray-900">{MODAL_CONTENT[activeModal].title}</h3>
@@ -816,13 +759,9 @@
                                             <Icons.X size={20} />
                                         </button>
                                     </div>
-                                    
-                                    {/* Description */}
                                     <p className="text-sm text-gray-600 font-pretendard leading-relaxed mb-2 break-keep font-medium">
                                         {MODAL_CONTENT[activeModal].desc}
                                     </p>
-                                    
-                                    {/* Special Sub-Description for Transport */}
                                     {MODAL_CONTENT[activeModal].subDesc && (
                                         <div className="mb-6 p-3 bg-gray-50 rounded-lg border border-gray-100/50">
                                             <p className="text-[11px] text-gray-400 font-pretendard leading-relaxed break-keep">
@@ -830,8 +769,6 @@
                                             </p>
                                         </div>
                                     )}
-
-                                    {/* Special Meal Reasons Section */}
                                     {activeModal === 'meal' && (
                                         <div className="mb-6 space-y-2 pl-1">
                                             {MODAL_CONTENT.meal.reasons.map((reason, idx) => (
@@ -849,25 +786,17 @@
                                             ))}
                                         </div>
                                     )}
-                                    
-                                    {/* Deduction Toggle Items */}
                                     <div className={`${(activeModal !== 'meal' && !MODAL_CONTENT[activeModal].subDesc) ? 'mt-4' : ''} space-y-4`}>
                                         {MODAL_CONTENT[activeModal].items.map(item => (
                                             <div key={item.id} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-0">
                                                 <div className="pr-4">
                                                     <span className="block text-sm font-bold text-gray-700 font-pretendard leading-tight">{item.label}</span>
-                                                    {item.subLabel && (
-                                                        <span className="block text-xs text-gray-400 mt-1 font-pretendard">{item.subLabel}</span>
-                                                    )}
+                                                    {item.subLabel && <span className="block text-xs text-gray-400 mt-1 font-pretendard">{item.subLabel}</span>}
                                                 </div>
-                                                <Toggle 
-                                                    checked={deductions[item.id]} 
-                                                    onChange={() => toggleDeduction(item.id)} 
-                                                />
+                                                <Toggle checked={deductions[item.id]} onChange={() => toggleDeduction(item.id)} />
                                             </div>
                                         ))}
                                     </div>
-
                                     <button 
                                         onClick={() => setActiveModal(null)}
                                         className="w-full mt-6 py-3.5 bg-teal-startup text-white rounded-xl font-bold font-suit text-base shadow-md active:scale-95 transition-transform"
@@ -879,7 +808,6 @@
                         </div>
                     )}
 
-                    {/* Notice Modal */}
                     {showNotice && (
                         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300" onClick={() => setShowNotice(false)}>
                             <div className="bg-white rounded-2xl w-full max-w-sm overflow-hidden shadow-2xl relative" onClick={e => e.stopPropagation()}>
@@ -887,30 +815,20 @@
                                     <h1 className="font-bold font-suit text-xl mb-1">yeobi-easy for JNE</h1>
                                     <p className="text-teal-100 text-xs font-pretendard opacity-90">2026. 1. 1. 자 국내여비 기준표를 기반으로 제작</p>
                                 </div>
-
                                 <div className="p-6 space-y-5">
                                     <div className="space-y-2">
                                         <p className="text-sm text-gray-600 leading-relaxed font-pretendard text-justify break-keep">
                                             광주전남의 교통비 조회와 여비 계산을 PC/모바일에서 할 수 있도록 만든 Web App 입니다.
                                         </p>
                                     </div>
-
                                     <ul className="space-y-2.5">
                                         <li className="flex items-start gap-3 text-sm text-gray-700">
                                             <span className="flex-shrink-0 w-5 h-5 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5">1</span>
-                                            <span className="font-pretendard">
-                                                시·군의 명칭으로 검색해 주세요
-                                                <br/>
-                                                <span className="text-gray-400 text-xs">(예: 광주, 신안, 담양, 해남 등)</span>
-                                            </span>
+                                            <span className="font-pretendard">시·군의 명칭으로 검색해 주세요<br/><span className="text-gray-400 text-xs">(예: 광주, 신안, 담양, 해남 등)</span></span>
                                         </li>
                                         <li className="flex items-start gap-3 text-sm text-gray-700">
                                             <span className="flex-shrink-0 w-5 h-5 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5">2</span>
-                                            <span className="font-pretendard">
-                                                초성 입력 후 선택하셔도 됩니다.
-                                                <br/>
-                                                <span className="text-gray-400 text-xs">(예: ㅎㄴ 입력 후 선택창에서 해남 선택)</span>
-                                            </span>
+                                            <span className="font-pretendard">초성 입력 후 선택하셔도 됩니다.<br/><span className="text-gray-400 text-xs">(예: ㅎㄴ 입력 후 선택창에서 해남 선택)</span></span>
                                         </li>
                                         <li className="flex items-start gap-3 text-sm text-gray-700">
                                             <span className="flex-shrink-0 w-5 h-5 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5">3</span>
@@ -918,18 +836,9 @@
                                         </li>
                                         <li className="flex items-start gap-3 text-sm text-gray-700">
                                             <span className="flex-shrink-0 w-5 h-5 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5">4</span>
-                                            <span className="font-pretendard">
-                                                오류, 건의사항, 요금정보 등은
-                                                <br/>
-                                                <span className="font-bold text-gray-900 underline decoration-teal-200 decoration-2 underline-offset-2">전현우@우수영초등학교</span>에게
-                                                <br/>
-                                                메신저쪽지, 050-6715-2727로
-                                                <br/>
-                                                연락부탁드립니다.
-                                            </span>
+                                            <span className="font-pretendard">오류, 건의사항, 요금정보 등은<br/><span className="font-bold text-gray-900 underline decoration-teal-200 decoration-2 underline-offset-2">전현우@우수영초등학교</span>에게<br/>메신저쪽지, 050-6715-2727로<br/>연락부탁드립니다.</span>
                                         </li>
                                     </ul>
-
                                     <div className="pt-2 text-center">
                                         <p className="text-xs text-gray-400 font-gmarket mb-4">부디 도움이 되길 바랍니다 🙏</p>
                                         <button 
@@ -944,7 +853,6 @@
                         </div>
                     )}
 
-                    {/* Modal */}
                     {modalState.type && (
                         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
                             <div className="bg-white rounded-2xl w-full max-w-sm overflow-hidden shadow-2xl">
@@ -990,64 +898,30 @@
                         </div>
                     )}
 
-                    {/* Header */}
                     <div className="text-center mt-6 mb-8">
                         <h1 className="text-2xl font-bold font-suit text-gray-900 tracking-tight">yeobi-easy for JNE</h1>
                     </div>
 
-                    {/* Search Form */}
                     <div className="space-y-4 mb-6">
-                        <AutocompleteInput
-                            label="출발지"
-                            placeholder="예: 광주 또는 ㄱㅈ"
-                            value={origin}
-                            onChange={setOrigin}
-                            onSelect={setOrigin}
-                            cityList={availableCities}
-                            onEnter={() => { if(destination) performCalculation(); }}
-                            onShowModal={(data) => setModalState({ type: 'selection', data, target: 'origin' })}
-                        />
-                        <AutocompleteInput
-                            label="도착지"
-                            placeholder="예: 해남 또는 ㅎㄴ"
-                            value={destination}
-                            onChange={setDestination}
-                            onSelect={setDestination}
-                            cityList={availableCities}
-                            onEnter={() => performCalculation()}
-                            onShowModal={(data) => setModalState({ type: 'selection', data, target: 'destination' })}
-                        />
-                        <button 
-                            onClick={() => performCalculation()} 
-                            className="w-full h-14 rounded-2xl font-bold btn-primary text-base shadow-lg shadow-teal-100 flex items-center justify-center gap-2 mt-4"
-                        >
+                        <AutocompleteInput label="출발지" placeholder="예: 광주 또는 ㄱㅈ" value={origin} onChange={setOrigin} onSelect={setOrigin} cityList={availableCities} onEnter={() => { if(destination) performCalculation(); }} onShowModal={(data) => setModalState({ type: 'selection', data, target: 'origin' })} />
+                        <AutocompleteInput label="도착지" placeholder="예: 해남 또는 ㅎㄴ" value={destination} onChange={setDestination} onSelect={setDestination} cityList={availableCities} onEnter={() => performCalculation()} onShowModal={(data) => setModalState({ type: 'selection', data, target: 'destination' })} />
+                        <button onClick={() => performCalculation()} className="w-full h-14 rounded-2xl font-bold btn-primary text-base shadow-lg shadow-teal-100 flex items-center justify-center gap-2 mt-4">
                             <Icons.Search size={20} /> 조회하기
                         </button>
                     </div>
 
-                    {/* Results Area */}
                     {result && (
-                        <div 
-                            className="mb-6 relative perspective-1000"
-                            onTouchStart={onTouchStart}
-                            onTouchMove={onTouchMove}
-                            onTouchEnd={onTouchEnd}
-                        >
-                            {/* Standard Result View */}
+                        <div className="mb-6 relative perspective-1000" onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
                             {!showDetail ? (
                                 <div className="result-card p-6 animate-flip-in relative">
-                                    {/* 상세 보기 버튼 (여비계산) - 관내 출장 시 미표시 */}
-                                    {result.type !== 'intraCity' && (
-                                        <button 
-                                            onClick={() => setShowDetail(true)}
-                                            className="absolute top-4 right-4 w-10 h-10 bg-[#00BFA5] text-white rounded-full shadow-md border border-white/20 flex flex-col items-center justify-center gap-0 z-20 hover:brightness-110 transition-all active:scale-95 animate-pulse-scale"
-                                        >
-                                            <span className="text-[13px] font-bold leading-none">여비</span>
-                                            <span className="text-[13px] font-bold leading-none mt-0.5">계산</span>
-                                        </button>
-                                    )}
+                                    <button 
+                                        onClick={() => setShowDetail(true)}
+                                        className="absolute top-4 right-4 w-10 h-10 bg-[#00BFA5] text-white rounded-full shadow-md border border-white/20 flex flex-col items-center justify-center gap-0 z-20 hover:brightness-110 transition-all active:scale-95 animate-pulse-scale"
+                                    >
+                                        <span className="text-[13px] font-bold leading-none">여비</span>
+                                        <span className="text-[13px] font-bold leading-none mt-0.5">계산</span>
+                                    </button>
 
-                                    {/* Route Info */}
                                     <div className="flex items-center justify-center gap-3 mb-6 pb-6 border-b border-gray-200 border-dashed mt-4">
                                         <div className="flex items-center gap-1">
                                             <span className="font-semibold text-lg text-gray-900 font-pretendard">{origin}</span>
@@ -1055,9 +929,7 @@
                                         </div>
                                         <div className="flex flex-col items-center">
                                             {result.routeType === 'transfer' && (
-                                                <span className="text-[10px] font-bold text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full mb-1">
-                                                    {result.viaPoint} 경유
-                                                </span>
+                                                <span className="text-[10px] font-bold text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full mb-1">{result.viaPoint} 경유</span>
                                             )}
                                             <Icons.ArrowRight size={20} className="text-gray-300" />
                                         </div>
@@ -1067,7 +939,6 @@
                                         </div>
                                     </div>
 
-                                    {/* Content Logic */}
                                     {result.type === 'intraCity' ? (
                                         <div className="space-y-3">
                                             <div className="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-100 shadow-sm">
@@ -1127,7 +998,6 @@
                                                 </div>
                                             )}
                                             
-                                            {/* Critical Warning Message */}
                                             <div className="mt-4 p-4 bg-teal-50 border border-teal-100 rounded-xl text-left">
                                                 <div className="space-y-2">
                                                     <p className="text-xs text-teal-800 font-pretendard leading-relaxed">
@@ -1137,20 +1007,14 @@
                                                     <p className="text-xs text-teal-800 font-pretendard leading-relaxed">
                                                         <span className="font-bold text-teal-600 mr-1">2.</span>
                                                         여행을 마친날로부터 <span className="font-bold">2주일 이내에 정산서 제출</span>
-                                                        <span className="block text-[10px] text-teal-600/70 mt-0.5">
-                                                                 「공무원여비규정」 제8조의2(여비의 결제와 정산 등)
-                                                        </span>
+                                                        <span className="block text-[10px] text-teal-600/70 mt-0.5">「공무원여비규정」 제8조의2(여비의 결제와 정산 등)</span>
                                                     </p>
                                                 </div>
                                             </div>
 
                                             {(result.data.note || result.specialNote) && (
                                                 <div className="mt-4 space-y-2">
-                                                    {result.data.note && (
-                                                        <p className="text-xs text-gray-500 font-pretendard bg-white px-3 py-2 rounded-lg border border-gray-100">
-                                                            * {result.data.note}
-                                                        </p>
-                                                    )}
+                                                    {result.data.note && <p className="text-xs text-gray-500 font-pretendard bg-white px-3 py-2 rounded-lg border border-gray-100">* {result.data.note}</p>}
                                                     {result.specialNote && (
                                                         <div className="flex items-start gap-2 bg-yellow-50 p-3 rounded-lg border border-yellow-100/50">
                                                             <Icons.Info size={14} className="text-yellow-600 mt-0.5 flex-shrink-0" />
@@ -1170,16 +1034,14 @@
                                             <Icons.Globe size={32} className="mx-auto mb-3 text-gray-300" />
                                             <h3 className="text-base font-bold text-gray-800 mb-1">DB 미등록 구간</h3>
                                             <p className="text-xs text-gray-500 mb-4">입력하신 구간의 요금 정보가 없습니다.</p>
-                                            <a href="https://map.kakao.com/?target=car" target="_blank" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#FEE500] text-[#191919] font-bold text-sm shadow-sm active:scale-95 transition-transform">
+                                            <a href="https://map.kakao.com/?target=car" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#FEE500] text-[#191919] font-bold text-sm shadow-sm active:scale-95 transition-transform">
                                                 카카오맵 길찾기
                                             </a>
                                         </div>
                                     )}
                                 </div>
                             ) : (
-                                /* Detailed Calculation View (Flip Side) */
                                 <div className="result-card p-6 bg-white animate-flip-in relative border-2 border-teal-500/10">
-                                    {/* 닫기 버튼 (좌측 상단 아이콘 버튼) */}
                                     <button 
                                         onClick={() => setShowDetail(false)}
                                         className="absolute top-4 left-4 w-10 h-10 bg-[#00BFA5] text-white rounded-full shadow-md border border-white/20 flex items-center justify-center z-20 hover:brightness-110 transition-all active:scale-95 animate-pulse-scale"
@@ -1187,112 +1049,149 @@
                                         <Icons.ChevronLeft size={24} />
                                     </button>
 
-                                    {/* Header */}
                                     <div className="text-center mb-6 mt-8">
                                         <h3 className="font-bold font-suit text-xl text-teal-600 flex items-center justify-center gap-2">
-                                            <Icons.Calculator size={20} />
-                                            여비계산
+                                            <Icons.Calculator size={20} /> 여비계산
                                         </h3>
                                         <p className="text-sm text-gray-500 mt-2 font-pretendard">
-                                            출장자가 {origin} ↔ {destination} {deductions.gov_vehicle ? '관용차량으로' : '자가용으로'} 당일 왕복한 경우
+                                            출장자가 {origin} ↔ {destination} {deductions.gov_vehicle || intraDeductions.govVehicle ? '관용차량으로' : '자가용으로'} 당일 왕복한 경우
                                         </p>
                                     </div>
 
-                                    {/* Calculation Rows (Compact) */}
                                     <div className="space-y-2 mb-4 bg-gray-50 p-4 rounded-xl border border-gray-100">
-                                        {/* Daily */}
-                                        <div className="flex justify-between items-center py-1">
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-sm font-bold text-gray-600 font-pretendard w-10">일비</span>
-                                                <button 
-                                                    onClick={() => setActiveModal('daily')}
-                                                    className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all active:scale-95 ${deductions.gov_vehicle ? 'bg-[#00BFA5] text-white shadow-sm' : 'text-teal-600 bg-teal-50/50 border border-teal-200 hover:bg-teal-100'}`}
-                                                >
-                                                    감액
-                                                </button>
-                                            </div>
-                                            <span className="text-sm font-bold font-suit text-gray-700">{fmt(detailCosts.daily)}<span className="text-xs font-normal text-gray-400 ml-0.5">원</span></span>
-                                        </div>
-                                        
-                                        {/* Meal */}
-                                        <div className="flex justify-between items-start py-1">
-                                            <div className="flex items-center gap-2 mt-0.5">
-                                                <span className="text-sm font-bold text-gray-600 font-pretendard w-10">식비</span>
-                                                <button 
-                                                    onClick={() => setActiveModal('meal')}
-                                                    className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all active:scale-95 ${(deductions.meal_1 || deductions.meal_2 || deductions.meal_3 || deductions.meal_half) ? 'bg-[#00BFA5] text-white shadow-sm' : 'text-teal-600 bg-teal-50/50 border border-teal-200 hover:bg-teal-100'}`}
-                                                >
-                                                    감액
-                                                </button>
-                                            </div>
-                                            <div className="flex flex-col items-end">
-                                                <span className="text-sm font-bold font-suit text-gray-700">{fmt(detailCosts.meal)}<span className="text-xs font-normal text-gray-400 ml-0.5">원</span></span>
-                                                {(25000 - detailCosts.meal > 0) && (
-                                                    <span className="block text-[11px] text-red-400 font-pretendard mt-0.5">(-{fmt(25000 - detailCosts.meal)})</span>
-                                                )}
-                                            </div>
-                                        </div>
-                                        
-                                        {/* Transport */}
-                                        <div className="flex justify-between items-start py-1">
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-sm font-bold text-gray-600 font-pretendard w-10">교통비</span>
-                                                <button 
-                                                    onClick={() => setActiveModal('transport')}
-                                                    className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all active:scale-95 ${(deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger) ? 'bg-[#00BFA5] text-white shadow-sm' : 'text-teal-600 bg-teal-50/50 border border-teal-200 hover:bg-teal-100'}`}
-                                                >
-                                                    감액
-                                                </button>
-                                            </div>
-                                            <div className="flex flex-col items-end">
-                                                <span className="text-sm font-bold font-suit text-gray-700">{fmt(detailCosts.transport)}<span className="text-xs font-normal text-gray-400 ml-0.5">원</span></span>
-                                                {/* Ship fare text removed here as requested */}
-                                            </div>
-                                        </div>
-
-                                        {/* Ship Fare Input (Only for Ship Routes) */}
-                                        {(result.hasShipCost || result.startIsShip || result.endIsShip) && (
-                                            <div className="flex justify-between items-start py-1">
-                                                <div className="flex items-center gap-2 mt-1">
-                                                    <span className="text-sm font-bold text-gray-600 font-pretendard w-16">기타교통비</span>
+                                        {result.type === 'intraCity' ? (
+                                            <>
+                                                <div className="flex justify-between items-center py-2 border-b border-gray-200 mb-2">
+                                                    <span className="text-sm font-bold text-gray-900 font-pretendard">관내여비</span>
+                                                    <span className="text-xl font-bold font-suit text-gray-700">{fmt(detailCosts.total)}<span className="text-xs font-normal text-gray-400 ml-0.5">원</span></span>
                                                 </div>
-                                                <div className="flex flex-col items-end">
-                                                    <div className="flex items-center justify-end gap-1">
-                                                        <input 
-                                                            type="number" 
-                                                            value={shipFare === 0 ? '' : shipFare} 
-                                                            onChange={(e) => setShipFare(Number(e.target.value))}
-                                                            placeholder="0"
-                                                            className="ship-fare-input"
-                                                        />
-                                                        <span className="text-xs font-normal text-gray-400">원</span>
+                                                <div className="space-y-3">
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-sm font-bold text-gray-600 font-pretendard">4시간 이하</span>
+                                                        <button 
+                                                            onClick={() => setIntraDeductions(prev => ({...prev, shortTime: !prev.shortTime}))}
+                                                            className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all active:scale-95 ${intraDeductions.shortTime ? 'bg-[#00BFA5] text-white shadow-sm' : 'text-teal-600 bg-teal-50/50 border border-teal-200 hover:bg-teal-100'}`}
+                                                        >
+                                                            감액
+                                                        </button>
                                                     </div>
-                                                    <span className="text-[10px] font-bold text-blue-500 font-pretendard mt-0.5">승선권 합계 입력</span>
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-sm font-bold text-gray-600 font-pretendard">관용차량 이용</span>
+                                                        <button 
+                                                            onClick={() => setIntraDeductions(prev => ({...prev, govVehicle: !prev.govVehicle}))}
+                                                            className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all active:scale-95 ${intraDeductions.govVehicle ? 'bg-[#00BFA5] text-white shadow-sm' : 'text-teal-600 bg-teal-50/50 border border-teal-200 hover:bg-teal-100'}`}
+                                                        >
+                                                            감액
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        )}
+                                            </>
+                                        ) : (
+                                            <>
+                                                <div className="flex justify-between items-center py-1">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-sm font-bold text-gray-600 font-pretendard w-10">일비</span>
+                                                        <button 
+                                                            onClick={() => setActiveModal('daily')}
+                                                            className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all active:scale-95 ${deductions.gov_vehicle ? 'bg-[#00BFA5] text-white shadow-sm' : 'text-teal-600 bg-teal-50/50 border border-teal-200 hover:bg-teal-100'}`}
+                                                        >
+                                                            감액
+                                                        </button>
+                                                    </div>
+                                                    <span className="text-sm font-bold font-suit text-gray-700">{fmt(detailCosts.daily)}<span className="text-xs font-normal text-gray-400 ml-0.5">원</span></span>
+                                                </div>
+                                                
+                                                <div className="flex justify-between items-start py-1">
+                                                    <div className="flex items-center gap-2 mt-0.5">
+                                                        <span className="text-sm font-bold text-gray-600 font-pretendard w-10">식비</span>
+                                                        <button 
+                                                            onClick={() => setActiveModal('meal')}
+                                                            className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all active:scale-95 ${(deductions.meal_1 || deductions.meal_2 || deductions.meal_3 || deductions.meal_half) ? 'bg-[#00BFA5] text-white shadow-sm' : 'text-teal-600 bg-teal-50/50 border border-teal-200 hover:bg-teal-100'}`}
+                                                        >
+                                                            감액
+                                                        </button>
+                                                    </div>
+                                                    <div className="flex flex-col items-end">
+                                                        <span className="text-sm font-bold font-suit text-gray-700">{fmt(detailCosts.meal)}<span className="text-xs font-normal text-gray-400 ml-0.5">원</span></span>
+                                                        {(25000 - detailCosts.meal > 0) && <span className="block text-[11px] text-red-400 font-pretendard mt-0.5">(-{fmt(25000 - detailCosts.meal)})</span>}
+                                                    </div>
+                                                </div>
+                                                
+                                                <div className="flex justify-between items-start py-1">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-sm font-bold text-gray-600 font-pretendard w-10">교통비</span>
+                                                        <button 
+                                                            onClick={() => setActiveModal('transport')}
+                                                            className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all active:scale-95 ${isTransportDeducted ? 'bg-[#00BFA5] text-white shadow-sm' : 'text-teal-600 bg-teal-50/50 border border-teal-200 hover:bg-teal-100'}`}
+                                                        >
+                                                            감액
+                                                        </button>
+                                                        {result.type === 'external' && (
+                                                            <a 
+                                                                href={`https://map.kakao.com/?target=car`} 
+                                                                target="_blank" rel="noopener noreferrer"
+                                                                className="px-2 py-1.5 text-[11px] font-bold rounded-lg bg-[#FEE500] text-[#191919] hover:brightness-95 transition-all shadow-sm whitespace-nowrap"
+                                                            >
+                                                                카카오맵검색
+                                                            </a>
+                                                        )}
+                                                    </div>
+                                                    <div className="flex flex-col items-end">
+                                                        {result.type === 'external' && !isTransportDeducted ? (
+                                                            <div className="flex items-center justify-end gap-1 w-full max-w-[100px]">
+                                                                <input 
+                                                                    type="number" 
+                                                                    value={customTransport === '' ? '' : customTransport} 
+                                                                    onChange={(e) => setCustomTransport(e.target.value)}
+                                                                    placeholder="0"
+                                                                    className="ship-fare-input w-full text-right"
+                                                                />
+                                                                <span className="text-xs font-normal text-gray-400">원</span>
+                                                            </div>
+                                                        ) : (
+                                                            <span className="text-sm font-bold font-suit text-gray-700 mt-1">{fmt(detailCosts.transport)}<span className="text-xs font-normal text-gray-400 ml-0.5">원</span></span>
+                                                        )}
+                                                    </div>
+                                                </div>
 
-                                        <div className="border-t border-gray-200 my-2"></div>
-                                        <div className="flex justify-between items-center pt-1">
-                                            <span className="text-sm font-bold text-gray-900 font-pretendard">합계</span>
-                                            <span className="text-xl font-bold font-suit text-teal-600">{fmt(detailCosts.total)}<span className="text-sm font-medium text-teal-400 ml-1">원</span></span>
-                                        </div>
+                                                {((result.type === 'internal' && (result.hasShipCost || result.startIsShip || result.endIsShip)) || result.type === 'external') && (
+                                                    <div className="flex justify-between items-start py-1">
+                                                        <div className="flex items-center gap-2 mt-1">
+                                                            <span className="text-sm font-bold text-gray-600 font-pretendard w-16">기타교통비</span>
+                                                        </div>
+                                                        <div className="flex flex-col items-end">
+                                                            <div className="flex items-center justify-end gap-1">
+                                                                <input 
+                                                                    type="number" 
+                                                                    value={shipFare === 0 ? '' : shipFare} 
+                                                                    onChange={(e) => setShipFare(Number(e.target.value))}
+                                                                    placeholder="0"
+                                                                    className="ship-fare-input"
+                                                                />
+                                                                <span className="text-xs font-normal text-gray-400">원</span>
+                                                            </div>
+                                                            <span className="text-[10px] font-bold text-blue-500 font-pretendard mt-0.5">승선권 등 합계 입력</span>
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                <div className="border-t border-gray-200 my-2"></div>
+                                                <div className="flex justify-between items-center pt-1">
+                                                    <span className="text-sm font-bold text-gray-900 font-pretendard">합계</span>
+                                                    <span className="text-xl font-bold font-suit text-teal-600">{fmt(detailCosts.total)}<span className="text-sm font-medium text-teal-400 ml-1">원</span></span>
+                                                </div>
+                                            </>
+                                        )}
                                     </div>
 
-                                    {/* Footer Notes */}
                                     <div className="mt-5 space-y-2">
-                                        {/* New Warning Note (First) */}
                                         <div className="flex items-start gap-1.5">
                                             <span className="text-xs text-red-500 mt-0.5 font-bold">※</span>
-                                            <p className="text-xs text-red-600 font-bold font-pretendard leading-tight">
-                                                단체행사 인솔 시 예산으로 숙박·식사계약 체결된 경우 주의
-                                            </p>
+                                            <p className="text-xs text-red-600 font-bold font-pretendard leading-tight">단체행사 인솔 시 예산으로 숙박·식사계약 체결된 경우 주의</p>
                                         </div>
                                         <div className="flex items-start gap-1.5">
                                             <span className="text-xs text-gray-600 mt-0.5">※</span>
-                                            <p className="text-xs text-gray-600 font-pretendard leading-tight">
-                                                여객선을 이용한 경우, 승선권 금액을 기타교통비에 입력
-                                            </p>
+                                            <p className="text-xs text-gray-600 font-pretendard leading-tight">여객선을 이용한 경우, 승선권 합계금액을 기타교통비에 입력</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1300,7 +1199,6 @@
                         </div>
                     )}
 
-                    {/* Footer */}
                     <footer className="mt-0.5 text-center text-gray-400/30 text-[10px] font-extrabold leading-relaxed font-gmarket mb-4 tracking-wide px-4">
                         crafted with passion by 전현우@우수영초등학교
                     </footer>
@@ -1313,5 +1211,3 @@
     </script>
 </body>
 </html>
-
-
