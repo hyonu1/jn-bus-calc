@@ -99,41 +99,52 @@
             background-color: var(--color-bg-card);
             border-radius: 16px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-            position: relative;
-            transform-style: preserve-3d;
-            touch-action: pan-y pinch-zoom;
         }
 
-        /* Animations */
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* --- Wipe Animation Logic --- */
+        .wipe-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            position: relative;
+            overflow: hidden; 
+            border-radius: 16px;
         }
-        .animate-slide-up { animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        
+
+        .wipe-layer {
+            grid-row: 1;
+            grid-column: 1;
+            width: 100%;
+            min-height: 100%; 
+        }
+
+        .wipe-base {
+            z-index: 1;
+            background-color: var(--color-bg-card);
+        }
+
+        .wipe-overlay {
+            z-index: 2;
+            background-color: #FFFFFF;
+            /* Transition: Clip-path & Transform for slide-over effect */
+            transition: clip-path 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            
+            /* Initial: Hidden to the right */
+            clip-path: inset(0 0 0 100%); 
+            transform: translateX(20px);
+        }
+
+        .wipe-overlay.active {
+            /* Active: Fully visible */
+            clip-path: inset(0 0 0 0);
+            transform: translateX(0);
+        }
+        /* ----------------------------------- */
+
         @keyframes slideUpModal {
             from { transform: translateY(100%); }
             to { transform: translateY(0); }
         }
         .animate-slide-up-modal { animation: slideUpModal 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-
-        @keyframes flipOut {
-            0% { transform: rotateY(0deg); opacity: 1; }
-            100% { transform: rotateY(-90deg); opacity: 0; }
-        }
-        @keyframes flipIn {
-            0% { transform: rotateY(90deg); opacity: 0; }
-            100% { transform: rotateY(0deg); opacity: 1; }
-        }
-
-        .animate-flip-out {
-            animation: flipOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-            transform-origin: left center;
-        }
-        .animate-flip-in {
-            animation: flipIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-            transform-origin: left center;
-        }
 
         @keyframes pulse-scale {
             0%, 100% { transform: scale(1); }
@@ -141,7 +152,6 @@
         }
         .animate-pulse-scale { animation: pulse-scale 2s ease-in-out infinite; }
 
-        /* 감액 버튼 시인성 강화를 위한 새로운 펄스 애니메이션 */
         @keyframes pulse-attention {
             0%, 100% { transform: scale(1); box-shadow: 0 4px 12px rgba(0, 191, 165, 0.2); }
             50% { transform: scale(1.03); box-shadow: 0 0 0 4px rgba(0, 191, 165, 0.15); }
@@ -351,9 +361,7 @@
                     e.preventDefault();
                     if (suggestions.length > 0) setActiveIndex(prev => (prev > 0 ? prev - 1 : Math.min(suggestions.length, 4) - 1));
                 } else if (e.key === 'Enter') {
-                    // 한글 중복 입력 방지 (조합 중이면 이벤트 무시)
                     if (e.nativeEvent.isComposing) return;
-
                     const trimmedValue = (value || '').trim();
                     if (cityList.includes(trimmedValue)) {
                         onSelect(trimmedValue); 
@@ -362,7 +370,6 @@
                         e.target.blur();
                         return;
                     }
-
                     if (suggestions.length >= 4) { onShowModal(suggestions); setShowSuggestions(false); e.target.blur(); return; }
                     if (activeIndex >= 0) handleSelect(suggestions[activeIndex]);
                     else if (suggestions.length > 0) handleSelect(suggestions[0]);
@@ -613,7 +620,7 @@
                 if (!from || !to) return;
 
                 if (from === "신안" && to === "신안") {
-                    setResult({ type: 'intraCity', short: 10000, long: 20000, note: "관내여비는 교통비와 식비 등을 포함 정액 지급.\n(조건에 따라 -10,000원 씩 감액)" });
+                    setResult({ type: 'intraCity', short: 10000, long: 20000, note: "관내여비는 교통비와 식비 등을 포함한 정액으로 지급함.\n(조건에 따라 -10,000원 씩 감액)" });
                     return;
                 }
 
@@ -626,7 +633,7 @@
                     const isConnectedFrom = fromZoneIdx <= 2;
                     const isConnectedTo = toZoneIdx <= 2;
                     if (fromZoneIdx === toZoneIdx || (isConnectedFrom && isConnectedTo)) {
-                        setResult({ type: 'intraCity', short: 10000, long: 20000, note: "관내여비는 교통비와 식비 등을 포함 정액 지급.\n(조건에 따라 -10,000원 씩 감액)" });
+                        setResult({ type: 'intraCity', short: 10000, long: 20000, note: "관내여비는 교통비와 식비 등을 포함한 정액으로 지급함.\n(조건에 따라 -10,000원 씩 감액)" });
                         return;
                     } else {
                         setResult({ type: 'internal', data: { gen: 0, pre: null, note: "" }, specialNote: "여객선 운행 지역 (육상교통비 외 선박운임 별도)", isShipOnlyRoute: true, startIsShip: true, endIsShip: true, hideFare: true });
@@ -638,7 +645,7 @@
                 const isToShinanArea = ALL_SHINAN_AREAS.includes(to);
 
                 if (from === to) {
-                    setResult({ type: 'intraCity', short: 10000, long: 20000, note: "관내여비는 교통비와 식비 등을 포함 정액 지급.\n(조건에 따라 -10,000원 씩 감액)" });
+                    setResult({ type: 'intraCity', short: 10000, long: 20000, note: "관내여비는 교통비와 식비 등을 포함한 정액으로 지급함.\n(조건에 따라 -10,000원 씩 감액)" });
                     return;
                 }
 
@@ -848,7 +855,7 @@
                                     <ul className="space-y-2.5">
                                         <li className="flex items-start gap-3 text-sm text-gray-700">
                                             <span className="flex-shrink-0 w-5 h-5 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5">1</span>
-                                            <span className="font-pretendard">시·군의 명칭으로 검색해 주세요.<br/><span className="text-gray-400 text-xs">(예: 남악, 신안, 담양, 해남 등)</span></span>
+                                            <span className="font-pretendard">시·군의 명칭으로 검색해 주세요.<br/><span className="text-gray-400 text-xs">(예: 광주, 신안, 담양, 해남 등)</span></span>
                                         </li>
                                         <li className="flex items-start gap-3 text-sm text-gray-700">
                                             <span className="flex-shrink-0 w-5 h-5 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center text-[10px] font-bold mt-0.5">2</span>
@@ -935,326 +942,338 @@
                     </div>
 
                     {result && (
-                        <div className="mb-6 relative perspective-1000" onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
-                            {!showDetail ? (
-                                <div className="result-card p-6 animate-flip-in relative">
-                                    <button 
-                                        onClick={() => setShowDetail(true)}
-                                        className="absolute top-4 right-4 w-12 h-12 bg-[#00BFA5] text-white rounded-full shadow-md border border-white/20 flex flex-col items-center justify-center gap-0 z-20 hover:brightness-110 transition-all active:scale-95 animate-pulse-scale"
-                                    >
-                                        <span className="text-[11px] font-bold leading-none">여비</span>
-                                        <span className="text-[11px] font-bold leading-none mt-0.5">계산</span>
-                                    </button>
+                        <div className="mb-6 relative wipe-container" onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
+                            
+                            {/* Layer 1: 기본 결과 화면 (Wipe Base) */}
+                            <div className="result-card p-6 wipe-layer wipe-base relative">
+                                <button 
+                                    onClick={() => setShowDetail(true)}
+                                    className="absolute top-4 right-4 w-12 h-12 bg-[#00BFA5] text-white rounded-full shadow-md border border-white/20 flex flex-col items-center justify-center gap-0 z-20 hover:brightness-110 transition-all active:scale-95 animate-pulse-scale"
+                                >
+                                    <span className="text-[11px] font-bold leading-none">여비</span>
+                                    <span className="text-[11px] font-bold leading-none mt-0.5">계산</span>
+                                </button>
 
-                                    <div className="flex items-center justify-center gap-3 mb-6 pb-6 border-b border-gray-200 border-dashed mt-4">
-                                        <div className="flex items-center gap-1">
-                                            <span className="font-semibold text-lg text-gray-900 font-pretendard">{origin}</span>
-                                            {REGION_ICONS[origin] && <span className="text-lg inline-block ship-body">{REGION_ICONS[origin]}</span>}
+                                <div className="flex items-center justify-center gap-3 mb-6 pb-6 border-b border-gray-200 border-dashed mt-4">
+                                    <div className="flex items-center gap-1">
+                                        <span className="font-semibold text-lg text-gray-900 font-pretendard">{origin}</span>
+                                        {REGION_ICONS[origin] && <span className="text-lg inline-block ship-body">{REGION_ICONS[origin]}</span>}
+                                    </div>
+                                    <div className="flex flex-col items-center">
+                                        {result.routeType === 'transfer' && (
+                                            <span className="text-[10px] font-bold text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full mb-1">{result.viaPoint} 경유</span>
+                                        )}
+                                        <Icons.ArrowRight size={20} className="text-gray-300" />
+                                    </div>
+                                    <div className="flex items-center gap-1">
+                                        <span className="font-semibold text-lg text-gray-900 font-pretendard">{destination}</span>
+                                        {REGION_ICONS[destination] && <span className="text-lg inline-block ship-body">{REGION_ICONS[destination]}</span>}
+                                    </div>
+                                </div>
+
+                                {result.type === 'intraCity' ? (
+                                    <div className="space-y-3">
+                                        <div className="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-100 shadow-sm">
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-sm font-medium text-gray-500 font-pretendard">4시간 이하</span>
+                                                <button 
+                                                    onClick={() => setIntraDeductions(prev => ({...prev, govVehicle: !prev.govVehicle}))}
+                                                    className={getDeductionBtnClass(intraDeductions.govVehicle)}
+                                                >
+                                                    관용차량 이용
+                                                </button>
+                                            </div>
+                                            <span className="text-xl font-bold font-suit text-gray-900">
+                                                {fmt(Math.max(0, result.short - (intraDeductions.govVehicle ? 10000 : 0)))}
+                                                <span className="text-base font-medium text-gray-400 ml-1">원</span>
+                                            </span>
                                         </div>
-                                        <div className="flex flex-col items-center">
-                                            {result.routeType === 'transfer' && (
-                                                <span className="text-[10px] font-bold text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full mb-1">{result.viaPoint} 경유</span>
-                                            )}
-                                            <Icons.ArrowRight size={20} className="text-gray-300" />
+                                        <div className="flex items-center justify-between p-4 bg-teal-50 rounded-xl border border-teal-100 shadow-sm">
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-sm font-medium text-teal-700 font-pretendard">4시간 이상</span>
+                                                <button 
+                                                    onClick={() => setIntraDeductions(prev => ({...prev, govVehicle: !prev.govVehicle}))}
+                                                    className={getDeductionBtnClass(intraDeductions.govVehicle)}
+                                                >
+                                                    관용차량 이용
+                                                </button>
+                                            </div>
+                                            <span className="text-2xl font-bold font-suit text-teal-600">
+                                                {fmt(Math.max(0, result.long - (intraDeductions.govVehicle ? 10000 : 0)))}
+                                                <span className="text-lg font-medium text-teal-400 ml-1">원</span>
+                                            </span>
                                         </div>
-                                        <div className="flex items-center gap-1">
-                                            <span className="font-semibold text-lg text-gray-900 font-pretendard">{destination}</span>
-                                            {REGION_ICONS[destination] && <span className="text-lg inline-block ship-body">{REGION_ICONS[destination]}</span>}
+                                        <div className="mt-4 flex items-start gap-2 bg-yellow-50 p-3 rounded-lg">
+                                            <Icons.Info size={16} className="text-yellow-600 mt-0.5 flex-shrink-0" />
+                                            <p className="text-xs text-yellow-700 font-pretendard leading-relaxed whitespace-pre-line">{result.note}</p>
                                         </div>
                                     </div>
-
-                                    {result.type === 'intraCity' ? (
-                                        <div className="space-y-3">
-                                            <div className="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-100 shadow-sm">
-                                                <div className="flex items-center gap-2">
-                                                    <span className="text-sm font-medium text-gray-500 font-pretendard">4시간 이하</span>
-                                                    <button 
-                                                        onClick={() => setIntraDeductions(prev => ({...prev, govVehicle: !prev.govVehicle}))}
-                                                        className={getDeductionBtnClass(intraDeductions.govVehicle)}
-                                                    >
-                                                        관용차량 이용
-                                                    </button>
+                                ) : result.type === 'internal' ? (
+                                    <div>
+                                        {result.hideFare ? (
+                                            <div className="text-center py-8">
+                                                <div className="w-12 h-12 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
+                                                    <Icons.Ship size={24} className="ship-body" />
                                                 </div>
-                                                <span className="text-xl font-bold font-suit text-gray-900">
-                                                    {fmt(Math.max(0, result.short - (intraDeductions.govVehicle ? 10000 : 0)))}
-                                                    <span className="text-base font-medium text-gray-400 ml-1">원</span>
-                                                </span>
+                                                <h3 className="font-bold text-gray-800 mb-1">여객선 운행 구간</h3>
+                                                <p className="text-sm text-gray-500">선박운임이 적용됩니다.</p>
                                             </div>
-                                            <div className="flex items-center justify-between p-4 bg-teal-50 rounded-xl border border-teal-100 shadow-sm">
-                                                <div className="flex items-center gap-2">
-                                                    <span className="text-sm font-medium text-teal-700 font-pretendard">4시간 이상</span>
-                                                    <button 
-                                                        onClick={() => setIntraDeductions(prev => ({...prev, govVehicle: !prev.govVehicle}))}
-                                                        className={getDeductionBtnClass(intraDeductions.govVehicle)}
-                                                    >
-                                                        관용차량 이용
-                                                    </button>
-                                                </div>
-                                                <span className="text-2xl font-bold font-suit text-teal-600">
-                                                    {fmt(Math.max(0, result.long - (intraDeductions.govVehicle ? 10000 : 0)))}
-                                                    <span className="text-lg font-medium text-teal-400 ml-1">원</span>
-                                                </span>
-                                            </div>
-                                            <div className="mt-4 flex items-start gap-2 bg-yellow-50 p-3 rounded-lg">
-                                                <Icons.Info size={16} className="text-yellow-600 mt-0.5 flex-shrink-0" />
-                                                <p className="text-xs text-yellow-700 font-pretendard leading-relaxed whitespace-pre-line">{result.note}</p>
-                                            </div>
-                                        </div>
-                                    ) : result.type === 'internal' ? (
-                                        <div>
-                                            {result.hideFare ? (
-                                                <div className="text-center py-8">
-                                                    <div className="w-12 h-12 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                                                        <Icons.Ship size={24} className="ship-body" />
+                                        ) : (
+                                            <div className="space-y-3">
+                                                {result.data.pre === null ? (
+                                                    <div className="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-100 shadow-sm">
+                                                        <span className="text-sm font-medium text-gray-500 font-pretendard">일반 요금</span>
+                                                        <div className="flex items-center gap-1">
+                                                            <span className="text-2xl font-bold font-suit text-gray-900">{fmt(result.data.gen)}</span>
+                                                            <span className="text-base font-medium font-suit text-gray-400">원</span>
+                                                            {result.hasShipCost && <span className="text-[11px] text-blue-600 font-extrabold ml-1.5 bg-white border border-blue-200 shadow-sm px-2 py-0.5 rounded-md tracking-tight">+ 선박운임</span>}
+                                                        </div>
                                                     </div>
-                                                    <h3 className="font-bold text-gray-800 mb-1">여객선 운행 구간</h3>
-                                                    <p className="text-sm text-gray-500">선박운임이 적용됩니다.</p>
-                                                </div>
-                                            ) : (
-                                                <div className="space-y-3">
-                                                    {result.data.pre === null ? (
+                                                ) : (
+                                                    <>
                                                         <div className="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-100 shadow-sm">
                                                             <span className="text-sm font-medium text-gray-500 font-pretendard">일반 요금</span>
                                                             <div className="flex items-center gap-1">
-                                                                <span className="text-2xl font-bold font-suit text-gray-900">{fmt(result.data.gen)}</span>
-                                                                <span className="text-base font-medium font-suit text-gray-400">원</span>
+                                                                <span className="text-xl font-bold font-suit text-gray-800">{fmt(result.data.gen)}</span>
+                                                                <span className="text-sm font-medium font-suit text-gray-400">원</span>
                                                                 {result.hasShipCost && <span className="text-[11px] text-blue-600 font-extrabold ml-1.5 bg-white border border-blue-200 shadow-sm px-2 py-0.5 rounded-md tracking-tight">+ 선박운임</span>}
                                                             </div>
                                                         </div>
-                                                    ) : (
-                                                        <>
-                                                            <div className="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-100 shadow-sm">
-                                                                <span className="text-sm font-medium text-gray-500 font-pretendard">일반 요금</span>
-                                                                <div className="flex items-center gap-1">
-                                                                    <span className="text-xl font-bold font-suit text-gray-800">{fmt(result.data.gen)}</span>
-                                                                    <span className="text-sm font-medium font-suit text-gray-400">원</span>
-                                                                    {result.hasShipCost && <span className="text-[11px] text-blue-600 font-extrabold ml-1.5 bg-white border border-blue-200 shadow-sm px-2 py-0.5 rounded-md tracking-tight">+ 선박운임</span>}
-                                                                </div>
+                                                        <div className="flex items-center justify-between p-4 bg-teal-50 rounded-xl border border-teal-100 shadow-sm relative overflow-hidden">
+                                                            <span className="text-sm font-medium text-teal-700 font-pretendard relative z-10">우등 요금</span>
+                                                            <div className="flex items-center gap-1 relative z-10">
+                                                                <span className="text-2xl font-bold font-suit text-teal-600">{fmt(result.data.pre)}</span>
+                                                                <span className="text-base font-medium font-suit text-teal-400">원</span>
+                                                                {result.hasShipCost && <span className="text-[11px] text-blue-600 font-extrabold ml-1.5 bg-white border border-blue-200 shadow-sm px-2 py-0.5 rounded-md tracking-tight">+ 선박운임</span>}
                                                             </div>
-                                                            <div className="flex items-center justify-between p-4 bg-teal-50 rounded-xl border border-teal-100 shadow-sm relative overflow-hidden">
-                                                                <span className="text-sm font-medium text-teal-700 font-pretendard relative z-10">우등 요금</span>
-                                                                <div className="flex items-center gap-1 relative z-10">
-                                                                    <span className="text-2xl font-bold font-suit text-teal-600">{fmt(result.data.pre)}</span>
-                                                                    <span className="text-base font-medium font-suit text-teal-400">원</span>
-                                                                    {result.hasShipCost && <span className="text-[11px] text-blue-600 font-extrabold ml-1.5 bg-white border border-blue-200 shadow-sm px-2 py-0.5 rounded-md tracking-tight">+ 선박운임</span>}
-                                                                </div>
-                                                            </div>
-                                                        </>
-                                                    )}
+                                                        </div>
+                                                    </>
+                                                )}
+                                            </div>
+                                        )}
+                                        
+                                        <div className="mt-4 p-4 bg-teal-50 border border-teal-100 rounded-xl text-left">
+                                            <div className="space-y-3">
+                                                <div className="flex items-start gap-1">
+                                                    <span className="font-bold text-teal-600 text-xs mt-0.5 min-w-[12px]">1.</span>
+                                                    <p className="text-xs text-teal-800 font-pretendard leading-relaxed">
+                                                        <span className="font-bold">교통비</span>·<span className="font-bold">숙박비</span>는 실비정산제 → <span className="font-bold">증빙</span> 없으면 정산 ×
+                                                    </p>
                                                 </div>
-                                            )}
-                                            
-                                            <div className="mt-4 p-4 bg-teal-50 border border-teal-100 rounded-xl text-left">
-                                                <div className="space-y-3">
-                                                    <div className="flex items-start gap-1">
-                                                        <span className="font-bold text-teal-600 text-xs mt-0.5 min-w-[12px]">1.</span>
+                                                <div className="flex items-start gap-1">
+                                                    <span className="font-bold text-teal-600 text-xs mt-0.5 min-w-[12px]">2.</span>
+                                                    <div>
                                                         <p className="text-xs text-teal-800 font-pretendard leading-relaxed">
-                                                            <span className="font-bold">교통비</span>·<span className="font-bold">숙박비</span>는 실비정산제 → <span className="font-bold">증빙</span> 없으면 정산 ×
+                                                            여행을 마친날로부터 <span className="font-bold">2주일 이내에 정산서 제출</span>
+                                                        </p>
+                                                        <p className="text-[10px] text-teal-600/70 mt-0.5 font-pretendard">
+                                                            「공무원여비규정」 제8조의2(여비의 결제와 정산 등)
                                                         </p>
                                                     </div>
-                                                    <div className="flex items-start gap-1">
-                                                        <span className="font-bold text-teal-600 text-xs mt-0.5 min-w-[12px]">2.</span>
-                                                        <div>
-                                                            <p className="text-xs text-teal-800 font-pretendard leading-relaxed">
-                                                                여행을 마친날로부터 <span className="font-bold">2주일 이내에 정산서 제출</span>
-                                                            </p>
-                                                            <p className="text-[10px] text-teal-600/70 mt-0.5 font-pretendard">
-                                                                「공무원여비규정」 제8조의2(여비의 결제와 정산 등)
-                                                            </p>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>
-
-                                            {(result.data.note || result.specialNote) && (
-                                                <div className="mt-4 space-y-2">
-                                                    {result.data.note && <p className="text-xs text-gray-500 font-pretendard bg-white px-3 py-2 rounded-lg border border-gray-100">* {result.data.note}</p>}
-                                                    {result.specialNote && (
-                                                        <div className="flex items-start gap-2 bg-yellow-50 p-3 rounded-lg border border-yellow-100/50">
-                                                            <Icons.Info size={14} className="text-yellow-600 mt-0.5 flex-shrink-0" />
-                                                            <p className="text-xs text-yellow-700 font-pretendard">{result.specialNote}</p>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            )}
-                                            
-                                            <div className="mt-5 pt-4 border-t border-gray-200 flex items-center justify-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity">
-                                                <Icons.Database size={12} className="text-gray-400" />
-                                                <span className="text-[11px] text-gray-400 font-pretendard">출처: {result.source}</span>
-                                            </div>
                                         </div>
-                                    ) : (
-                                        <div className="text-center py-6">
-                                            <Icons.Globe size={32} className="mx-auto mb-3 text-gray-300" />
-                                            <h3 className="text-base font-bold text-gray-800 mb-1">DB 미등록 구간</h3>
-                                            <p className="text-xs text-gray-500 mb-4">광주·전남권 밖은 외부검색을 이용해주세요.</p>
-                                            <a href="https://map.kakao.com/?target=car" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#FEE500] text-[#191919] font-bold text-sm shadow-sm active:scale-95 transition-transform">
-                                                카카오맵 길찾기
-                                            </a>
-                                        </div>
-                                    )}
-                                </div>
-                            ) : (
-                                <div className="result-card p-6 bg-white animate-flip-in relative border-2 border-teal-500/10">
-                                    <button 
-                                        onClick={() => setShowDetail(false)}
-                                        className="absolute top-4 left-4 w-12 h-12 bg-[#00BFA5] text-white rounded-full shadow-md border border-white/20 flex flex-col items-center justify-center gap-0 z-20 hover:brightness-110 transition-all active:scale-95 animate-pulse-scale"
-                                    >
-                                        <span className="text-[11px] font-bold leading-none">편도</span>
-                                        <span className="text-[11px] font-bold leading-none mt-0.5">교통비</span>
-                                    </button>
 
-                                    <div className="text-center mb-6 mt-8">
-                                        <h3 className="font-bold font-suit text-xl text-teal-600 flex items-center justify-center gap-2">
-                                            <Icons.Calculator size={20} /> {result.type === 'intraCity' ? '관내여비계산' : '여비계산'}
-                                        </h3>
-                                        {result.type !== 'intraCity' && (
-                                            <p className="text-sm text-gray-500 mt-2 font-pretendard">
-                                                출장자가 {origin} ↔ {destination} {deductions.gov_vehicle || intraDeductions.govVehicle ? '관용차량으로' : '자가용으로'} 당일 왕복한 경우
-                                            </p>
-                                        )}
-                                    </div>
-
-                                    <div className="space-y-2 mb-4 bg-gray-50 p-4 rounded-xl border border-gray-100">
-                                        {result.type === 'intraCity' ? (
-                                            <>
-                                                <div className="flex justify-between items-center py-2 border-b border-gray-200 mb-2">
-                                                    <span className="text-sm font-bold text-gray-900 font-pretendard">관내여비</span>
-                                                    <span className="text-xl font-bold font-suit text-gray-700">{fmt(detailCosts.total)}<span className="text-xs font-normal text-gray-400 ml-0.5">원</span></span>
-                                                </div>
-                                                <div className="space-y-3">
-                                                    <div className="flex justify-between items-center">
-                                                        <span className="text-sm font-bold text-gray-600 font-pretendard">4시간 이하</span>
-                                                        <button 
-                                                            onClick={() => setIntraDeductions(prev => ({...prev, shortTime: !prev.shortTime}))}
-                                                            className={getDeductionBtnClass(intraDeductions.shortTime)}
-                                                        >
-                                                            감액
-                                                        </button>
-                                                    </div>
-                                                    <div className="flex justify-between items-center">
-                                                        <span className="text-sm font-bold text-gray-600 font-pretendard">관용차량 이용</span>
-                                                        <button 
-                                                            onClick={() => setIntraDeductions(prev => ({...prev, govVehicle: !prev.govVehicle}))}
-                                                            className={getDeductionBtnClass(intraDeductions.govVehicle)}
-                                                        >
-                                                            감액
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <div className="flex justify-between items-center py-1">
-                                                    <div className="flex items-center gap-2">
-                                                        <span className="text-sm font-bold text-gray-600 font-pretendard w-10">일비</span>
-                                                        <button 
-                                                            onClick={() => setActiveModal('daily')}
-                                                            className={getDeductionBtnClass(deductions.gov_vehicle)}
-                                                        >
-                                                            감액
-                                                        </button>
-                                                    </div>
-                                                    <span className="text-sm font-bold font-suit text-gray-700">{fmt(detailCosts.daily)}<span className="text-xs font-normal text-gray-400 ml-0.5">원</span></span>
-                                                </div>
-                                                
-                                                <div className="flex justify-between items-start py-1">
-                                                    <div className="flex items-center gap-2 mt-0.5">
-                                                        <span className="text-sm font-bold text-gray-600 font-pretendard w-10">식비</span>
-                                                        <button 
-                                                            onClick={() => setActiveModal('meal')}
-                                                            className={getDeductionBtnClass(deductions.meal_1 || deductions.meal_2 || deductions.meal_3 || deductions.meal_half)}
-                                                        >
-                                                            감액
-                                                        </button>
-                                                    </div>
-                                                    <div className="flex flex-col items-end">
-                                                        <span className="text-sm font-bold font-suit text-gray-700">{fmt(detailCosts.meal)}<span className="text-xs font-normal text-gray-400 ml-0.5">원</span></span>
-                                                        {(25000 - detailCosts.meal > 0) && <span className="block text-[11px] text-red-400 font-pretendard mt-0.5">(-{fmt(25000 - detailCosts.meal)})</span>}
-                                                    </div>
-                                                </div>
-                                                
-                                                <div className="flex justify-between items-start py-1">
-                                                    <div className="flex items-center gap-2">
-                                                        <span className="text-sm font-bold text-gray-600 font-pretendard w-10">교통비</span>
-                                                        <button 
-                                                            onClick={() => setActiveModal('transport')}
-                                                            className={getDeductionBtnClass(isTransportDeducted)}
-                                                        >
-                                                            감액
-                                                        </button>
-                                                        {result.type === 'external' && (
-                                                            <a 
-                                                                href={`https://map.kakao.com/?target=car`} 
-                                                                target="_blank" rel="noopener noreferrer"
-                                                                className="px-2 py-1.5 text-[11px] font-bold rounded-lg bg-[#FEE500] text-[#191919] hover:brightness-95 transition-all shadow-sm whitespace-nowrap"
-                                                            >
-                                                                카카오맵검색
-                                                            </a>
-                                                        )}
-                                                    </div>
-                                                    <div className="flex flex-col items-end">
-                                                        {result.type === 'external' && !isTransportDeducted ? (
-                                                            <div className="flex items-center justify-end gap-1 w-full max-w-[100px]">
-                                                                <input 
-                                                                    type="number" 
-                                                                    value={customTransport === '' ? '' : customTransport} 
-                                                                    onChange={(e) => setCustomTransport(e.target.value)}
-                                                                    placeholder="0"
-                                                                    className="ship-fare-input w-full text-right"
-                                                                />
-                                                                <span className="text-xs font-normal text-gray-400">원</span>
-                                                            </div>
-                                                        ) : (
-                                                            <span className="text-sm font-bold font-suit text-gray-700 mt-1">{fmt(detailCosts.transport)}<span className="text-xs font-normal text-gray-400 ml-0.5">원</span></span>
-                                                        )}
-                                                    </div>
-                                                </div>
-
-                                                {((result.type === 'internal' && (result.hasShipCost || result.startIsShip || result.endIsShip)) || result.type === 'external') && (
-                                                    <div className="flex justify-between items-start py-1">
-                                                        <div className="flex items-center gap-2 mt-1">
-                                                            <span className="text-sm font-bold text-gray-600 font-pretendard w-16">기타교통비</span>
-                                                        </div>
-                                                        <div className="flex flex-col items-end">
-                                                            <div className="flex items-center justify-end gap-1">
-                                                                <input 
-                                                                    type="number" 
-                                                                    value={shipFare === 0 ? '' : shipFare} 
-                                                                    onChange={(e) => setShipFare(Number(e.target.value))}
-                                                                    placeholder="0"
-                                                                    className="ship-fare-input"
-                                                                />
-                                                                <span className="text-xs font-normal text-gray-400">원</span>
-                                                            </div>
-                                                            <span className="text-[10px] font-bold text-blue-500 font-pretendard mt-0.5">승선권 합계 입력</span>
-                                                        </div>
+                                        {(result.data.note || result.specialNote) && (
+                                            <div className="mt-4 space-y-2">
+                                                {result.data.note && <p className="text-xs text-gray-500 font-pretendard bg-white px-3 py-2 rounded-lg border border-gray-100">* {result.data.note}</p>}
+                                                {result.specialNote && (
+                                                    <div className="flex items-start gap-2 bg-yellow-50 p-3 rounded-lg border border-yellow-100/50">
+                                                        <Icons.Info size={14} className="text-yellow-600 mt-0.5 flex-shrink-0" />
+                                                        <p className="text-xs text-yellow-700 font-pretendard">{result.specialNote}</p>
                                                     </div>
                                                 )}
-
-                                                <div className="border-t border-gray-200 my-2"></div>
-                                                <div className="flex justify-between items-center pt-1">
-                                                    <span className="text-sm font-bold text-gray-900 font-pretendard">합계</span>
-                                                    <span className="text-xl font-bold font-suit text-teal-600">{fmt(detailCosts.total)}<span className="text-sm font-medium text-teal-400 ml-1">원</span></span>
-                                                </div>
-                                            </>
+                                            </div>
                                         )}
-                                    </div>
-
-                                    {result.type !== 'intraCity' && (
-                                        <div className="mt-5 space-y-2">
-                                            <div className="flex items-start gap-1.5">
-                                                <span className="text-xs text-red-500 mt-0.5 font-bold">※</span>
-                                                <p className="text-xs text-red-600 font-bold font-pretendard leading-tight">단체행사 인솔 시 예산으로 숙박·식사계약 체결된 경우 주의</p>
-                                            </div>
-                                            <div className="flex items-start gap-1.5">
-                                                <span className="text-xs text-gray-600 mt-0.5">※</span>
-                                                <p className="text-xs text-gray-600 font-pretendard leading-tight">여객선을 이용한 경우, 승선권 합계금액을 기타교통비에 입력</p>
-                                            </div>
+                                        
+                                        <div className="mt-5 pt-4 border-t border-gray-200 flex items-center justify-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity">
+                                            <Icons.Database size={12} className="text-gray-400" />
+                                            <span className="text-[11px] text-gray-400 font-pretendard">출처: {result.source}</span>
                                         </div>
+
+                                        <div className="mt-4 flex justify-center">
+                                            <a 
+                                                href="https://docs.google.com/spreadsheets/d/10v8CuQTEWWYuh-rGUDWfT3XmHShj3QP64bm8u0GFG4E/edit?usp=sharing"
+                                                target="_blank"
+                                                rel="noopener noreferrer" 
+                                                className="inline-flex items-center justify-center py-3 px-8 rounded-xl bg-yellow-50 border border-yellow-200 shadow-sm hover:bg-yellow-100 transition-all active:scale-95"
+                                            >
+                                                <span className="text-sm font-bold text-yellow-700">📢 요금 정보 제보</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="text-center py-6">
+                                        <Icons.Globe size={32} className="mx-auto mb-3 text-gray-300" />
+                                        <h3 className="text-base font-bold text-gray-800 mb-1">DB 미등록 구간</h3>
+                                        <p className="text-xs text-gray-500 mb-4">광주·전남권 밖은 외부검색을 이용해주세요.</p>
+                                        <a href="https://map.kakao.com/?target=car" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#FEE500] text-[#191919] font-bold text-sm shadow-sm active:scale-95 transition-transform">
+                                            카카오맵 길찾기
+                                        </a>
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Layer 2: 상세 계산 화면 (Wipe Overlay) */}
+                            <div className={`result-card p-6 bg-white wipe-layer wipe-overlay border-2 border-teal-500/10 relative ${showDetail ? 'active' : ''}`}>
+                                <button 
+                                    onClick={() => setShowDetail(false)}
+                                    className="absolute top-4 left-4 w-12 h-12 bg-[#00BFA5] text-white rounded-full shadow-md border border-white/20 flex flex-col items-center justify-center gap-0 z-20 hover:brightness-110 transition-all active:scale-95 animate-pulse-scale"
+                                >
+                                    <span className="text-[11px] font-bold leading-none block">편도</span>
+                                    <span className="text-[11px] font-bold leading-none mt-0.5 block">교통비</span>
+                                </button>
+
+                                <div className="text-center mb-6 mt-8">
+                                    <h3 className="font-bold font-suit text-xl text-teal-600 flex items-center justify-center gap-2">
+                                        <Icons.Calculator size={20} /> {result.type === 'intraCity' ? '관내여비계산' : '여비계산'}
+                                    </h3>
+                                    {result.type !== 'intraCity' && (
+                                        <p className="text-sm text-gray-500 mt-2 font-pretendard">
+                                            출장자가 {origin} ↔ {destination} {deductions.gov_vehicle || intraDeductions.govVehicle ? '관용차량으로' : '자가용으로'} 당일 왕복한 경우
+                                        </p>
                                     )}
                                 </div>
-                            )}
+
+                                <div className="space-y-2 mb-4 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                                    {result.type === 'intraCity' ? (
+                                        <>
+                                            <div className="flex justify-between items-center py-2 border-b border-gray-200 mb-2">
+                                                <span className="text-sm font-bold text-gray-900 font-pretendard">관내여비</span>
+                                                <span className="text-xl font-bold font-suit text-gray-700">{fmt(detailCosts.total)}<span className="text-xs font-normal text-gray-400 ml-0.5">원</span></span>
+                                            </div>
+                                            <div className="space-y-3">
+                                                <div className="flex justify-between items-center">
+                                                    <span className="text-sm font-bold text-gray-600 font-pretendard">4시간 이하</span>
+                                                    <button 
+                                                        onClick={() => setIntraDeductions(prev => ({...prev, shortTime: !prev.shortTime}))}
+                                                        className={getDeductionBtnClass(intraDeductions.shortTime)}
+                                                    >
+                                                        감액
+                                                    </button>
+                                                </div>
+                                                <div className="flex justify-between items-center">
+                                                    <span className="text-sm font-bold text-gray-600 font-pretendard">관용차량 이용</span>
+                                                    <button 
+                                                        onClick={() => setIntraDeductions(prev => ({...prev, govVehicle: !prev.govVehicle}))}
+                                                        className={getDeductionBtnClass(intraDeductions.govVehicle)}
+                                                    >
+                                                        감액
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <div className="flex justify-between items-center py-1">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-sm font-bold text-gray-600 font-pretendard w-10">일비</span>
+                                                    <button 
+                                                        onClick={() => setActiveModal('daily')}
+                                                        className={getDeductionBtnClass(deductions.gov_vehicle)}
+                                                    >
+                                                        감액
+                                                    </button>
+                                                </div>
+                                                <span className="text-sm font-bold font-suit text-gray-700">{fmt(detailCosts.daily)}<span className="text-xs font-normal text-gray-400 ml-0.5">원</span></span>
+                                            </div>
+                                            
+                                            <div className="flex justify-between items-start py-1">
+                                                <div className="flex items-center gap-2 mt-0.5">
+                                                    <span className="text-sm font-bold text-gray-600 font-pretendard w-10">식비</span>
+                                                    <button 
+                                                        onClick={() => setActiveModal('meal')}
+                                                        className={getDeductionBtnClass(deductions.meal_1 || deductions.meal_2 || deductions.meal_3 || deductions.meal_half)}
+                                                    >
+                                                        감액
+                                                    </button>
+                                                </div>
+                                                <div className="flex flex-col items-end">
+                                                    <span className="text-sm font-bold font-suit text-gray-700">{fmt(detailCosts.meal)}<span className="text-xs font-normal text-gray-400 ml-0.5">원</span></span>
+                                                    {(25000 - detailCosts.meal > 0) && <span className="block text-[11px] text-red-400 font-pretendard mt-0.5">(-{fmt(25000 - detailCosts.meal)})</span>}
+                                                </div>
+                                            </div>
+                                            
+                                            <div className="flex justify-between items-start py-1">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-sm font-bold text-gray-600 font-pretendard w-10">교통비</span>
+                                                    <button 
+                                                        onClick={() => setActiveModal('transport')}
+                                                        className={getDeductionBtnClass(isTransportDeducted)}
+                                                    >
+                                                        감액
+                                                    </button>
+                                                    {result.type === 'external' && (
+                                                        <a 
+                                                            href={`https://map.kakao.com/?target=car`} 
+                                                            target="_blank" rel="noopener noreferrer"
+                                                            className="px-2 py-1.5 text-[11px] font-bold rounded-lg bg-[#FEE500] text-[#191919] hover:brightness-95 transition-all shadow-sm whitespace-nowrap"
+                                                        >
+                                                            카카오맵검색
+                                                        </a>
+                                                    )}
+                                                </div>
+                                                <div className="flex flex-col items-end">
+                                                    {result.type === 'external' && !isTransportDeducted ? (
+                                                        <div className="flex items-center justify-end gap-1 w-full max-w-[100px]">
+                                                            <input 
+                                                                type="number" 
+                                                                value={customTransport === '' ? '' : customTransport} 
+                                                                onChange={(e) => setCustomTransport(e.target.value)}
+                                                                placeholder="0"
+                                                                className="ship-fare-input w-full text-right"
+                                                            />
+                                                            <span className="text-xs font-normal text-gray-400">원</span>
+                                                        </div>
+                                                    ) : (
+                                                        <span className="text-sm font-bold font-suit text-gray-700 mt-1">{fmt(detailCosts.transport)}<span className="text-xs font-normal text-gray-400 ml-0.5">원</span></span>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            {((result.type === 'internal' && (result.hasShipCost || result.startIsShip || result.endIsShip)) || result.type === 'external') && (
+                                                <div className="flex justify-between items-start py-1">
+                                                    <div className="flex items-center gap-2 mt-1">
+                                                        <span className="text-sm font-bold text-gray-600 font-pretendard w-16">기타교통비</span>
+                                                    </div>
+                                                    <div className="flex flex-col items-end">
+                                                        <div className="flex items-center justify-end gap-1">
+                                                            <input 
+                                                                type="number" 
+                                                                value={shipFare === 0 ? '' : shipFare} 
+                                                                onChange={(e) => setShipFare(Number(e.target.value))}
+                                                                placeholder="0"
+                                                                className="ship-fare-input"
+                                                            />
+                                                            <span className="text-xs font-normal text-gray-400">원</span>
+                                                        </div>
+                                                        <span className="text-[10px] font-bold text-blue-500 font-pretendard mt-0.5">승선권 합계 입력</span>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            <div className="border-t border-gray-200 my-2"></div>
+                                            <div className="flex justify-between items-center pt-1">
+                                                <span className="text-sm font-bold text-gray-900 font-pretendard">합계</span>
+                                                <span className="text-xl font-bold font-suit text-teal-600">{fmt(detailCosts.total)}<span className="text-sm font-medium text-teal-400 ml-1">원</span></span>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+
+                                {result.type !== 'intraCity' && (
+                                    <div className="mt-5 space-y-2">
+                                        <div className="flex items-start gap-1.5">
+                                            <span className="text-xs text-red-500 mt-0.5 font-bold">※</span>
+                                            <p className="text-xs text-red-600 font-bold font-pretendard leading-tight">단체행사 인솔 시 예산으로 숙박·식사계약 체결된 경우 주의</p>
+                                        </div>
+                                        <div className="flex items-start gap-1.5">
+                                            <span className="text-xs text-gray-600 mt-0.5">※</span>
+                                            <p className="text-xs text-gray-600 font-pretendard leading-tight">여객선을 이용한 경우, 승선권 합계금액을 기타교통비에 입력</p>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     )}
 
