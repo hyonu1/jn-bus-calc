@@ -125,16 +125,12 @@
         .wipe-overlay {
             z-index: 2;
             background-color: #FFFFFF;
-            /* Transition: Clip-path & Transform for slide-over effect */
             transition: clip-path 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-            
-            /* Initial: Hidden to the right */
             clip-path: inset(0 0 0 100%); 
             transform: translateX(20px);
         }
 
         .wipe-overlay.active {
-            /* Active: Fully visible */
             clip-path: inset(0 0 0 0);
             transform: translateX(0);
         }
@@ -215,7 +211,7 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
-        // --- 유틸리티 및 데이터 ---
+        // --- 유틸리티 및 데이터 생략 (동일) ---
         const CHOSUNG = ["ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ","ㅅ","ㅆ","ㅇ","ㅈ","ㅉ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
         const JUNGSUNG = ["ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅗ","ㅘ","ㅙ","ㅚ","ㅛ","ㅜ","ㅝ","ㅞ","ㅟ","ㅠ","ㅡ","ㅢ","ㅣ"];
         const JONGSUNG = ["","ㄱ","ㄲ","ㄳ","ㄴ","ㄵ","ㄶ","ㄷ","ㄹ","ㄺ","ㄻ","ㄼ","ㄽ","ㄾ","ㄿ","ㅀ","ㅁ","ㅂ","ㅄ","ㅅ","ㅆ","ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
@@ -310,6 +306,7 @@
             </button>
         );
 
+        // ... AutocompleteInput 생략 (동일) ...
         const AutocompleteInput = ({ value, onChange, onSelect, placeholder, label, cityList, onEnter, onShowModal }) => {
             const [suggestions, setSuggestions] = useState([]);
             const [showSuggestions, setShowSuggestions] = useState(false);
@@ -440,12 +437,11 @@
             const [showNotice, setShowNotice] = useState(true);
             const [showDetail, setShowDetail] = useState(false);
             
-            // Transport & Deductions States
+            // ... State definitions (동일) ...
             const [shipFare, setShipFare] = useState(0); 
             const [customTransport, setCustomTransport] = useState('');
             const [intraDeductions, setIntraDeductions] = useState({ shortTime: false, govVehicle: false });
             
-            // Swipe handlers ref
             const touchStartX = useRef(null);
             const touchEndX = useRef(null);
 
@@ -464,7 +460,6 @@
                 touchEndX.current = null;
             };
             
-            // Deduction Modal State
             const [activeModal, setActiveModal] = useState(null); 
             const [deductions, setDeductions] = useState({
                 gov_vehicle: false,
@@ -477,7 +472,7 @@
                 transport_passenger: false
             });
 
-            // Modal Content Data
+            // ... Modal Content & Toggle Logic (동일) ...
             const MODAL_CONTENT = {
                 daily: {
                     title: "일비",
@@ -539,7 +534,7 @@
                 });
             };
 
-            // Data Initialization
+            // Data Initialization, Effects, Calculation Logic (동일 - 생략 가능하나 전체 파일 제공을 위해 포함)
             useEffect(() => {
                 const INITIAL_DATA = {
                     "광주": { "목포": { gen: 7200, pre: 9300 }, "여수": { gen: 13000, pre: 16800 }, "순천": { gen: 8400, pre: 11000 }, "나주": { gen: 4300 }, "광양": { gen: 8400, pre: 10900 }, "담양": { gen: 2900 }, "곡성": { gen: 5500 }, "구례": { gen: 9800 }, "고흥": { gen: 16200, pre: 21000 }, "보성": { gen: 10500, pre: 11500 }, "화순": { gen: 2500 }, "장흥": { gen: 11500, pre: 14900 }, "강진": { gen: 11700, pre: 15200 }, "해남": { gen: 13700, pre: 16900 }, "영암": { gen: 8700 }, "영암(독천)": { gen: 7700 }, "무안": { gen: 6000, pre: 7800 }, "함평": { gen: 4500, pre: 5800 }, "영광": { gen: 7300, pre: 9500 }, "장성": { gen: 2400 }, "완도": { gen: 20500, pre: 24800 }, "진도": { gen: 15300, pre: 19900 }, "남악": { gen: 7200, pre: 9300 } },
@@ -774,6 +769,7 @@
 
             return (
                 <div className="main-wrapper relative p-5">
+                    {/* ... (Modal & Notice parts unchanged) ... */}
                     {activeModal && (
                         <div 
                             className="fixed inset-0 z-[300] flex items-end justify-center sm:items-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
@@ -941,11 +937,23 @@
                         </button>
                     </div>
 
+                    {/* Bottom Report Button Removed Here as requested */}
+
                     {result && (
                         <div className="mb-6 relative wipe-container" onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
                             
                             {/* Layer 1: 기본 결과 화면 (Wipe Base) */}
                             <div className="result-card p-6 wipe-layer wipe-base relative">
+                                <a 
+                                    href="https://docs.google.com/spreadsheets/d/10v8CuQTEWWYuh-rGUDWfT3XmHShj3QP64bm8u0GFG4E/edit?usp=sharing"
+                                    target="_blank"
+                                    rel="noopener noreferrer" 
+                                    className="absolute top-4 left-4 w-12 h-12 bg-[#FFD700] text-white rounded-full shadow-md border border-white/20 flex flex-col items-center justify-center gap-0 z-20 hover:brightness-110 transition-all active:scale-95 animate-pulse-scale"
+                                >
+                                    <span className="text-[10px] font-bold leading-none text-yellow-900">요금</span>
+                                    <span className="text-[10px] font-bold leading-none mt-0.5 text-yellow-900">제보</span>
+                                </a>
+
                                 <button 
                                     onClick={() => setShowDetail(true)}
                                     className="absolute top-4 right-4 w-12 h-12 bg-[#00BFA5] text-white rounded-full shadow-md border border-white/20 flex flex-col items-center justify-center gap-0 z-20 hover:brightness-110 transition-all active:scale-95 animate-pulse-scale"
@@ -1053,24 +1061,16 @@
                                         )}
                                         
                                         <div className="mt-4 p-4 bg-teal-50 border border-teal-100 rounded-xl text-left">
-                                            <div className="space-y-3">
-                                                <div className="flex items-start gap-1">
-                                                    <span className="font-bold text-teal-600 text-xs mt-0.5 min-w-[12px]">1.</span>
-                                                    <p className="text-xs text-teal-800 font-pretendard leading-relaxed">
-                                                        <span className="font-bold">교통비</span>·<span className="font-bold">숙박비</span>는 실비정산제 → <span className="font-bold">증빙</span> 없으면 정산 ×
-                                                    </p>
-                                                </div>
-                                                <div className="flex items-start gap-1">
-                                                    <span className="font-bold text-teal-600 text-xs mt-0.5 min-w-[12px]">2.</span>
-                                                    <div>
-                                                        <p className="text-xs text-teal-800 font-pretendard leading-relaxed">
-                                                            여행을 마친날로부터 <span className="font-bold">2주일 이내에 정산서 제출</span>
-                                                        </p>
-                                                        <p className="text-[10px] text-teal-600/70 mt-0.5 font-pretendard">
-                                                            「공무원여비규정」 제8조의2(여비의 결제와 정산 등)
-                                                        </p>
-                                                    </div>
-                                                </div>
+                                            <div className="space-y-2">
+                                                <p className="text-xs text-teal-800 font-pretendard leading-relaxed">
+                                                    <span className="font-bold text-teal-600 mr-1">1.</span>
+                                                    <span className="font-bold">교통비</span>·<span className="font-bold">숙박비</span>는 실비정산제 → <span className="font-bold">증빙</span> 없으면 정산 ×
+                                                </p>
+                                                <p className="text-xs text-teal-800 font-pretendard leading-relaxed">
+                                                    <span className="font-bold text-teal-600 mr-1">2.</span>
+                                                    여행을 마친날로부터 <span className="font-bold">2주일 이내에 정산서 제출</span>
+                                                    <span className="block text-[10px] text-teal-600/70 mt-0.5">「공무원여비규정」 제8조의2(여비의 결제와 정산 등)</span>
+                                                </p>
                                             </div>
                                         </div>
 
@@ -1089,17 +1089,6 @@
                                         <div className="mt-5 pt-4 border-t border-gray-200 flex items-center justify-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity">
                                             <Icons.Database size={12} className="text-gray-400" />
                                             <span className="text-[11px] text-gray-400 font-pretendard">출처: {result.source}</span>
-                                        </div>
-
-                                        <div className="mt-4 flex justify-center">
-                                            <a 
-                                                href="https://docs.google.com/spreadsheets/d/10v8CuQTEWWYuh-rGUDWfT3XmHShj3QP64bm8u0GFG4E/edit?usp=sharing"
-                                                target="_blank"
-                                                rel="noopener noreferrer" 
-                                                className="inline-flex items-center justify-center py-3 px-8 rounded-xl bg-yellow-50 border border-yellow-200 shadow-sm hover:bg-yellow-100 transition-all active:scale-95"
-                                            >
-                                                <span className="text-sm font-bold text-yellow-700">📢 요금 정보 제보</span>
-                                            </a>
                                         </div>
                                     </div>
                                 ) : (
@@ -1123,6 +1112,16 @@
                                     <span className="text-[11px] font-bold leading-none block">편도</span>
                                     <span className="text-[11px] font-bold leading-none mt-0.5 block">교통비</span>
                                 </button>
+
+                                <a 
+                                    href="https://docs.google.com/spreadsheets/d/10v8CuQTEWWYuh-rGUDWfT3XmHShj3QP64bm8u0GFG4E/edit?usp=sharing"
+                                    target="_blank"
+                                    rel="noopener noreferrer" 
+                                    className="absolute top-4 right-4 w-12 h-12 bg-[#FFD700] text-white rounded-full shadow-md border border-white/20 flex flex-col items-center justify-center gap-0 z-20 hover:brightness-110 transition-all active:scale-95 animate-pulse-scale"
+                                >
+                                    <span className="text-[10px] font-bold leading-none text-yellow-900">요금</span>
+                                    <span className="text-[10px] font-bold leading-none mt-0.5 text-yellow-900">제보</span>
+                                </a>
 
                                 <div className="text-center mb-6 mt-8">
                                     <h3 className="font-bold font-suit text-xl text-teal-600 flex items-center justify-center gap-2">
