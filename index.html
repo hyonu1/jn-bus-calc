@@ -92,12 +92,6 @@
             margin: 0;
         }
         input.ship-fare-input::placeholder { color: #CBD5E1; font-weight: 400; }
-        
-        /* Watermark text effect */
-        .text-watermark {
-            color: #E2E8F0; /* Very light gray */
-            text-shadow: 1px 1px 0 #FFFFFF; /* White highlight to create depth */
-        }
     </style>
 </head>
 <body>
@@ -130,7 +124,7 @@
             "압해", "지도", "증도", "임자", "팔금", "암태", "자은", "안좌", "장산", "하의", "신의", 
             "흑산", "비금", "도초", "청산", "노화", "소안", "여서도", "금일", 
             "생일", "보길", "금당", "군외", "신지", "고금", "약산", 
-            "신안 홍도", "신안 가거도", "신안 만재도", "진도 관매도", "진도 조도", "진도 서거차도",
+            "홍도", "가거도", "만재도", "진도 관매도", "진도 조도", "진도 서거차도",
             "고흥 득량도", "고흥 쑥섬(애도)", "영광 안마도", "영광 낙월", "영광 송이도", "해남 어룡도"
         ];
 
@@ -139,7 +133,7 @@
             "지도": "🧂", "압해": "🐙", "증도": "🚲", "임자": "🌷", "자은": "🏖️", "안좌": "😈", "팔금": "🦐", "암태": "🌁", "비금": "🦅", "도초": "🌿", "흑산": "🐟", "하의": "🕊️", "신의": "🧂", "장산": "🏔️",
             "청산": "🐌", "노화": "🦪", "소안": "🇰🇷", "여서도": "🎣", "금일": "🌊", "생일": "🎂", "보길": "📜",
             "금당": "🗿", "군외": "🌉", "신지": "🏖️", "고금": "🚢", "약산": "🐐",
-            "신안 홍도": "🌅", "신안 가거도": "🏝️", "신안 만재도": "🎣",
+            "홍도": "🌅", "가거도": "🏝️", "만재도": "🎣",
             "진도 관매도": "🌲", "진도 조도": "🦅", "진도 서거차도": "🚢",
             "고흥 득량도": "🌾", "고흥 쑥섬(애도)": "🐱", "영광 안마도": "🐎", "영광 낙월": "🌙", "영광 송이도": "🐚", "해남 어룡도": "🐉"
         };
@@ -159,9 +153,9 @@
             "신의": { hub: "목포", cost: 1000, type: "ship", sources: ["서경종@압해초_국내여비기준표", "신안군여객선운임지원에관한조례"] },
             "흑산": { hub: "목포", cost: 1000, type: "ship", sources: ["서경종@압해초-국내여비기준표", "신안군여객선운임지원에관한조례"] },
             "도초": { hub: "목포", cost: 1000, type: "ship", sources: ["서경종@압해초_국내여비기준표", "신안군여객선운임지원에관한조례"] },
-            "신안 홍도": { hub: "목포", cost: 1000, type: "ship", sources: ["서경종@압해초_국내여비기준표", "신안군여객선운임지원에관한조례"] },
-            "신안 가거도": { hub: "목포", cost: 1000, type: "ship", sources: ["서경종@압해초_국내여비기준표", "신안군여객선운임지원에관한조례"] },
-            "신안 만재도": { hub: "목포", cost: 1000, type: "ship", sources: ["서경종@압해초_국내여비기준표", "신안군여객선운임지원에관한조례"] },
+            "홍도": { hub: "목포", cost: 1000, type: "ship", sources: ["서경종@압해초_국내여비기준표", "신안군여객선운임지원에관한조례"] },
+            "가거도": { hub: "목포", cost: 1000, type: "ship", sources: ["서경종@압해초_국내여비기준표", "신안군여객선운임지원에관한조례"] },
+            "만재도": { hub: "목포", cost: 1000, type: "ship", sources: ["서경종@압해초_국내여비기준표", "신안군여객선운임지원에관한조례"] },
             "완도": { hub: "완도", cost: 0, type: "connected", special: true }, 
             "군외": { hub: "완도", cost: 0, type: "connected", special: true }, // 군외 is handled as Wando with 0 cost
             "신지": { hub: "완도", cost: 0, type: "connected", special: true },
@@ -187,7 +181,7 @@
         };
 
         const POPUP_REGIONS = {
-            "신안": ["지도", "압해", "증도", "임자", "자은", "안좌", "팔금", "암태", "비금", "도초", "흑산", "하의", "신의", "장산", "신안 홍도", "신안 가거도", "신안 만재도"],
+            "신안": ["지도", "압해", "증도", "임자", "자은", "안좌", "팔금", "암태", "비금", "도초", "흑산", "하의", "신의", "장산", "홍도", "가거도", "만재도"],
             "완도": ["완도", "금일", "노화", "군외", "신지", "고금", "약산", "청산", "소안", "금당", "보길", "생일", "여서도"],
             "진도": ["진도", "진도 조도", "진도 관매도", "진도 서거차도"]
         };
@@ -461,7 +455,7 @@
                         type: 'internal', 
                         data: { gen: 1000, pre: null, note: "신안군농어촌버스 요금 가산: 1,000원" }, 
                         routeType: 'direct', 
-                        source: "신안군청 홈페이지, 시외버스 인가내역 등",
+                        source: "신안군공영버스사업운영조례 등",
                         islandType: 'connected', surcharge: 0 
                     });
                     return;
@@ -492,7 +486,7 @@
                         }
                         source = islandConfig.sources;
                     } else {
-                        source = "2026.1.1.자 시군별 시외버스요금 인가내역";
+                        source = "서경종@압해초_국내여비기준표";
                     }
 
                     const checkRoute = (a, b) => (from === a && to === b) || (from === b && to === a);
@@ -605,7 +599,7 @@
             const getDeductionBtnClass = (isActive) => `px-3 py-1.5 text-xs font-bold rounded-lg transition-all duration-300 active:scale-95 ${isActive ? 'bg-teal-500 text-white shadow-inner border border-transparent' : 'text-teal-700 bg-white border-2 border-teal-400 shadow-[0_2px_10px_rgba(0,191,165,0.2)] hover:bg-teal-50 hover:-translate-y-0.5 animate-pulse-attention relative overflow-hidden'}`;
 
             return (
-                <div className="main-wrapper relative p-5">
+                <div className="main-wrapper relative p-4">
                     {/* Active Modal */}
                     {activeModal && MODAL_CONTENT[activeModal] && (
                         <div className="fixed inset-0 z-[300] flex items-end justify-center sm:items-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setActiveModal(null)}>
@@ -662,21 +656,22 @@
                         </div>
                     )}
 
-                    <div className="text-center mt-6 mb-8"><h1 className="text-2xl font-bold font-suit text-gray-900 tracking-tight">yeobi-easy for JNE</h1></div>
+                    <div className="text-center mt-4 mb-6"><h1 className="text-2xl font-bold font-suit text-gray-900 tracking-tight">yeobi-easy for JNE</h1></div>
 
-                    <div className="space-y-4 mb-6">
+                    <div className="space-y-3 mb-5">
                         <AutocompleteInput label="출발지" placeholder="예: 광주, ㄱㅈ" value={origin} onChange={setOrigin} onSelect={setOrigin} cityList={ALLOWED_CITIES} onEnter={() => { if(destination) performCalculation(); }} onShowModal={(data) => setModalState({ type: 'selection', data, target: 'origin' })} />
                         <AutocompleteInput label="도착지" placeholder="예: 해남, ㅎㄴ" value={destination} onChange={setDestination} onSelect={setDestination} cityList={ALLOWED_CITIES} onEnter={() => performCalculation()} onShowModal={(data) => setModalState({ type: 'selection', data, target: 'destination' })} />
                         <button onClick={() => performCalculation()} className="w-full h-14 rounded-2xl font-bold btn-primary text-base shadow-lg shadow-teal-100 flex items-center justify-center gap-2"><Icons.Search size={20} /> 조회하기</button>
                     </div>
 
                     {result && (
-                        <div className="mb-6 relative wipe-container" onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
+                        <div className="mb-4 relative wipe-container" onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
                             <div className="result-card p-6 wipe-layer wipe-base relative">
                                 <a href="https://docs.google.com/spreadsheets/d/10v8CuQTEWWYuh-rGUDWfT3XmHShj3QP64bm8u0GFG4E/edit?usp=sharing" target="_blank" rel="noopener noreferrer" className="absolute top-4 left-4 w-12 h-12 bg-[#FFD700] text-white rounded-full shadow-md border border-white/20 flex flex-col items-center justify-center gap-0 z-20 hover:brightness-110 transition-all active:scale-95 animate-pulse-scale"><span className="text-[10px] font-bold leading-none text-yellow-900">요금</span><span className="text-[10px] font-bold leading-none mt-0.5 text-yellow-900">제보</span></a>
                                 <button onClick={() => setShowDetail(true)} className="absolute top-4 right-4 w-12 h-12 bg-[#00BFA5] text-white rounded-full shadow-md border border-white/20 flex flex-col items-center justify-center gap-0 z-20 hover:brightness-110 transition-all active:scale-95 animate-pulse-scale"><span className="text-[11px] font-bold leading-none">여비</span><span className="text-[11px] font-bold leading-none mt-0.5">계산</span></button>
 
-                                <div className="flex items-center justify-center gap-3 mb-6 pb-6 border-b border-gray-200 border-dashed mt-4">
+                                {/* Content pushed down with mt-16 to avoid button overlap */}
+                                <div className="flex items-center justify-center gap-3 mb-6 pb-6 border-b border-gray-200 border-dashed mt-16">
                                     <div className="flex items-center gap-1"><span className="font-semibold text-lg text-gray-900 font-pretendard">{origin}</span>{REGION_ICONS[origin] && <span className="text-lg inline-block ship-body">{REGION_ICONS[origin]}</span>}</div>
                                     <div className="flex flex-col items-center">
                                         {result.routeType === 'transfer' && (<span className="text-[10px] font-bold text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full mb-1">{result.viaPoint} 경유</span>)}
@@ -824,7 +819,7 @@
                         </div>
                     )}
 
-                    <footer className="mt-8 text-center text-gray-200 text-[10px] font-bold font-gmarket mb-6 tracking-wide px-4 select-none text-watermark">crafted with passion by 전현우@우수영초등학교<br/>deployment approved</footer>
+                    <footer className="mt-2 text-center text-gray-400 text-[11px] font-bold font-gmarket mb-8 tracking-wide px-4 select-none">crafted with passion by 전현우@우수영초등학교<br/>deployment approved</footer>
                 </div>
             );
         };
