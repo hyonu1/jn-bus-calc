@@ -9,9 +9,8 @@
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
-        /* Pretendard CDN */
+        /* Pretendard & SUIT Fonts */
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
-        /* SUIT CDN */
         @import url('https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/static/woff2/SUIT.css');
         
         :root {
@@ -20,7 +19,6 @@
             --color-teal: #00BFA5;
             --color-bg-card: #F7F9FB;
             --color-text-main: #191F28;
-            --color-text-sub: #8B95A1;
         }
 
         body { 
@@ -29,15 +27,15 @@
             color: var(--color-text-main);
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            overscroll-behavior-y: none; /* Pull-to-refresh 방지 */
+            overscroll-behavior-y: none;
         }
 
         .font-suit { font-family: var(--font-suit); }
         .font-pretendard { font-family: var(--font-pretendard); }
-        
-        @font-face { font-family: 'GmarketSans'; font-weight: 700; src: local('Gmarket Sans Bold'), url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff'); font-display: swap; }
         .font-gmarket { font-family: 'GmarketSans', sans-serif; }
         
+        @font-face { font-family: 'GmarketSans'; font-weight: 700; src: local('Gmarket Sans Bold'), url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff'); font-display: swap; }
+
         .text-teal-startup { color: var(--color-teal); }
         .bg-teal-startup { background-color: var(--color-teal); }
         .bg-card-startup { background-color: var(--color-bg-card); }
@@ -49,7 +47,7 @@
         .btn-primary:active { transform: scale(0.98); background-color: #00A891; }
         .result-card { background-color: var(--color-bg-card); border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02); }
 
-        .wipe-container { display: grid; grid-template-columns: 1fr; position: relative; overflow: hidden; border-radius: 16px; touch-action: pan-y; } /* 가로 스와이프 간섭 방지 */
+        .wipe-container { display: grid; grid-template-columns: 1fr; position: relative; overflow: hidden; border-radius: 16px; touch-action: pan-y; }
         .wipe-layer { grid-row: 1; grid-column: 1; width: 100%; min-height: 100%; }
         .wipe-base { z-index: 1; background-color: var(--color-bg-card); }
         .wipe-overlay { z-index: 2; background-color: #FFFFFF; transition: clip-path 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); clip-path: inset(0 0 0 100%); transform: translateX(20px); }
@@ -63,30 +61,28 @@
         .animate-pulse-attention { animation: pulse-attention 2.5s infinite cubic-bezier(0.4, 0, 0.2, 1); }
         @keyframes fade-in-calm { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade-in-calm { animation: fade-in-calm 0.6s ease-out forwards; }
+        
+        @keyframes wiggle { 0%, 100% { transform: rotate(-10deg); } 50% { transform: rotate(10deg); } }
+        .icon-wiggle { display: inline-block; animation: wiggle 1.5s ease-in-out infinite; transform-origin: bottom center; margin-left: 4px; font-style: normal; }
+        @keyframes float-boat { 0%, 100% { transform: translateY(0) rotate(0deg); } 25% { transform: translateY(1px) rotate(1deg); } 50% { transform: translateY(-2px) rotate(0deg); } 75% { transform: translateY(1px) rotate(-1deg); } }
+        .ship-body { animation: float-boat 3s ease-in-out infinite; transform-origin: center bottom; }
 
         .custom-scroll::-webkit-scrollbar { width: 4px; }
         .custom-scroll::-webkit-scrollbar-thumb { background-color: #E5E8EB; border-radius: 4px; }
         
-        @keyframes float-boat { 0%, 100% { transform: translateY(0) rotate(0deg); } 25% { transform: translateY(1px) rotate(1deg); } 50% { transform: translateY(-2px) rotate(0deg); } 75% { transform: translateY(1px) rotate(-1deg); } }
-        .ship-body { animation: float-boat 3s ease-in-out infinite; transform-origin: center bottom; }
-        @keyframes wiggle { 0%, 100% { transform: rotate(-10deg); } 50% { transform: rotate(10deg); } }
-        .icon-wiggle { display: inline-block; animation: wiggle 1.5s ease-in-out infinite; transform-origin: bottom center; margin-left: 4px; font-style: normal; }
-        
         input.ship-fare-input { text-align: right; border-bottom: 1px solid #E5E8EB; background-color: transparent; width: 80px; font-family: var(--font-suit); font-weight: 700; color: #191F28; outline: none; padding-bottom: 2px; transition: all 0.2s; -moz-appearance: textfield; appearance: none; }
         input.ship-fare-input:focus { border-color: var(--color-teal); }
-        input.ship-fare-input::placeholder { color: #E5E8EB; }
     </style>
 </head>
 <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect, useRef, useMemo } = React;
+        const { useState, useEffect, useRef } = React;
 
         const CHOSUNG = ["ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ","ㅅ","ㅆ","ㅇ","ㅈ","ㅉ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
         const COMPLEX_JAMO_MAP = {'ㄳ':'ㄱㅅ','ㄵ':'ㄴㅈ','ㄶ':'ㄴㅎ','ㄺ':'ㄹㄱ','ㄻ':'ㄹㅁ','ㄼ':'ㄹㅂ','ㄽ':'ㄹㅅ','ㄾ':'ㄹㅌ','ㄿ':'ㄹㅍ','ㅀ':'ㄹㅎ','ㅄ':'ㅂㅅ'};
 
-        // Utility Functions - Safe handling
         const getChosung = (str) => {
             if (!str) return "";
             let result = "";
@@ -140,7 +136,7 @@
             "가거도": { hub: "목포", cost: 1000, type: "ship", sources: ["서경종@압해초", "신안군 조례"] },
             "만재도": { hub: "목포", cost: 1000, type: "ship", sources: ["서경종@압해초", "신안군 조례"] },
             "완도": { hub: "완도", cost: 0, type: "connected", special: true }, 
-            "군외": { hub: "완도", cost: 0, type: "connected", special: true },
+            "군외": { hub: "완도", cost: 0, type: "connected", special: true }, // 군외 is handled as Wando with 0 cost
             "신지": { hub: "완도", cost: 0, type: "connected", special: true },
             "고금": { hub: "완도", cost: 0, type: "connected", special: true },
             "약산": { hub: "완도", cost: 0, type: "connected", special: true },
@@ -274,7 +270,6 @@
             const [result, setResult] = useState(null);
             const [busDataState, setBusDataState] = useState({});
             const [modalState, setModalState] = useState({ type: null, data: [] });
-            // showNotice removed as requested
             const [showDetail, setShowDetail] = useState(false);
             const [shipFare, setShipFare] = useState(0); 
             const [customTransport, setCustomTransport] = useState('');
@@ -316,7 +311,6 @@
             };
 
             useEffect(() => {
-                // Optimization: Data loading outside render loop
                 const INITIAL_DATA = {
                     "광주": { "목포": { gen: 7200, pre: 9300 }, "여수": { gen: 13000, pre: 16800 }, "순천": { gen: 8400, pre: 11000 }, "나주": { gen: 4300 }, "광양": { gen: 8400, pre: 10900 }, "담양": { gen: 2900 }, "곡성": { gen: 5500 }, "구례": { gen: 9800 }, "고흥": { gen: 16200, pre: 21000 }, "보성": { gen: 10500, pre: 11500 }, "화순": { gen: 2500 }, "장흥": { gen: 11500, pre: 14900 }, "강진": { gen: 11700, pre: 15200 }, "해남": { gen: 13700, pre: 16900 }, "영암": { gen: 8700 }, "영암(독천)": { gen: 7700 }, "무안": { gen: 6000, pre: 7800 }, "함평": { gen: 4500, pre: 5800 }, "영광": { gen: 7300, pre: 9500 }, "장성": { gen: 2400 }, "완도": { gen: 20500, pre: 24800 }, "진도": { gen: 15300, pre: 19900 }, "남악": { gen: 7200, pre: 9300 } },
                     "목포": { "광주": { gen: 7200, pre: 9300 }, "여수": { gen: 16500, pre: 21400 }, "순천": { gen: 11500, pre: 15000 }, "나주": { gen: 7300 }, "광양": { gen: 13700, pre: 17800 }, "담양": { gen: 10100 }, "곡성": { gen: 12700 }, "구례": { gen: 17000 }, "고흥": { gen: 18600 }, "보성": { gen: 13500 }, "화순": { gen: 9700 }, "장흥": { gen: 10200 }, "강진": { gen: 7800 }, "해남": { gen: 8700 }, "영암": { gen: 6400 }, "무안": { gen: 3200 }, "함평": { gen: 5100 }, "영광": { gen: 8700 }, "장성": { gen: 9600 }, "완도": { gen: 15700 }, "진도": { gen: 8300, pre: 10800 }, "남악": { gen: 1700 } },
@@ -384,17 +378,13 @@
                 setManualMainTransport(null);
 
                 if (!from || !to) return;
-                
-                // Defensive check: Ensure Data is loaded
                 if (Object.keys(busDataState).length === 0) return;
 
-                // --- DB Unregistered Check ---
                 if (!ALLOWED_CITIES.includes(from) || !ALLOWED_CITIES.includes(to)) {
                      setResult({ type: 'external', source: "외부 검색 (네이버지도, 카카오맵)", isShipOnlyRoute: false });
                      return;
                 }
 
-                // --- Intra City Check ---
                 if (from === to) {
                     setResult({ type: 'intraCity', short: 10000, long: 20000, note: "관내여비는 교통비와 식비 등을 포함한 정액으로 지급함.\n(조건에 따라 -10,000원 씩 감액)" });
                     return;
@@ -403,7 +393,6 @@
                 const fromIsland = ISLAND_DB[from];
                 const toIsland = ISLAND_DB[to];
                 
-                // --- Island Logic ---
                 let searchFrom = from;
                 let searchTo = to;
                 let surcharge = 0;
@@ -416,7 +405,6 @@
                 let isShipOnlyRoute = false;
                 let isSpecialRoute = false;
                 
-                // Identify if we need to route through a Hub
                 if (fromIsland) {
                     searchFrom = fromIsland.hub;
                     surcharge += fromIsland.cost;
@@ -427,7 +415,7 @@
                 if (toIsland) {
                     searchTo = toIsland.hub;
                     surcharge += toIsland.cost;
-                    islandConfig = toIsland; // Destination priority for config
+                    islandConfig = toIsland; 
                     viaPoint = toIsland.via || toIsland.hub;
                     if(toIsland.special) isSpecialRoute = true;
                 }
@@ -443,32 +431,27 @@
                     return;
                 }
 
-                // Calculate Fare from Bus DB - Defensive Check
                 const baseData = busDataState[searchFrom]?.[searchTo];
                 
                 if (baseData || (searchFrom === searchTo)) {
                     let finalGen = (baseData?.gen || 0);
                     let finalPre = (baseData?.pre || null);
                     
-                    // Logic: If Connected, add surcharge to Bus Fare. If Ship, Bus Fare is Hub Fare.
-                    let displaySurcharge = 0;
-                    
+                    // Always add surcharge regardless of type (connected or ship)
+                    // The user wanted the surcharge to be included in the displayed rate
+                    finalGen += surcharge;
+                    if (finalPre) finalPre += surcharge;
+
                     if (islandConfig) {
-                        if (islandConfig.type === 'connected') {
-                            finalGen += surcharge;
-                            if (finalPre) finalPre += surcharge;
-                            displaySurcharge = surcharge;
-                            routeType = (searchFrom !== searchTo) ? 'transfer' : 'direct'; 
-                            if (from === islandConfig.hub || to === islandConfig.hub) routeType = 'direct';
-                        } else if (islandConfig.type === 'ship') {
+                        if (islandConfig.type === 'ship') {
                             routeType = 'transfer';
                             isShipOnlyRoute = true;
-                            setShipFare(2000); 
+                            // Ship fare input remains separate for ADDITIONAL costs, 
+                            // but the basic surcharge is now in finalGen
+                        } else {
+                            routeType = (searchFrom !== searchTo) ? 'transfer' : 'direct'; 
+                            if (from === islandConfig.hub || to === islandConfig.hub) routeType = 'direct';
                         }
-                    }
-
-                    // Special Note & Sources
-                    if (islandConfig) {
                         source = islandConfig.sources;
                     } else {
                         source = "2026.1.1.자 시군별 시외버스요금 인가내역";
@@ -481,9 +464,9 @@
                     else if (checkRoute('광양', '여수')) specialNote = "이순신대교방면 이용 시 5,600원";
                     else if (checkRoute('순천', '곡성')) specialNote = "ITX(도시간특급열차) 이용 시 7,100원";
 
-                    // Handle Editable Transport Logic (Bigeum, Wando Connected etc.)
                     if (islandConfig && islandConfig.special) {
-                        const oneWay = (finalPre || finalGen) + surcharge; 
+                        // For special islands, we still calculate based on finalGen which includes surcharge
+                        const oneWay = finalPre ? finalPre : finalGen;
                         setManualMainTransport(oneWay * 2);
                     }
 
@@ -550,26 +533,17 @@
             };
 
             const getTravelerText = () => {
-                // Defensive check
                 if (!origin || !destination) return "출장자가";
-
                 const originConfig = ISLAND_DB[origin];
                 const destConfig = ISLAND_DB[destination];
                 const config = originConfig || destConfig;
 
-                // 기본값
                 if (!config) return "출장자가";
+                // Exception for Wando-connected (Gunoe, etc.)
+                if (config.hub === '완도' && config.type === 'connected') return "출장자가";
                 
-                // 예외: 완도 연륙 지역 (완도, 군외, 신지, 고금, 약산 등)
-                // 이들은 ISLAND_DB에 있지만, hub가 '완도'이고 type이 'connected'임.
-                if (config.hub === '완도' && config.type === 'connected') {
-                    return "출장자가";
-                }
-
-                // 일반 연륙/도서 로직
                 if (config.type === 'connected') return "군민인 출발자가";
                 if (config.type === 'ship') return "도서민인 출발자가";
-                
                 return "출장자가";
             };
 
@@ -579,7 +553,7 @@
 
             return (
                 <div className="main-wrapper relative p-5">
-                    {/* Active Modal with defensive rendering */}
+                    {/* Active Modal */}
                     {activeModal && MODAL_CONTENT[activeModal] && (
                         <div className="fixed inset-0 z-[300] flex items-end justify-center sm:items-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setActiveModal(null)}>
                             <div className="bg-white w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl animate-slide-up-modal" onClick={e => e.stopPropagation()}>
@@ -595,8 +569,7 @@
                         </div>
                     )}
                     
-                    {/* Notice removed */}
-
+                    {/* Modal for City Selection */}
                     {modalState.type && (
                         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
                             <div className="bg-white rounded-2xl w-full max-w-sm overflow-hidden shadow-2xl">
