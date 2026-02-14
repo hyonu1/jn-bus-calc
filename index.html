@@ -9,7 +9,6 @@
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
-        /* Pretendard & SUIT Fonts */
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
         @import url('https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/static/woff2/SUIT.css');
         
@@ -19,6 +18,7 @@
             --color-teal: #00BFA5;
             --color-bg-card: #F7F9FB;
             --color-text-main: #191F28;
+            --color-footer-text: #5a6b8c;
         }
 
         body { 
@@ -32,7 +32,6 @@
 
         .font-suit { font-family: var(--font-suit); }
         .font-pretendard { font-family: var(--font-pretendard); }
-        .font-gmarket { font-family: 'GmarketSans', sans-serif; }
         
         @font-face { font-family: 'GmarketSans'; font-weight: 700; src: local('Gmarket Sans Bold'), url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff'); font-display: swap; }
 
@@ -70,28 +69,10 @@
         .custom-scroll::-webkit-scrollbar { width: 4px; }
         .custom-scroll::-webkit-scrollbar-thumb { background-color: #E5E8EB; border-radius: 4px; }
         
-        /* Updated Input Style for cleaner look */
-        input.ship-fare-input { 
-            text-align: right; 
-            background-color: transparent; 
-            width: 90px; 
-            font-family: var(--font-suit); 
-            font-weight: 700; 
-            outline: none; 
-            padding: 0;
-            margin: 0;
-            border: none;
-            transition: all 0.2s; 
-            -moz-appearance: textfield; 
-            appearance: none; 
-        }
-        /* Spinner removal for Webkit */
-        input.ship-fare-input::-webkit-outer-spin-button,
-        input.ship-fare-input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
+        input.ship-fare-input { text-align: right; background-color: transparent; width: 90px; font-family: var(--font-suit); font-weight: 700; outline: none; border: none; padding: 0; margin: 0; transition: all 0.2s; -moz-appearance: textfield; appearance: none; }
+        input.ship-fare-input::-webkit-outer-spin-button, input.ship-fare-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         input.ship-fare-input::placeholder { color: #CBD5E1; font-weight: 400; }
+        .text-footer-sophisticated { color: var(--color-footer-text); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.12); }
     </style>
 </head>
 <body>
@@ -117,7 +98,6 @@
         const normalize = (text) => text ? text.replace(/(시|군|읍|면|터미널|종합|공용|\s)/g, "") : "";
         const fmt = (num) => (num !== undefined && num !== null) ? num.toLocaleString() : '0';
 
-        // --- Data Definitions ---
         const ALLOWED_CITIES = [
             "광주", "남악", "목포", "여수", "순천", "나주", "광양", "담양", "곡성", "구례", "고흥", "보성",
             "화순", "장흥", "강진", "해남", "영암", "무안", "함평", "영광", "장성", "완도", "진도", "신안",
@@ -157,7 +137,7 @@
             "가거도": { hub: "목포", cost: 1000, type: "ship", sources: ["서경종@압해초_국내여비기준표", "신안군여객선운임지원에관한조례"] },
             "만재도": { hub: "목포", cost: 1000, type: "ship", sources: ["서경종@압해초_국내여비기준표", "신안군여객선운임지원에관한조례"] },
             "완도": { hub: "완도", cost: 0, type: "connected", special: true }, 
-            "군외": { hub: "완도", cost: 0, type: "connected", special: true }, // 군외 is handled as Wando with 0 cost
+            "군외": { hub: "완도", cost: 0, type: "connected", special: true }, 
             "신지": { hub: "완도", cost: 0, type: "connected", special: true },
             "고금": { hub: "완도", cost: 0, type: "connected", special: true },
             "약산": { hub: "완도", cost: 0, type: "connected", special: true },
@@ -251,7 +231,13 @@
                 else if (e.key === 'Enter') {
                     if (e.nativeEvent.isComposing) return;
                     const trimmedValue = (value || '').trim();
-                    if (cityList.includes(trimmedValue)) { onSelect(trimmedValue); if(onEnter) onEnter(); setShowSuggestions(false); e.target.blur(); return; }
+                    if (cityList.includes(trimmedValue)) { 
+                        onSelect(trimmedValue); 
+                        if(onEnter) onEnter(); 
+                        setShowSuggestions(false); 
+                        e.target.blur(); 
+                        return; 
+                    }
                     
                     if (activeIndex >= 0) handleSelect(suggestions[activeIndex]);
                     else if (suggestions.length > 0) handleSelect(suggestions[0]);
@@ -368,18 +354,6 @@
                 setBusDataState(expandedData);
             }, []);
 
-            useEffect(() => {
-                if (ALLOWED_CITIES.includes(origin) && ALLOWED_CITIES.includes(destination)) performCalculation(origin, destination);
-            }, [origin, destination]);
-
-            useEffect(() => { 
-                if (POPUP_REGIONS[origin]) setModalState({ type: 'origin', data: POPUP_REGIONS[origin] }); 
-            }, [origin]);
-            
-            useEffect(() => { 
-                if (POPUP_REGIONS[destination]) setModalState({ type: 'destination', data: POPUP_REGIONS[destination] }); 
-            }, [destination]);
-
             const handleModalSelect = (city) => {
                 if (modalState.type === 'origin') setOrigin(city);
                 else if (modalState.type === 'destination') setDestination(city);
@@ -397,13 +371,17 @@
                 const to = normalize(rawTo);
                 
                 setDeductions({ gov_vehicle: false, meal_1: false, meal_2: false, meal_3: false, meal_half: false, transport_proof: false, transport_gov_vehicle: false, transport_passenger: false });
-                
                 setShipFare(0);
-
                 setIntraDeductions({ shortTime: false, govVehicle: false }); setCustomTransport('');
                 setManualMainTransport(null);
 
                 if (!from || !to) return;
+                
+                if (from === to) {
+                    handleIntraCity();
+                    return;
+                }
+
                 if (Object.keys(busDataState).length === 0) return;
 
                 if (!ALLOWED_CITIES.includes(rawFrom) && !ALLOWED_CITIES.includes(from)) {
@@ -415,11 +393,6 @@
                      return;
                 }
 
-                if (from === to) {
-                    setResult({ type: 'intraCity', short: 10000, long: 20000, note: "관내여비는 교통비와 식비 등을 포함한 정액으로 지급함.\n(조건에 따라 -10,000원 씩 감액)" });
-                    return;
-                }
-                
                 const fromIsland = ISLAND_DB[rawFrom] || ISLAND_DB[from];
                 const toIsland = ISLAND_DB[rawTo] || ISLAND_DB[to];
                 
@@ -450,19 +423,9 @@
                     if(toIsland.special) isSpecialRoute = true;
                 }
                 
-                if ((from === '목포' && to === '압해') || (from === '압해' && to === '목포')) {
-                    setResult({ 
-                        type: 'internal', 
-                        data: { gen: 1000, pre: null, note: "신안군농어촌버스 요금 가산: 1,000원" }, 
-                        routeType: 'direct', 
-                        source: "신안군공영버스사업운영조례 등",
-                        islandType: 'connected', surcharge: 0 
-                    });
-                    return;
-                }
-
                 const baseData = busDataState[searchFrom]?.[searchTo];
                 
+                // baseData가 있거나(일반적인 경우), 검색 허브가 같은 경우(예: 목포<->압해)
                 if (baseData || (searchFrom === searchTo)) {
                     let finalGen = (baseData?.gen || 0);
                     let finalPre = (baseData?.pre || null);
@@ -470,24 +433,14 @@
                     finalGen += surcharge;
                     if (finalPre) finalPre += surcharge;
 
-                    if (islandConfig && islandConfig.type === 'ship') {
-                        setShipFare(surcharge * 2);
-                    } else {
-                        setShipFare(0);
-                    }
+                    if (islandConfig && islandConfig.type === 'ship') setShipFare(surcharge * 2);
+                    else setShipFare(0);
 
                     if (islandConfig) {
-                        if (islandConfig.type === 'ship') {
-                            routeType = 'transfer';
-                            isShipOnlyRoute = true;
-                        } else {
-                            routeType = (searchFrom !== searchTo) ? 'transfer' : 'direct'; 
-                            if (from === islandConfig.hub || to === islandConfig.hub) routeType = 'direct';
-                        }
+                        if (islandConfig.type === 'ship') { routeType = 'transfer'; isShipOnlyRoute = true; }
+                        else { routeType = (searchFrom !== searchTo) ? 'transfer' : 'direct'; if (from === islandConfig.hub || to === islandConfig.hub) routeType = 'direct'; }
                         source = islandConfig.sources;
-                    } else {
-                        source = "서경종@압해초_국내여비기준표";
-                    }
+                    } else { source = "서경종@압해초_국내여비기준표"; }
 
                     const checkRoute = (a, b) => (from === a && to === b) || (from === b && to === a);
                     if (checkRoute('목포', '영암')) specialNote = "독천터미널 이용 시 3,900원";
@@ -497,101 +450,53 @@
                     else if (checkRoute('순천', '곡성')) specialNote = "ITX(도시간특급열차) 이용 시 7,100원";
 
                     let calculatedTransport = 0;
-                    if (islandConfig && islandConfig.special) {
-                        const oneWay = finalPre ? finalPre : finalGen;
-                        if (islandConfig.type === 'ship') {
-                            calculatedTransport = (oneWay - surcharge) * 2;
-                        } else {
-                            calculatedTransport = oneWay * 2;
-                        }
-                    } else {
-                        const oneWay = finalPre ? finalPre : finalGen;
-                        if (islandConfig && islandConfig.type === 'ship') {
-                             calculatedTransport = (oneWay - surcharge) * 2;
-                        } else {
-                             calculatedTransport = oneWay * 2;
-                        }
-                    }
+                    const oneWay = finalPre ? finalPre : finalGen;
+                    if (islandConfig && islandConfig.type === 'ship') calculatedTransport = (oneWay - surcharge) * 2;
+                    else calculatedTransport = oneWay * 2;
+                    
                     setManualMainTransport(calculatedTransport);
-
-                    setResult({
-                        type: 'internal',
-                        data: { gen: finalGen, pre: finalPre, note },
-                        routeType,
-                        viaPoint,
-                        specialNote,
-                        source,
-                        islandType: islandConfig?.type,
-                        surcharge: islandConfig ? islandConfig.cost : 0,
-                        isShipOnlyRoute,
-                        isSpecial: islandConfig?.special 
-                    });
+                    setResult({ type: 'internal', data: { gen: finalGen, pre: finalPre, note }, routeType, viaPoint, specialNote, source, islandType: islandConfig?.type, surcharge: surcharge, isShipOnlyRoute, isSpecial: islandConfig?.special });
                 } else {
                     setResult({ type: 'external', source: "외부 검색 (네이버지도, 카카오맵)" });
                 }
             };
 
+            const handleIntraCity = () => {
+                setOrigin("관내");
+                setDestination("관내");
+                setResult({ type: 'intraCity', short: 10000, long: 20000 });
+                setShowDetail(true);
+            };
+
             const calculateDetailedCost = () => {
                 if (!result) return { daily: 0, meal: 0, transport: 0, total: 0 };
-                
                 if (result.type === 'intraCity') {
                     let total = 20000;
                     if (intraDeductions.shortTime) total -= 10000;
                     if (intraDeductions.govVehicle) total -= 10000;
                     return { daily: 0, meal: 0, transport: 0, total: Math.max(0, total) };
                 }
-
-                let daily = 25000;
-                if (deductions.gov_vehicle) daily = 12500;
-
-                let meal = 25000;
-                if (deductions.meal_1) meal = 16660;
-                else if (deductions.meal_2) meal = 8330;
-                else if (deductions.meal_3) meal = 0;
-                else if (deductions.meal_half) meal = 12500;
-
+                let daily = deductions.gov_vehicle ? 12500 : 25000;
+                let meal = deductions.meal_3 ? 0 : deductions.meal_1 ? 16660 : deductions.meal_2 ? 8330 : deductions.meal_half ? 12500 : 25000;
                 let transport = 0;
                 const isTransportDeducted = deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger;
-
                 if (!isTransportDeducted) {
-                    if (result.type === 'internal') {
-                        if (manualMainTransport !== null) {
-                            transport = Number(manualMainTransport);
-                        } else {
-                            let oneWayFare = result.data.pre ? result.data.pre : result.data.gen;
-                            if (result.islandType === 'ship') {
-                                transport = (oneWayFare - result.surcharge) * 2;
-                            } else {
-                                transport = oneWayFare * 2;
-                            }
-                        }
-                    } else if (result.type === 'external') {
-                        transport = Number(customTransport) || 0;
-                    }
-                } else {
-                    transport = 0;
+                    if (result.type === 'internal') transport = (manualMainTransport !== null) ? Number(manualMainTransport) : 0;
+                    else if (result.type === 'external') transport = Number(customTransport) || 0;
                 }
-
-                return {
-                    daily,
-                    meal,
-                    transport,
-                    total: daily + meal + transport + (shipFare || 0)
-                };
+                return { daily, meal, transport, total: daily + meal + transport + (shipFare || 0) };
             };
 
             const getTravelerText = () => {
-                if (!origin || !destination) return "출장자가";
+                if (!origin || !destination) return "출장자";
                 const originConfig = ISLAND_DB[origin];
                 const destConfig = ISLAND_DB[destination];
                 const config = originConfig || destConfig;
-
-                if (!config) return "출장자가";
-                if (config.hub === '완도' && config.type === 'connected') return "출장자가";
-                
-                if (config.type === 'connected') return "군민인 출발자가";
-                if (config.type === 'ship') return "도서민인 출발자가";
-                return "출장자가";
+                if (!config) return "출장자";
+                if (config.hub === '완도' && config.type === 'connected') return "출장자";
+                if (config.type === 'connected') return "군민";
+                if (config.type === 'ship') return "도서민";
+                return "출장자";
             };
 
             const detailCosts = calculateDetailedCost();
@@ -630,24 +535,9 @@
                                     {modalState.type === 'selection' && (
                                         <div className="grid grid-cols-2 gap-2">
                                             {modalState.data.map(city => {
-                                                // Handle long names by inserting line break if space exists, and adjust styling
                                                 const hasSpace = city.includes(' ');
-                                                const displayName = hasSpace ? (
-                                                    <span className="text-left leading-tight">
-                                                        {city.split(' ').map((part, i) => (
-                                                            <React.Fragment key={i}>
-                                                                {part}{i < city.split(' ').length - 1 && <br/>}
-                                                            </React.Fragment>
-                                                        ))}
-                                                    </span>
-                                                ) : <span>{city}</span>;
-                                                
-                                                return (
-                                                    <button key={city} onClick={() => handleModalSelect(city)} className="flex items-center justify-between px-4 py-3.5 rounded-xl bg-gray-50 border border-gray-100 text-sm font-bold text-gray-700 hover:bg-teal-50 hover:text-teal-700 hover:border-teal-200 transition-all">
-                                                        {displayName}
-                                                        {REGION_ICONS[city] && <span className="text-lg icon-wiggle shrink-0 ml-1">{REGION_ICONS[city]}</span>}
-                                                    </button>
-                                                );
+                                                const displayName = hasSpace ? (<span className="text-left leading-tight">{city.split(' ').map((part, i) => (<React.Fragment key={i}>{part}{i < city.split(' ').length - 1 && <br/>}</React.Fragment>))}</span>) : <span>{city}</span>;
+                                                return (<button key={city} onClick={() => handleModalSelect(city)} className="flex items-center justify-between px-4 py-3.5 rounded-xl bg-gray-50 border border-gray-100 text-sm font-bold text-gray-700 hover:bg-teal-50 hover:text-teal-700 hover:border-teal-200 transition-all">{displayName}{REGION_ICONS[city] && <span className="text-lg icon-wiggle shrink-0 ml-1">{REGION_ICONS[city]}</span>}</button>);
                                             })}
                                         </div>
                                     )}
@@ -659,9 +549,42 @@
                     <div className="text-center mt-4 mb-6"><h1 className="text-2xl font-bold font-suit text-gray-900 tracking-tight">yeobi-easy for JNE</h1></div>
 
                     <div className="space-y-3 mb-5">
-                        <AutocompleteInput label="출발지" placeholder="예: 광주, ㄱㅈ" value={origin} onChange={setOrigin} onSelect={setOrigin} cityList={ALLOWED_CITIES} onEnter={() => { if(destination) performCalculation(); }} onShowModal={(data) => setModalState({ type: 'selection', data, target: 'origin' })} />
-                        <AutocompleteInput label="도착지" placeholder="예: 해남, ㅎㄴ" value={destination} onChange={setDestination} onSelect={setDestination} cityList={ALLOWED_CITIES} onEnter={() => performCalculation()} onShowModal={(data) => setModalState({ type: 'selection', data, target: 'destination' })} />
-                        <button onClick={() => performCalculation()} className="w-full h-14 rounded-2xl font-bold btn-primary text-base shadow-lg shadow-teal-100 flex items-center justify-center gap-2"><Icons.Search size={20} /> 조회하기</button>
+                        <AutocompleteInput 
+                            label="출발지" 
+                            placeholder="예: 광주, ㄱㅈ" 
+                            value={origin} 
+                            onChange={setOrigin} 
+                            onSelect={(city) => {
+                                setOrigin(city);
+                                if (POPUP_REGIONS[city]) setModalState({ type: 'origin', data: POPUP_REGIONS[city] });
+                            }} 
+                            cityList={ALLOWED_CITIES} 
+                            onEnter={() => { 
+                                if(POPUP_REGIONS[origin]) setModalState({ type: 'origin', data: POPUP_REGIONS[origin] });
+                                else if(destination) performCalculation(); 
+                            }} 
+                            onShowModal={(data) => setModalState({ type: 'selection', data, target: 'origin' })} 
+                        />
+                        <AutocompleteInput 
+                            label="도착지" 
+                            placeholder="예: 해남, ㅎㄴ" 
+                            value={destination} 
+                            onChange={setDestination} 
+                            onSelect={(city) => {
+                                setDestination(city);
+                                if (POPUP_REGIONS[city]) setModalState({ type: 'destination', data: POPUP_REGIONS[city] });
+                            }} 
+                            cityList={ALLOWED_CITIES} 
+                            onEnter={() => { 
+                                if(POPUP_REGIONS[destination]) setModalState({ type: 'destination', data: POPUP_REGIONS[destination] });
+                                else performCalculation(); 
+                            }} 
+                            onShowModal={(data) => setModalState({ type: 'selection', data, target: 'destination' })} 
+                        />
+                        <div className="flex gap-2 w-full">
+                            <button onClick={handleIntraCity} className="w-14 h-14 rounded-2xl font-bold bg-slate-100 text-slate-500 border border-slate-200 text-sm flex items-center justify-center active:scale-95 transition-transform hover:bg-slate-200">관내</button>
+                            <button onClick={() => performCalculation()} className="flex-1 h-14 rounded-2xl font-bold btn-primary text-base shadow-lg shadow-teal-100 flex items-center justify-center gap-2"><Icons.Search size={20} /> 조회하기</button>
+                        </div>
                     </div>
 
                     {result && (
@@ -670,7 +593,6 @@
                                 <a href="https://docs.google.com/spreadsheets/d/10v8CuQTEWWYuh-rGUDWfT3XmHShj3QP64bm8u0GFG4E/edit?usp=sharing" target="_blank" rel="noopener noreferrer" className="absolute top-4 left-4 w-12 h-12 bg-[#FFD700] text-white rounded-full shadow-md border border-white/20 flex flex-col items-center justify-center gap-0 z-20 hover:brightness-110 transition-all active:scale-95 animate-pulse-scale"><span className="text-[10px] font-bold leading-none text-yellow-900">요금</span><span className="text-[10px] font-bold leading-none mt-0.5 text-yellow-900">제보</span></a>
                                 <button onClick={() => setShowDetail(true)} className="absolute top-4 right-4 w-12 h-12 bg-[#00BFA5] text-white rounded-full shadow-md border border-white/20 flex flex-col items-center justify-center gap-0 z-20 hover:brightness-110 transition-all active:scale-95 animate-pulse-scale"><span className="text-[11px] font-bold leading-none">여비</span><span className="text-[11px] font-bold leading-none mt-0.5">계산</span></button>
 
-                                {/* Content pushed down with mt-16 to avoid button overlap */}
                                 <div className="flex items-center justify-center gap-3 mb-6 pb-6 border-b border-gray-200 border-dashed mt-16">
                                     <div className="flex items-center gap-1"><span className="font-semibold text-lg text-gray-900 font-pretendard">{origin}</span>{REGION_ICONS[origin] && <span className="text-lg inline-block ship-body">{REGION_ICONS[origin]}</span>}</div>
                                     <div className="flex flex-col items-center">
@@ -684,59 +606,26 @@
                                     <div className="space-y-3">
                                         <div className="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-100 shadow-sm"><div className="flex items-center gap-2"><span className="text-sm font-medium text-gray-500 font-pretendard">4시간 이하</span><button onClick={() => setIntraDeductions(prev => ({...prev, govVehicle: !prev.govVehicle}))} className={getDeductionBtnClass(intraDeductions.govVehicle)}>관용차량 이용</button></div><span className="text-xl font-bold font-suit text-gray-900">{fmt(Math.max(0, result.short - (intraDeductions.govVehicle ? 10000 : 0)))}<span className="text-base font-medium text-gray-400 ml-1">원</span></span></div>
                                         <div className="flex items-center justify-between p-4 bg-teal-50 rounded-xl border border-teal-100 shadow-sm"><div className="flex items-center gap-2"><span className="text-sm font-medium text-teal-700 font-pretendard">4시간 이상</span><button onClick={() => setIntraDeductions(prev => ({...prev, govVehicle: !prev.govVehicle}))} className={getDeductionBtnClass(intraDeductions.govVehicle)}>관용차량 이용</button></div><span className="text-2xl font-bold font-suit text-teal-600">{fmt(Math.max(0, result.long - (intraDeductions.govVehicle ? 10000 : 0)))}<span className="text-lg font-medium text-teal-400 ml-1">원</span></span></div>
-                                        <div className="mt-4 flex items-start gap-2 bg-yellow-50 p-3 rounded-lg"><Icons.Info size={16} className="text-yellow-600 mt-0.5 flex-shrink-0" /><p className="text-xs text-yellow-700 font-pretendard leading-relaxed whitespace-pre-line">{result.note}</p></div>
                                     </div>
                                 ) : result.type === 'internal' ? (
                                     <div className="space-y-3">
                                         <div className="flex items-center justify-between p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-gray-200 shadow-sm">
                                             <span className="text-sm font-medium text-gray-500 font-pretendard">일반 요금</span>
                                             <div className="flex flex-col items-end gap-1">
-                                                <div className="flex items-end">
-                                                    <span className="text-2xl font-bold font-suit text-gray-900">{fmt(result.data.gen)}</span>
-                                                    <span className="text-base font-medium font-suit text-gray-400 mb-0.5 ml-1">원</span>
-                                                </div>
-                                                {result.surcharge > 0 && (
-                                                    <div className="flex items-center gap-1 px-2 py-1 bg-white/50 rounded-lg border border-gray-100 animate-fade-in-calm">
-                                                        {result.islandType === 'connected' ? <Icons.Bus size={12} className="text-gray-400" /> : <Icons.Ticket size={12} className="text-gray-400" />}
-                                                        <span className={`text-xs font-bold text-gray-500`}>
-                                                            {result.isSpecial && result.islandType === 'ship' && result.surcharge === 2000 
-                                                                ? "농어촌버스·여객선 2,000원 포함" 
-                                                                : result.islandType === 'connected' 
-                                                                    ? `농어촌버스 ${fmt(result.surcharge)}원 포함` 
-                                                                    : `여객선 ${fmt(result.surcharge)}원 포함`}
-                                                        </span>
-                                                    </div>
-                                                )}
+                                                <div className="flex items-end"><span className="text-2xl font-bold font-suit text-gray-900">{fmt(result.data.gen)}</span><span className="text-base font-medium font-suit text-gray-400 mb-0.5 ml-1">원</span></div>
+                                                {result.surcharge > 0 && (<div className="flex items-center gap-1 px-2 py-1 bg-white/50 rounded-lg border border-gray-100 animate-fade-in-calm">{result.islandType === 'connected' ? <Icons.Bus size={12} className="text-gray-400" /> : <Icons.Ticket size={12} className="text-gray-400" />}<span className={`text-xs font-bold text-gray-500`}>{result.isSpecial && result.islandType === 'ship' && result.surcharge === 2000 ? "농어촌버스·여객선 2,000원 포함" : result.islandType === 'connected' ? `농어촌버스 ${fmt(result.surcharge)}원 포함` : `여객선 ${fmt(result.surcharge)}원 포함`}</span></div>)}
                                             </div>
                                         </div>
-                                        {result.data.pre !== null && (
-                                            <div className="flex items-center justify-between p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-gray-200 shadow-sm relative overflow-hidden">
-                                                <span className="text-sm font-medium text-gray-500 font-pretendard relative z-10">우등 요금</span>
-                                                <div className="flex flex-col items-end gap-1 relative z-10">
-                                                    <div className="flex items-end">
-                                                        <span className="text-2xl font-bold font-suit text-gray-900">{fmt(result.data.pre)}</span>
-                                                        <span className="text-base font-medium font-suit text-gray-400 mb-0.5 ml-1">원</span>
-                                                    </div>
-                                                    {result.surcharge > 0 && (
-                                                        <div className="flex items-center gap-1 px-2 py-1 bg-white/50 rounded-lg border border-gray-100 animate-fade-in-calm">
-                                                            {result.islandType === 'connected' ? <Icons.Bus size={12} className="text-gray-400" /> : <Icons.Ticket size={12} className="text-gray-400" />}
-                                                            <span className={`text-xs font-bold text-gray-500`}>
-                                                                {result.isSpecial && result.islandType === 'ship' && result.surcharge === 2000 
-                                                                    ? "농어촌버스·여객선 2,000원 포함" 
-                                                                    : result.islandType === 'connected' 
-                                                                        ? `농어촌버스 ${fmt(result.surcharge)}원 포함` 
-                                                                        : `여객선 ${fmt(result.surcharge)}원 포함`}
-                                                            </span>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        )}
+                                        {result.data.pre !== null && (<div className="flex items-center justify-between p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-gray-200 shadow-sm relative overflow-hidden"><span className="text-sm font-medium text-gray-500 font-pretendard relative z-10">우등 요금</span><div className="flex flex-col items-end gap-1 relative z-10"><div className="flex items-end"><span className="text-2xl font-bold font-suit text-gray-900">{fmt(result.data.pre)}</span><span className="text-base font-medium font-suit text-gray-400 mb-0.5 ml-1">원</span></div>{result.surcharge > 0 && (<div className="flex items-center gap-1 px-2 py-1 bg-white/50 rounded-lg border border-gray-100 animate-fade-in-calm">{result.islandType === 'connected' ? <Icons.Bus size={12} className="text-gray-400" /> : <Icons.Ticket size={12} className="text-gray-400" />}<span className={`text-xs font-bold text-gray-500`}>{result.isSpecial && result.islandType === 'ship' && result.surcharge === 2000 ? "농어촌버스·여객선 2,000원 포함" : result.islandType === 'connected' ? `농어촌버스 ${fmt(result.surcharge)}원 포함` : `여객선 ${fmt(result.surcharge)}원 포함`}</span></div>)}</div></div>)}
                                         
-                                        <div className="mt-4 p-4 bg-teal-50 border border-teal-100 rounded-xl text-left"><div className="space-y-2"><p className="text-xs text-teal-800 font-pretendard leading-relaxed"><span className="font-bold text-teal-600 mr-1">1.</span><span className="font-bold">교통비</span>·<span className="font-bold">숙박비</span>는 실비정산제 → <span className="font-bold">증빙</span> 없으면 정산 ×</p><p className="text-xs text-teal-800 font-pretendard leading-relaxed"><span className="font-bold text-teal-600 mr-1">2.</span>여행을 마친날로부터 <span className="font-bold">2주일 이내에 정산서 제출</span><span className="block text-[10px] text-teal-600/70 mt-0.5">「공무원여비규정」 제8조의2(여비의 결제와 정산 등)</span></p></div></div>
+                                        <div className="mt-4 p-4 bg-teal-50 border border-teal-100 rounded-xl text-left">
+                                            <div className="space-y-2">
+                                                <div className="flex items-start gap-1"><span className="font-bold text-teal-600 shrink-0 text-xs mt-0.5">1.</span><p className="text-xs text-teal-800 font-pretendard leading-relaxed"><span className="font-bold">교통비</span>·<span className="font-bold">숙박비</span>는 실비정산제 → <span className="font-bold">증빙</span> 없으면 정산 ×</p></div>
+                                                <div className="flex items-start gap-1"><span className="font-bold text-teal-600 shrink-0 text-xs mt-0.5">2.</span><div className="text-xs text-teal-800 font-pretendard leading-relaxed">여행을 마친날로부터 <span className="font-bold">2주일 이내에 정산서 제출</span><div className="block text-[10px] text-teal-600/70 mt-0.5">「공무원여비규정」 제8조의2(여비의 결제와 정산 등)</div></div></div>
+                                            </div>
+                                        </div>
                                         {(result.data.note || result.specialNote) && (<div className="mt-4 space-y-2">{result.data.note && <p className="text-xs text-gray-500 font-pretendard bg-white px-3 py-2 rounded-lg border border-gray-100">* {result.data.note}</p>}{result.specialNote && (<div className="flex items-start gap-2 bg-yellow-50 p-3 rounded-lg border border-yellow-100/50"><Icons.Info size={14} className="text-yellow-600 mt-0.5 flex-shrink-0" /><p className="text-xs text-yellow-700 font-pretendard">{result.specialNote}</p></div>)}</div>)}
                                         
-                                        {/* Source Section: Reverted to badge style */}
                                         <div className="mt-5 pt-4 border-t border-gray-200 opacity-100 transition-opacity">
                                             <div className="flex items-start justify-center gap-2 text-[11px] text-gray-500 font-pretendard font-medium">
                                                 <span className="shrink-0 px-1.5 py-0.5 rounded border border-gray-200 bg-gray-100 text-gray-400 text-[10px] font-bold">출처</span>
@@ -760,7 +649,7 @@
                                 <button onClick={() => setShowDetail(false)} className="absolute top-4 left-4 w-12 h-12 bg-[#00BFA5] text-white rounded-full shadow-md border border-white/20 flex flex-col items-center justify-center gap-0 z-20 hover:brightness-110 transition-all active:scale-95 animate-pulse-scale"><span className="text-[11px] font-bold leading-none block">편도</span><span className="text-[11px] font-bold leading-none mt-0.5 block">교통비</span></button>
                                 <a href="https://docs.google.com/spreadsheets/d/10v8CuQTEWWYuh-rGUDWfT3XmHShj3QP64bm8u0GFG4E/edit?usp=sharing" target="_blank" rel="noopener noreferrer" className="absolute top-4 right-4 w-12 h-12 bg-[#FFD700] text-white rounded-full shadow-md border border-white/20 flex flex-col items-center justify-center gap-0 z-20 hover:brightness-110 transition-all active:scale-95 animate-pulse-scale"><span className="text-[10px] font-bold leading-none text-yellow-900">요금</span><span className="text-[10px] font-bold leading-none mt-0.5 text-yellow-900">제보</span></a>
 
-                                <div className="text-center mb-6 mt-8"><h3 className="font-bold font-suit text-xl text-teal-600 flex items-center justify-center gap-2"><Icons.Calculator size={20} /> {result.type === 'intraCity' ? '관내여비계산' : '여비계산'}</h3>{result.type !== 'intraCity' && (<p className="text-sm text-gray-500 mt-2 font-pretendard">{getTravelerText()} {origin} ↔ {destination} {deductions.gov_vehicle || intraDeductions.govVehicle ? '관용차량으로' : '자가용으로'} 당일 왕복한 경우</p>)}</div>
+                                <div className="text-center mb-6 mt-8"><h3 className="font-bold font-suit text-xl text-teal-600 flex items-center justify-center gap-2"><Icons.Calculator size={20} /> {result.type === 'intraCity' ? '관내여비계산' : '여비계산'}</h3>{result.type !== 'intraCity' && (<p className="text-sm text-gray-500 mt-2 font-pretendard">{getTravelerText()} {origin}↔{destination} {deductions.gov_vehicle || intraDeductions.govVehicle ? '관용차로' : '자차로'} 왕복(1일)</p>)}</div>
 
                                 <div className="space-y-2 mb-4 bg-gray-50 p-4 rounded-xl border border-gray-100">
                                     {result.type === 'intraCity' ? (
@@ -781,7 +670,6 @@
                                                     {result.type === 'external' && !isTransportDeducted ? (
                                                         <div className="flex items-center justify-end gap-1 w-full max-w-[100px]"><input type="text" inputMode="numeric" value={customTransport === '' ? '' : fmt(customTransport)} onChange={(e) => { const val = e.target.value.replace(/,/g, ''); if (val === '' || !isNaN(val)) setCustomTransport(val); }} placeholder="0" className="ship-fare-input w-full text-right text-gray-400 font-bold font-suit hover:text-gray-600 transition-colors" /><span className="text-xs font-normal text-gray-400">원</span></div>
                                                     ) : (
-                                                        // 모든 내부 경로(internal)는 이제 수정 가능하게 됨
                                                         !isTransportDeducted ? (
                                                             <div className="flex flex-col items-end">
                                                                 <div className="flex items-center justify-end gap-1 w-full max-w-[100px]">
@@ -814,12 +702,12 @@
                                         </>
                                     )}
                                 </div>
-                                {result.type !== 'intraCity' && (<div className="mt-5 space-y-2"><div className="flex items-start gap-1.5"><span className="text-xs text-red-500 mt-0.5 font-bold">※</span><p className="text-xs text-red-600 font-bold font-pretendard leading-tight">단체행사 인솔 시 예산으로 숙박·식사계약 체결된 경우 주의</p></div><div className="flex items-start gap-1.5"><span className="text-xs text-gray-600 mt-0.5">※</span><p className="text-xs text-gray-600 font-pretendard leading-tight">여객선을 이용한 경우, 승선권 합계금액을 기타교통비에 입력</p></div></div>)}
+                                {result.type !== 'intraCity' && (<div className="mt-5 space-y-2"><div className="flex items-start gap-1.5"><span className="text-xs text-red-500 mt-0.5 font-bold\">※</span><p className="text-xs text-red-600 font-bold font-pretendard leading-tight">단체행사 인솔 시 예산으로 숙박·식사계약 체결된 경우 주의</p></div><div className="flex items-start gap-1.5"><span className="text-xs text-gray-600 mt-0.5\">※</span><p className="text-xs text-gray-600 font-pretendard leading-tight">여객선을 이용한 경우, 승선권 합계금액을 기타교통비에 입력</p></div></div>)}
                             </div>
                         </div>
                     )}
 
-                    <footer className="mt-2 text-center text-gray-400 text-[11px] font-bold font-gmarket mb-8 tracking-wide px-4 select-none">crafted with passion by 전현우@우수영초등학교<br/>deployment approved</footer>
+                    <footer className="mt-2 text-center text-footer-sophisticated text-[11px] font-medium font-pretendard mb-8 tracking-wide px-4 select-none">crafted with passion by 전현우@우수영초등학교<br/>deployment approved</footer>
                 </div>
             );
         };
