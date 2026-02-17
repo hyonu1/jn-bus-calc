@@ -84,7 +84,8 @@
             border: 1px solid #cbd5e1; background: #ffffff; color: #64748B;
             cursor: pointer; z-index: 10; font-family: var(--font-gmarket); transition: all 0.2s;
         }
-        .deduct-btn.active { background: var(--color-teal); color: white; border-color: var(--color-teal); }
+        /* [교정] active 클래스일 때 animation: none 추가하여 펄스 효과 중지 */
+        .deduct-btn.active { background: var(--color-teal); color: white; border-color: var(--color-teal); animation: none; }
 
         .detail-drawer { max-height: 0; overflow: hidden; transition: max-height 1s cubic-bezier(0.25, 1, 0.5, 1); background-color: #ffffff; border-radius: 0 0 16px 16px; }
         .detail-drawer.open { max-height: 2000px; }
@@ -97,9 +98,8 @@
 
         @keyframes bounce-custom {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20%); }
+            50% { transform: translateY(-20%); } 
         }
-        /* [교정] 애니메이션 속도를 절반으로 늦춤 (1s -> 2s) */
         .icon-bounce { display: inline-block; animation: bounce-custom 2s infinite; margin-left: 4px; }
         
         .toggle-switch { width: 40px; height: 22px; border-radius: 99px; transition: 0.2s; position: relative; }
@@ -298,10 +298,10 @@
                                 </div>
                                 <div className={`detail-drawer ${showDetail ? 'open' : ''}`}>
                                     <div className="p-4 pt-4 space-y-6 border-t border-gray-100">
-                                        <div className="relative flex items-center justify-between h-12"><span className="font-bold text-gray-600 text-xl w-24">일비</span><button onClick={()=>setActiveModal('daily')} className={`deduct-btn ${deductions.gov_vehicle ? 'active':''} animate-pulse-spread`}>감액</button><div className="flex flex-col items-end flex-1"><span className="text-xl font-bold text-gray-900 font-suit">{fmt(detailCosts.daily)}원</span>{deductions.gov_vehicle && <span className="text-[11px] text-rose-500 font-bold leading-none mt-1">(-12,500)</span>}</div></div>
-                                        <div className="relative flex items-center justify-between h-12"><span className="font-bold text-gray-600 text-xl w-24">식비</span><button onClick={()=>setActiveModal('meal')} className={`deduct-btn ${(deductions.meal_1||deductions.meal_2||deductions.meal_3||deductions.meal_half) ? 'active':''} animate-pulse-spread`}>감액</button><div className="flex flex-col items-end flex-1"><span className="text-xl font-bold text-gray-900 font-suit">{fmt(detailCosts.meal)}원</span><span className="text-[11px] text-rose-500 font-bold leading-none mt-1">{getMealDeductionLabel()}</span></div></div>
+                                        <div className="relative flex items-center justify-between h-12"><span className="font-bold text-gray-600 text-xl w-24">일비</span><button onClick={()=>setActiveModal('daily')} className={`deduct-btn ${deductions.gov_vehicle ? 'active': 'animate-pulse-spread'}`}>감액</button><div className="flex flex-col items-end flex-1"><span className="text-xl font-bold text-gray-900 font-suit">{fmt(detailCosts.daily)}원</span>{deductions.gov_vehicle && <span className="text-[11px] text-rose-500 font-bold leading-none mt-1">(-12,500)</span>}</div></div>
+                                        <div className="relative flex items-center justify-between h-12"><span className="font-bold text-gray-600 text-xl w-24">식비</span><button onClick={()=>setActiveModal('meal')} className={`deduct-btn ${(deductions.meal_1||deductions.meal_2||deductions.meal_3||deductions.meal_half) ? 'active': 'animate-pulse-spread'}`}>감액</button><div className="flex flex-col items-end flex-1"><span className="text-xl font-bold text-gray-900 font-suit">{fmt(detailCosts.meal)}원</span><span className="text-[11px] text-rose-500 font-bold leading-none mt-1">{getMealDeductionLabel()}</span></div></div>
                                         <div className="pt-4 border-t border-dashed border-gray-200">
-                                            <div className="relative flex items-center justify-between h-12"><div className="flex items-center"><span className="font-bold text-gray-600 text-xl">교통비</span><span className={`tag-side ${getTagStyles('왕복')}`}>왕복</span></div><button onClick={()=>setActiveModal('transport')} className={`deduct-btn ${deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger ? 'active':''} animate-pulse-spread`}>감액</button><div className="text-right flex-1">{!(deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger) ? (<div className="flex items-center justify-end gap-1"><input type="text" inputMode="numeric" value={manualMainTransport === null ? '' : fmt(manualMainTransport)} onChange={(e) => setManualMainTransport(Number(e.target.value.replace(/,/g, '')))} className="ship-fare-input" /><span className="text-xl text-gray-900 font-bold">원</span></div>) : <span className="text-xl font-bold text-gray-400">0원</span>}</div></div>
+                                            <div className="relative flex items-center justify-between h-12"><div className="flex items-center"><span className="font-bold text-gray-600 text-xl">교통비</span><span className={`tag-side ${getTagStyles('왕복')}`}>왕복</span></div><button onClick={()=>setActiveModal('transport')} className={`deduct-btn ${deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger ? 'active': 'animate-pulse-spread'}`}>감액</button><div className="text-right flex-1">{!(deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger) ? (<div className="flex items-center justify-end gap-1"><input type="text" inputMode="numeric" value={manualMainTransport === null ? '' : fmt(manualMainTransport)} onChange={(e) => setManualMainTransport(Number(e.target.value.replace(/,/g, '')))} className="ship-fare-input" /><span className="text-xl text-gray-900 font-bold">원</span></div>) : <span className="text-xl font-bold text-gray-400">0원</span>}</div></div>
                                             {(shipFare > 0) && (<div className="relative flex items-center justify-between h-12 mt-2"><span className="font-bold text-gray-600 text-xl">기타교통비</span><div className="text-right flex-1"><div className="flex items-center justify-end gap-1"><input type="text" inputMode="numeric" value={shipFare === 0 ? '' : fmt(shipFare)} onChange={(e) => setShipFare(Number(e.target.value.replace(/,/g, '')))} className="ship-fare-input" /><span className="text-xl text-gray-900 font-bold">원</span></div></div></div>)}
                                         </div>
                                         <div className="pt-4 border-t-2 border-gray-100 flex justify-between items-center"><span className="font-bold text-gray-900 text-xl">합계</span><span className="text-3xl font-extrabold text-[#00BFA5] font-suit">{fmt(detailCosts.total)}<span className="text-xl ml-1">원</span></span></div>
@@ -366,7 +366,19 @@
                                                 </div>
                                             </div>
                                         )}
-                                        <div className="space-y-3">{content.items.map(item => (<div key={item.id} className="flex justify-between items-center py-4 border-t border-gray-100"><div><span className="block text-[15px] font-bold text-gray-700 leading-snug">{item.label}</span>{item.subLabel && <span className="text-[11px] text-gray-400 font-bold mt-1 block">{item.subLabel}</span>}</div><Toggle checked={deductions[item.id]} onChange={() => setDeductions(prev => { const newState = { ...prev }; if (['meal_1','meal_2','meal_3','meal_half'].includes(item.id)) { if(!prev[item.id]) ['meal_1','meal_2','meal_3','meal_half'].forEach(k=>newState[k]=false); } newState[item.id] = !prev[item.id]; return newState; })} /></div>))}</div>
+                                        <div className="space-y-3">{content.items.map(item => (<div key={item.id} className="flex justify-between items-center py-4 border-t border-gray-100"><div><span className="block text-[15px] font-bold text-gray-700 leading-snug">{item.label}</span>{item.subLabel && <span className="text-[11px] text-gray-400 font-bold mt-1 block">{item.subLabel}</span>}</div><Toggle checked={deductions[item.id]} onChange={() => setDeductions(prev => { 
+                                            const newState = { ...prev }; 
+                                            if (['meal_1','meal_2','meal_3','meal_half'].includes(item.id)) { 
+                                                if (!prev[item.id]) { ['meal_1','meal_2','meal_3','meal_half'].forEach(k => newState[k] = false); } 
+                                            } 
+                                            newState[item.id] = !prev[item.id]; 
+                                            
+                                            /* [교정] 일비(관용차) ↔ 교통비(관용차) 연동 로직 복구 */
+                                            if (item.id === 'gov_vehicle') { newState['transport_gov_vehicle'] = newState[item.id]; }
+                                            if (item.id === 'transport_gov_vehicle') { newState['gov_vehicle'] = newState[item.id]; }
+                                            
+                                            return newState; 
+                                        })} /></div>))}</div>
                                         <button onClick={()=>setActiveModal(null)} className="bg-[#00BFA5] text-white w-full mt-8 h-12 rounded-xl font-bold text-lg shadow-sm">확인</button>
                                     </div>
                                 </div>
