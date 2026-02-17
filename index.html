@@ -15,13 +15,10 @@
                     animation: {
                         'pulse-spread': 'pulse-spread 2s infinite',
                         'slide-up': 'slideUpModal 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-                        'bounce-custom': 'bounce-custom 1s infinite',
                     },
                     keyframes: {
                         'pulse-spread': { '0%': { boxShadow: '0 0 0 0 rgba(0, 191, 165, 0.7)' }, '70%': { boxShadow: '0 0 0 10px rgba(0, 191, 165, 0)' }, '100%': { boxShadow: '0 0 0 0 rgba(0, 191, 165, 0)' } },
-                        'slideUpModal': { 'from': { transform: 'translateY(20px)', opacity: '0' }, 'to': { transform: 'translateY(0)', opacity: '1' } },
-                        /* [교정] 바운스 높이를 -25%에서 -10%로 줄여서 덜 튀게 수정 */
-                        'bounce-custom': { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10%)' } }
+                        'slideUpModal': { 'from': { transform: 'translateY(20px)', opacity: '0' }, 'to': { transform: 'translateY(0)', opacity: '1' } }
                     }
                 }
             }
@@ -37,127 +34,44 @@
             --color-teal: #00BFA5;
             --color-bg-base: #E5E8EB;
             --color-text-main: #191F28;
-            
             --color-btn-main: #00BFA5;
-            --color-btn-sub-bg: #FFF0F3;
-            --color-btn-sub-text: #FF4D6D;
         }
 
         html { scrollbar-gutter: stable; }
         body { 
-            font-family: var(--font-pretendard);
-            background-color: var(--color-bg-base);
-            color: var(--color-text-main);
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-            overflow-y: scroll;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
+            font-family: var(--font-pretendard); background-color: var(--color-bg-base); color: var(--color-text-main); margin: 0;
+            display: flex; justify-content: center; min-height: 100vh; overflow-y: scroll; overflow-x: hidden; -webkit-font-smoothing: antialiased;
         }
 
         .main-wrapper { 
-            width: 100%;
-            max-width: 480px; 
-            min-height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-            background-color: #FFFFFF; 
-            position: relative;
-            box-shadow: 0 0 30px rgba(0,0,0,0.08);
+            width: 100%; max-width: 480px; min-height: 100vh; display: flex; flex-direction: column; background-color: #FFFFFF; position: relative; box-shadow: 0 0 30px rgba(0,0,0,0.08);
         }
 
         @media (min-width: 768px) {
-            body {
-                align-items: center;
-                min-height: 100vh;
-                padding: 24px 0;
-                box-sizing: border-box;
-                overflow-y: auto;
-            }
-            .main-wrapper {
-                min-height: unset;
-                height: auto;
-                max-height: calc(100vh - 48px);
-                overflow-y: auto;
-                overflow-x: hidden;
-                border-radius: 32px;
-                box-shadow: 0 8px 60px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.04);
-                scrollbar-width: thin;
-                scrollbar-color: #E2E8F0 transparent;
-            }
-            .main-wrapper::-webkit-scrollbar { width: 4px; }
-            .main-wrapper::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 99px; }
-            .main-wrapper::-webkit-scrollbar-track { background: transparent; }
+            body { align-items: center; padding: 24px 0; box-sizing: border-box; overflow-y: auto; }
+            .main-wrapper { min-height: unset; height: auto; max-height: calc(100vh - 48px); overflow-y: auto; overflow-x: hidden; border-radius: 32px; box-shadow: 0 8px 60px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.04); }
         }
 
         .input-group { 
-            background-color: #F8FAFC;
-            border-radius: 14px;
-            padding: 0 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            width: 100%;
-            box-sizing: border-box;
-            height: 64px; 
-            border: 2px solid #F1F3F5;
-            font-family: var(--font-gmarket);
+            background-color: #F8FAFC; border-radius: 18px; padding: 0 20px; display: flex; align-items: center; gap: 16px; width: 100%; box-sizing: border-box; height: 96px; border: 2px solid #F1F3F5; font-family: var(--font-gmarket); 
         }
         .input-group:focus-within { border-color: var(--color-teal); background-color: #FFFFFF; box-shadow: 0 0 0 2px rgba(0, 191, 165, 0.1); }
 
         .tag-badge {
             display: inline-flex; align-items: center; justify-content: center;
             padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 800;
-            margin: 0 2px; font-family: var(--font-gmarket);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-            border: 1px solid transparent;
+            margin: 0 2px; font-family: var(--font-gmarket); box-shadow: 0 1px 2px rgba(0,0,0,0.03); border: 1px solid transparent;
         }
 
         .tag-side {
             display: inline-flex; align-items: center; justify-content: center;
             padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 800;
-            margin-left: 6px; white-space: nowrap; font-family: var(--font-pretendard);
-            border: 1px solid transparent;
+            margin-left: 6px; white-space: nowrap; font-family: var(--font-pretendard); border: 1px solid transparent;
         }
 
-        .btn-action {
-            width: 100%;
-            height: 68px;
-            border-radius: 20px;
-            font-family: var(--font-gmarket);
-            font-weight: 700;
-            font-size: 1.125rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: opacity 0.1s ease;
-            border: none;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        .btn-action:active { opacity: 0.8; }
-
-        .header-teal {
-            background: white; border-bottom: 1px solid #F1F5F9; padding: 12px 20px;
-            display: flex; align-items: center; justify-content: space-between;
-            width: 100%; position: relative; z-index: 40;
-        }
-
-        .mode-switch-container {
-            display: flex; align-items: center; justify-content: center;
-            background-color: #E2E8F0; border-radius: 99px;
-            width: 110px; height: 38px; position: relative; cursor: pointer;
-            padding: 3px; user-select: none;
-        }
-        .mode-switch-slider {
-            position: absolute; top: 3px; bottom: 3px; width: calc(50% - 3px);
-            background-color: #FFFFFF; border-radius: 99px;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-        }
+        .header-teal { background: white; border-bottom: 1px solid #F1F5F9; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; width: 100%; position: relative; z-index: 40; }
+        .mode-switch-container { display: flex; align-items: center; justify-content: center; background-color: #E2E8F0; border-radius: 99px; width: 110px; height: 38px; position: relative; cursor: pointer; padding: 3px; user-select: none; }
+        .mode-switch-slider { position: absolute; top: 3px; bottom: 3px; width: calc(50% - 3px); background-color: #FFFFFF; border-radius: 99px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
         .mode-switch-slider.extra { left: 3px; }
         .mode-switch-slider.intra { left: calc(50%); }
         .mode-text { flex: 1; z-index: 10; text-align: center; font-size: 12px; font-weight: 800; transition: color 0.2s; }
@@ -168,43 +82,25 @@
             position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
             font-size: 10px; padding: 5px 12px; border-radius: 8px; font-weight: 700;
             border: 1px solid #cbd5e1; background: #ffffff; color: #64748B;
-            cursor: pointer; z-index: 10; font-family: var(--font-gmarket);
-            transition: all 0.2s;
+            cursor: pointer; z-index: 10; font-family: var(--font-gmarket); transition: all 0.2s;
         }
         .deduct-btn.active { background: var(--color-teal); color: white; border-color: var(--color-teal); }
 
-        .detail-drawer {
-            max-height: 0; overflow: hidden;
-            transition: max-height 1s cubic-bezier(0.25, 1, 0.5, 1);
-            background-color: #ffffff; border-radius: 0 0 16px 16px;
-        }
+        .detail-drawer { max-height: 0; overflow: hidden; transition: max-height 1s cubic-bezier(0.25, 1, 0.5, 1); background-color: #ffffff; border-radius: 0 0 16px 16px; }
         .detail-drawer.open { max-height: 2000px; }
-
-        input.ship-fare-input { 
-            text-align: right; background-color: transparent; width: 100px; 
-            font-family: var(--font-gmarket); font-weight: 700; outline: none; 
-            border-bottom: 2px solid #E2E8F0; padding: 0 2px 2px 0; margin: 0; 
-            color: #191F28; font-size: 18px; border-radius: 0;
-        }
+        input.ship-fare-input { text-align: right; background-color: transparent; width: 100px; font-family: var(--font-gmarket); font-weight: 700; outline: none; border-bottom: 2px solid #E2E8F0; padding: 0 2px 2px 0; margin: 0; color: #191F28; font-size: 18px; border-radius: 0; }
         input.ship-fare-input:focus { border-bottom-color: var(--color-teal); }
 
-        .suggestions-box {
-            position: absolute; left: 0; right: 0; top: 100%; margin-top: 4px;
-            background: white; border: 1px solid #E2E8F0;
-            border-radius: 12px; z-index: 999;
-            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.15);
-            max-height: 240px; overflow-y: auto;
-            font-family: var(--font-gmarket);
-        }
-        .suggestion-item {
-            padding: 12px 16px; cursor: pointer;
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: 14px; color: #374151; font-weight: 500;
-            transition: background-color 0.1s;
-        }
+        .suggestions-box { position: absolute; left: 0; right: 0; top: 100%; margin-top: 4px; background: white; border: 1px solid #E2E8F0; border-radius: 12px; z-index: 999; box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.15); max-height: 240px; overflow-y: auto; font-family: var(--font-gmarket); }
+        .suggestion-item { padding: 12px 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #374151; font-weight: 500; }
         .suggestion-item:hover, .suggestion-item.active { background-color: #E0F2F1; }
 
-        .icon-bounce { display: inline-block; animation: bounce-custom 1s infinite; margin-left: 4px; }
+        @keyframes bounce-custom {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20%); }
+        }
+        /* [교정] 애니메이션 속도를 절반으로 늦춤 (1s -> 2s) */
+        .icon-bounce { display: inline-block; animation: bounce-custom 2s infinite; margin-left: 4px; }
         
         .toggle-switch { width: 40px; height: 22px; border-radius: 99px; transition: 0.2s; position: relative; }
         .toggle-knob { width: 18px; height: 18px; background: white; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
@@ -217,14 +113,13 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        // --- DATA & CONSTANTS (Must be defined at the top) ---
         const Icons = {
-            MapPin: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>,
-            Search: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>,
+            MapPin: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>,
+            Search: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>,
             ChevronDown: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m6 9 6 6 6-6"/></svg>,
             X: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>,
             Send: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="22" x2="11" y1="2" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>,
-            Calculator: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg>
+            Calculator: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg>
         };
 
         const REGION_ICONS = {
@@ -259,7 +154,7 @@
             "목포": { "광주": { gen: 7200, pre: 9300 }, "여수": { gen: 16500, pre: 21400 }, "순천": { gen: 11500, pre: 15000 }, "나주": { gen: 7300 }, "광양": { gen: 13700, pre: 17800 }, "담양": { gen: 10100 }, "곡성": { gen: 12700 }, "구례": { gen: 17000 }, "고흥": { gen: 18600 }, "보성": { gen: 13500 }, "화순": { gen: 9700 }, "장흥": { gen: 10200 }, "강진": { gen: 7800 }, "해남": { gen: 8700 }, "영암": { gen: 6400 }, "무안": { gen: 3200 }, "함평": { gen: 5100 }, "영광": { gen: 8700 }, "장성": { gen: 9600 }, "완도": { gen: 15700 }, "진도": { gen: 8300, pre: 10800 }, "남악": { gen: 1700 } },
             "여수": { "광주": { gen: 13000, pre: 16800 }, "목포": { gen: 16500, pre: 21400 }, "순천": { gen: 5000 }, "나주": { gen: 17300 }, "광양": { gen: 7500 }, "담양": { gen: 15900 }, "곡성": { gen: 18500 }, "구례": { gen: 10200 }, "고흥": { gen: 13600 }, "보성": { gen: 12800 }, "화순": { gen: 15500 }, "장흥": { gen: 16100 }, "강진": { gen: 18500 }, "해남": { gen: 21500 }, "영암": { gen: 22400 }, "무안": { gen: 19000 }, "함평": { gen: 17500 }, "영광": { gen: 20300 }, "장성": { gen: 15400 }, "완도": { gen: 28200 }, "진도": { gen: 24800 }, "남악": { gen: 15600, pre: 20200 } },
             "순천": { "광주": { gen: 8400, pre: 11000 }, "목포": { gen: 11500, pre: 15000 }, "여수": { gen: 5000 }, "나주": { gen: 12700 }, "광양": { gen: 2500 }, "담양": { gen: 10100 }, "곡성": { gen: 9400 }, "구례": { gen: 5200 }, "고흥": { gen: 8700 }, "보성": { gen: 7900 }, "화순": { gen: 9700 }, "장흥": { gen: 11100 }, "강진": { gen: 13500 }, "해남": { gen: 16600 }, "영암": { gen: 17500 }, "무안": { gen: 14700, pre: 18200 }, "함평": { gen: 12900 }, "영광": { gen: 15700 }, "장성": { gen: 10800 }, "완도": { gen: 23200 }, "진도": { gen: 23900 }, "남악": { gen: 10600, pre: 13800 } },
-            "나주": { "광주": { gen: 4300 }, "목포": { gen: 7300 }, "여수": { gen: 17300 }, "순천": { gen: 12700 }, "광양": { gen: 12700 }, "담양": { gen: 7200 }, "곡성": { gen: 9800 }, "구례": { gen: 14100 }, "고흥": { gen: 20500 }, "보성": { gen: 14800 }, "화순": { gen: 6800 }, "장흥": { gen: 9000 }, "강진": { gen: 8200 }, "해남": { gen: 9900 }, "영암": { gen: 4400 }, "무안": { gen: 4100 }, "함평": { gen: 3700 }, "영광": { gen: 7400 }, "장성": { gen: 6700 }, "완도": { BRA: 16600 }, "진도": { gen: 17200 }, "남악": { gen: 9000 } },
+            "나주": { "광주": { gen: 4300 }, "목포": { gen: 7300 }, "여수": { gen: 17300 }, "순천": { gen: 12700 }, "광양": { gen: 12700 }, "담양": { gen: 7200 }, "곡성": { gen: 9800 }, "구례": { gen: 14100 }, "고흥": { gen: 20500 }, "보성": { gen: 14800 }, "화순": { gen: 6800 }, "장흥": { gen: 9000 }, "강진": { gen: 8200 }, "해남": { gen: 9900 }, "영암": { gen: 4400 }, "무안": { gen: 4100 }, "함평": { gen: 3700 }, "영광": { gen: 7400 }, "장성": { gen: 6700 }, "완도": { gen: 16600 }, "진도": { gen: 17200 }, "남악": { gen: 9000 } },
             "광양": { "광주": { gen: 8400, pre: 10900 }, "목포": { gen: 13700, pre: 17800 }, "여수": { gen: 7500 }, "순천": { gen: 2500 }, "나주": { gen: 12700 }, "담양": { gen: 11300 }, "곡성": { gen: 13900 }, "구례": { gen: 7700 }, "고흥": { gen: 8700 }, "보성": { gen: 9900 }, "화순": { gen: 10900 }, "장흥": { gen: 13200 }, "강진": { gen: 15600 }, "해남": { gen: 19100 }, "영암": { gen: 19500 }, "무안": { gen: 14400 }, "함평": { gen: 12900 }, "영광": { gen: 15700 }, "장성": { gen: 10800 }, "완도": { gen: 25800 }, "진도": { gen: 23400 }, "남악": { gen: 11700 } },
             "담양": { "광주": { gen: 2900 }, "목포": { gen: 10100 }, "여수": { gen: 15900 }, "순천": { gen: 10100 }, "나주": { gen: 11300 }, "광양": { gen: 11300 }, "곡성": { gen: 8400 }, "구례": { gen: 12700 }, "고흥": { gen: 19100 }, "보성": { gen: 13400 }, "화순": { gen: 8000 }, "장흥": { gen: 14400 }, "강진": { gen: 14600 }, "해남": { gen: 16600 }, "영암": { gen: 11600 }, "무안": { gen: 8900 }, "함평": { gen: 7400 }, "영광": { gen: 10200 }, "장성": { gen: 5300 }, "완도": { gen: 23400 }, "진도": { gen: 18200 }, "남악": { gen: 10100 } },
             "곡성": { "광주": { gen: 5500 }, "목포": { gen: 12700 }, "여수": { gen: 18500 }, "순천": { gen: 9800 }, "나주": { gen: 9800 }, "광양": { gen: 13900 }, "담양": { gen: 8400 }, "구례": { gen: 4300 }, "고흥": { gen: 21400 }, "보성": { gen: 17300 }, "화순": { gen: 8000 }, "장흥": { gen: 17000 }, "강진": { gen: 2400 }, "해남": { gen: 19200 }, "영암": { gen: 14200 }, "무안": { gen: 11500 }, "함평": { gen: 8800 }, "영광": { gen: 12800 }, "장성": { gen: 7900 }, "완도": { gen: 23000 }, "진도": { gen: 20800 }, "남악": { gen: 12700 } },
@@ -275,7 +170,7 @@
             "함평": { "광주": { gen: 4500, pre: 5800 }, "목포": { gen: 5100 }, "여수": { gen: 17500 }, "순천": { gen: 12900 }, "나주": { gen: 3700 }, "광양": { gen: 12900 }, "담양": { gen: 7400 }, "곡성": { gen: 8800 }, "구례": { gen: 14300 }, "고흥": { gen: 20700 }, "보성": { gen: 15000 }, "화순": { gen: 7000 }, "장흥": { gen: 15300 }, "강진": { gen: 11600 }, "해남": { gen: 13800 }, "영암": { gen: 7700 }, "무안": { gen: 2500 }, "영광": { gen: 3600 }, "장성": { gen: 6900 }, "완도": { gen: 20800 }, "진도": { gen: 13400 }, "남악": { gen: 6800 } },
             "영광": { "광주": { gen: 7300, pre: 9500 }, "목포": { gen: 8700 }, "여수": { gen: 20300 }, "순천": { gen: 15700 }, "나주": { gen: 7400 }, "광양": { gen: 15700 }, "담양": { gen: 10200 }, "곡성": { gen: 12800 }, "구례": { gen: 17100 }, "고흥": { gen: 23500 }, "보성": { gen: 17800 }, "화순": { gen: 9800 }, "장흥": { gen: 18900 }, "강진": { gen: 16500 }, "해남": { gen: 17400 }, "영암": { gen: 11800 }, "무안": { gen: 5500 }, "함평": { gen: 3600 }, "장성": { gen: 5900 }, "완도": { gen: 24400 }, "진도": { gen: 17000 }, "남악": { gen: 8700 } },
             "장성": { "광주": { gen: 2400 }, "목포": { gen: 9600 }, "여수": { gen: 10800 }, "순천": { gen: 6700 }, "나주": { gen: 10800 }, "광양": { gen: 5300 }, "담양": { gen: 7900 }, "곡성": { gen: 12200 }, "구례": { gen: 18600 }, "고흥": { gen: 12900 }, "보성": { gen: 4900 }, "화순": { gen: 13900 }, "장흥": { gen: 14100 }, "강진": { gen: 16100 }, "해남": { gen: 11100 }, "영암": { gen: 8400 }, "무안": { gen: 6900 }, "함평": { gen: 5900 }, "영광": { gen: 9700 }, "완도": { gen: 22900 }, "진도": { gen: 14000 }, "남악": { gen: 15500 } },
-            "완도": { "광주": { gen: 20500, pre: 24800 }, "목포": { gen: 15700 }, "여수": { gen: 28200 }, "순천": { gen: 23200 }, "나주": { gen: 16600 }, "광양": { gen: 25800 }, "담양": { gen: 23400 }, "곡성": { gen: 23000 }, "구례": { gen: 28400 }, "고흥": { gen: 25200 }, "보성": { gen: 15400 }, "화순": { gen: 23000 }, "장흥": { gen: 12100 }, "강진": { gen: 7300 }, "해남": { gen: 6700, pre: 8200 }, "영암": { gen: 11600 }, "무안": { gen: 18900 }, "함평": { gen: 20800 }, "영광": { gen: 22900 }, "장성": { gen: 22900 }, "진도": { BRA: 14000 }, "남악": { gen: 10100 } },
+            "완도": { "광주": { gen: 20500, pre: 24800 }, "목포": { gen: 15700 }, "여수": { gen: 28200 }, "순천": { gen: 23200 }, "나주": { gen: 16600 }, "광양": { gen: 25800 }, "담양": { gen: 23400 }, "곡성": { gen: 23000 }, "구례": { gen: 28400 }, "고흥": { gen: 25200 }, "보성": { gen: 15400 }, "화순": { gen: 23000 }, "장흥": { gen: 12100 }, "강진": { gen: 7300 }, "해남": { gen: 6700, pre: 8200 }, "영암": { gen: 11600 }, "무안": { gen: 18900 }, "함평": { gen: 20800 }, "영광": { gen: 22900 }, "장성": { gen: 22900 }, "진도": { gen: 14000 }, "남악": { gen: 10100 } },
             "진도": { "광주": { gen: 15300, pre: 19900 }, "목포": { gen: 8300, pre: 10800 }, "여수": { gen: 24800 }, "순천": { gen: 23900 }, "나주": { gen: 17200 }, "광양": { gen: 23400 }, "담양": { gen: 18200 }, "곡성": { gen: 20800 }, "구례": { gen: 11400 }, "해남": { gen: 7300 }, "영암": { gen: 10300 }, "무안": { gen: 11500 }, "함평": { gen: 13400 }, "영광": { gen: 17000 }, "장성": { gen: 17700 }, "완도": { gen: 14000 }, "남악": { gen: 10100 } },
             "남악": { "광주": { gen: 7200, pre: 9300 }, "목포": { gen: 1700 }, "여수": { gen: 15600, pre: 20200 }, "순천": { gen: 10600, pre: 13800 }, "나주": { gen: 9000 }, "광양": { gen: 11700 }, "담양": { gen: 10100 }, "곡성": { gen: 12700 }, "구례": { gen: 19000 }, "고흥": { gen: 23400 }, "보성": { gen: 13500 }, "화순": { gen: 9700 }, "장흥": { gen: 10000 }, "강진": { gen: 7600 }, "해남": { gen: 8500 }, "영암": { gen: 3700 }, "무안": { gen: 3700 }, "함평": { gen: 2500 }, "영광": { gen: 5500 }, "장성": { gen: 8400 }, "완도": { gen: 18900 }, "진도": { gen: 11500 }, "남악": { gen: 3700 } } 
         };
@@ -284,88 +179,36 @@
         const CHOSUNG = ["ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ","ㅅ","ㅆ","ㅇ","ㅈ","ㅉ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
         const COMPLEX_JAMO_MAP = {'ㄳ':'ㄱㅅ','ㄵ':'ㄴㅈ','ㄶ':'ㄴㅎ','ㄺ':'ㄹㄱ','ㄻ':'ㄹㅁ','ㄼ':'ㄹㅂ','ㄽ':'ㄹㅅ','ㄾ':'ㄹㅌ','ㄿ':'ㄹㅍ','ㅀ':'ㄹㅎ','ㅄ':'ㅂㅅ'};
 
-        // --- 2. UTILS ---
-        const getChosungStr = (str) => {
-            if (!str) return "";
-            let result = "";
-            for (let i = 0; i < str.length; i++) {
-                const code = str.charCodeAt(i) - 44032;
-                if (code > -1 && code < 11172) result += CHOSUNG[Math.floor(code / 588)];
-                else result += str.charAt(i);
-            }
-            return result;
-        };
-        const resolveComplexJamo = (str) => {
-            let result = "";
-            for (let char of str) { result += COMPLEX_JAMO_MAP[char] || char; }
-            return result;
-        };
+        const getChosungStr = (str) => { if (!str) return ""; let result = ""; for (let i = 0; i < str.length; i++) { const code = str.charCodeAt(i) - 44032; if (code > -1 && code < 11172) result += CHOSUNG[Math.floor(code / 588)]; else result += str.charAt(i); } return result; };
+        const resolveComplexJamo = (str) => { let result = ""; for (let char of str) { result += COMPLEX_JAMO_MAP[char] || char; } return result; };
         const normalize = (str) => (str || '').trim().replace(/\s/g, "");
         const fmt = (num) => Number(num).toLocaleString('ko-KR');
+        const getTagStyles = (tag) => { const map = { '자가용': 'bg-blue-50 text-blue-600 border-blue-100', '관용차': 'bg-rose-50 text-rose-600 border-rose-100', '당일': 'bg-emerald-50 text-emerald-600 border-emerald-100', '왕복': 'bg-purple-50 text-purple-600 border-purple-100', '여객선': 'bg-sky-50 text-sky-600 border-sky-100', '농어촌버스': 'bg-amber-50 text-amber-600 border-amber-100', '편도': 'bg-indigo-50 text-indigo-600 border-indigo-100' }; return map[tag] || 'bg-gray-50 text-gray-600 border-gray-100'; };
 
-        const getTagStyles = (tag) => {
-            const map = {
-                '자가용': 'bg-blue-50 text-blue-600 border-blue-100',
-                '관용차': 'bg-rose-50 text-rose-600 border-rose-100',
-                '당일': 'bg-emerald-50 text-emerald-600 border-emerald-100',
-                '왕복': 'bg-purple-50 text-purple-600 border-purple-100',
-                '여객선': 'bg-sky-50 text-sky-600 border-sky-100',
-                '농어촌버스': 'bg-amber-50 text-amber-600 border-amber-100',
-                '편도': 'bg-indigo-50 text-indigo-600 border-indigo-100'
-            };
-            return map[tag] || 'bg-gray-50 text-gray-600 border-gray-100';
-        };
+        const { useState, useEffect } = React;
 
-        const { useState, useEffect, useRef } = React;
-
-        // --- 3. COMPONENTS ---
         const AutocompleteInput = ({ value, onChange, onSelect, placeholder, label, cityList }) => {
             const [suggestions, setSuggestions] = useState([]);
             const [showSuggestions, setShowSuggestions] = useState(false);
             const [activeIndex, setActiveIndex] = useState(-1);
-
-            useEffect(() => {
-                const inputVal = (value || '').trim();
-                if (!inputVal || cityList.includes(inputVal)) { setSuggestions([]); return; }
-                const resolved = resolveComplexJamo(inputVal);
-                const isChosung = /^[ㄱ-ㅎ]+$/.test(resolved); 
-                let exact = cityList.filter(city => {
-                    if (isChosung) return getChosungStr(city).includes(resolved);
-                    return city.includes(inputVal);
-                });
-                setSuggestions(exact.length > 0 ? exact : []);
-            }, [value, cityList]);
-
+            useEffect(() => { const inputVal = (value || '').trim(); if (!inputVal || cityList.includes(inputVal)) { setSuggestions([]); return; } const resolved = resolveComplexJamo(inputVal); const isChosung = /^[ㄱ-ㅎ]+$/.test(resolved); let exact = cityList.filter(city => { if (isChosung) return getChosungStr(city).includes(resolved); return city.includes(inputVal); }); setSuggestions(exact.length > 0 ? exact : []); }, [value, cityList]);
             const handleSelect = (city) => { onSelect(city); setShowSuggestions(false); setSuggestions([]); setActiveIndex(-1); };
-            const handleInputClick = () => { if (value) { onChange(''); onSelect(''); } };
-
-            const handleKeyDown = (e) => {
-                if (e.key === 'ArrowDown') { e.preventDefault(); if (suggestions.length > 0) setActiveIndex(prev => (prev < suggestions.length - 1 ? prev + 1 : 0)); }
-                else if (e.key === 'ArrowUp') { e.preventDefault(); if (suggestions.length > 0) setActiveIndex(prev => (prev > 0 ? prev - 1 : suggestions.length - 1)); }
-                else if (e.key === 'Enter') { if (e.nativeEvent.isComposing) return; if (activeIndex >= 0) handleSelect(suggestions[activeIndex]); else if (suggestions.length > 0) handleSelect(suggestions[0]); }
-            };
-
+            const handleKeyDown = (e) => { if (e.key === 'ArrowDown') { e.preventDefault(); if (suggestions.length > 0) setActiveIndex(prev => (prev < suggestions.length - 1 ? prev + 1 : 0)); } else if (e.key === 'ArrowUp') { e.preventDefault(); if (suggestions.length > 0) setActiveIndex(prev => (prev > 0 ? prev - 1 : suggestions.length - 1)); } else if (e.key === 'Enter') { if (e.nativeEvent.isComposing) return; if (activeIndex >= 0) handleSelect(suggestions[activeIndex]); else if (suggestions.length > 0) handleSelect(suggestions[0]); } };
             return (
                 <div className="relative w-full group">
                     <div className="input-group">
                         <Icons.MapPin className="text-gray-300 group-focus-within:text-teal-500 transition-colors shrink-0" />
                         <div className="flex-1 min-w-0">
                             {label && <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-tighter mb-0.5">{label}</label>}
-                            <input type="text" className="w-full bg-transparent outline-none font-gmarket font-bold text-gray-800 text-xl placeholder-gray-300" 
-                                   placeholder={placeholder} value={value || ''} 
-                                   onChange={e => { onChange(e.target.value); setShowSuggestions(true); }} 
-                                   onClick={handleInputClick} onFocus={() => setShowSuggestions(true)}
-                                   onBlur={() => setTimeout(() => setShowSuggestions(false), 200)} onKeyDown={handleKeyDown} autoComplete="off" />
+                            <input type="text" className="w-full bg-transparent outline-none font-gmarket font-bold text-gray-800 text-2xl placeholder-gray-300" placeholder={placeholder} value={value || ''} onChange={e => { onChange(e.target.value); setShowSuggestions(true); }} onClick={() => { if (value) { onChange(''); onSelect(''); } }} onFocus={() => setShowSuggestions(true)} onBlur={() => setTimeout(() => setShowSuggestions(false), 200)} onKeyDown={handleKeyDown} autoComplete="off" />
                         </div>
-                        <div className="w-12 flex justify-center items-center shrink-0">
-                            {value && REGION_ICONS[value.replace(/\s/g, "")] && <span className="text-3xl icon-bounce">{REGION_ICONS[value.replace(/\s/g, "")]}</span>}
-                        </div>
+                        <div className="w-12 flex justify-center items-center shrink-0">{value && REGION_ICONS[value.replace(/\s/g, "")] && <span className="text-4xl icon-bounce">{REGION_ICONS[value.replace(/\s/g, "")]}</span>}</div>
                     </div>
                     {showSuggestions && suggestions.length > 0 && (
                         <div className="suggestions-box custom-scroll">
                             {suggestions.map((city, idx) => (
                                 <div key={city} onMouseDown={() => handleSelect(city)} onMouseEnter={() => setActiveIndex(idx)} className={`suggestion-item ${idx === activeIndex ? 'active' : ''}`}>
-                                    <span className="text-base font-bold">{city}</span><span className="text-xl">{REGION_ICONS[city.replace(/\s/g, "")]}</span>
+                                    <span className="text-lg font-bold">{city}</span><span className="text-2xl">{REGION_ICONS[city.replace(/\s/g, "")]}</span>
                                 </div>
                             ))}
                         </div>
@@ -393,219 +236,152 @@
             const [activeModal, setActiveModal] = useState(null); 
             const [deductions, setDeductions] = useState({ gov_vehicle: false, meal_1: false, meal_2: false, meal_3: false, meal_half: false, transport_proof: false, transport_gov_vehicle: false, transport_passenger: false });
 
-            const calculateDetailedCost = () => {
-                if (!result) return { total: 0 };
-                let daily = deductions.gov_vehicle ? 12500 : 25000;
-                let meal = deductions.meal_3 ? 0 : deductions.meal_1 ? 16660 : deductions.meal_2 ? 8330 : deductions.meal_half ? 12500 : 25000;
-                let transport = (deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger) ? 0 : (result.type === 'internal' ? Number(manualMainTransport) : 0);
-                return { daily, meal, transport, total: daily + meal + transport + (shipFare || 0) };
-            };
+            const calculateDetailedCost = () => { if (!result) return { total: 0 }; let daily = deductions.gov_vehicle ? 12500 : 25000; let meal = deductions.meal_3 ? 0 : deductions.meal_1 ? 16670 : deductions.meal_2 ? 8330 : deductions.meal_half ? 12500 : 25000; let transport = (deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger) ? 0 : (result.type === 'internal' ? Number(manualMainTransport) : 0); return { daily, meal, transport, total: daily + meal + transport + (shipFare || 0) }; };
 
-            // [교정] 팝업 루프 해결: isForce 파라미터를 사용하여 강제 재계산 시 팝업 스킵
             const performCalculation = (o = origin, d = destination, isForce = false) => {
                 const from = normalize(o); const to = normalize(d);
                 setDeductions({ gov_vehicle: false, meal_1: false, meal_2: false, meal_3: false, meal_half: false, transport_proof: false, transport_gov_vehicle: false, transport_passenger: false });
                 setShipFare(0); setManualMainTransport(null); setShowDetail(false);
                 const fromNormalized = o.replace(/\s/g, ""); const toNormalized = d.replace(/\s/g, "");
-                
-                // [교정] 강제 조회가 아닐 때만 팝업 체크
-                if (!isForce) {
-                    if (POPUP_REGIONS[fromNormalized] && !modalState.type) { setModalState({ type: 'origin', data: POPUP_REGIONS[fromNormalized] }); return; }
-                    if (POPUP_REGIONS[toNormalized] && !modalState.type) { setModalState({ type: 'destination', data: POPUP_REGIONS[toNormalized] }); return; }
-                }
-
+                if (!isForce) { if (POPUP_REGIONS[fromNormalized] && !modalState.type) { setModalState({ type: 'origin', data: POPUP_REGIONS[fromNormalized] }); return; } if (POPUP_REGIONS[toNormalized] && !modalState.type) { setModalState({ type: 'destination', data: POPUP_REGIONS[toNormalized] }); return; } }
                 if (!from || !to) return;
                 for (const group of SAME_AREA_GROUPS) { if (group.has(from) && group.has(to)) { setIntraCityOpen(true); return; } }
                 const fromIsland = ISLAND_DB[from]; const toIsland = ISLAND_DB[to];
-                let searchFrom = from; let searchTo = to; let surcharge = 0; let shipSurcharge = 0; let viaPoint = null; let islandConfig = null; let isShipOnlyRoute = false;
-                if (fromIsland) { searchFrom = fromIsland.hub; shipSurcharge += (fromIsland.shipCost || 0); islandConfig = fromIsland; viaPoint = fromIsland.via || fromIsland.hub; }
-                if (toIsland) { searchTo = toIsland.hub; shipSurcharge += (toIsland.shipCost || 0); islandConfig = toIsland; viaPoint = toIsland.via || toIsland.hub; }
+                let searchFrom = from; let searchTo = to; let surcharge = 0; let shipSurcharge = 0; let islandConfig = null;
+                if (fromIsland) { searchFrom = fromIsland.hub; shipSurcharge += (fromIsland.shipCost || 0); islandConfig = fromIsland; }
+                if (toIsland) { searchTo = toIsland.hub; shipSurcharge += (toIsland.shipCost || 0); islandConfig = toIsland; }
                 const mainlandCities = ["광주", "목포", "남악", "나주", "무안", "함평", "영광", "순천", "여수", "장성", "담양", "곡성", "구례", "광양", "보성", "화순", "장흥", "강진", "해남", "영암"];
-                if (mainlandCities.includes(from) && !!toIsland && toIsland.hub === "목포") { surcharge = toIsland.cost || 0; } 
-                else if (!!fromIsland && fromIsland.hub === "목포" && mainlandCities.includes(to)) { surcharge = fromIsland.cost || 0; }
+                if (mainlandCities.includes(from) && !!toIsland && toIsland.hub === "목포") surcharge = toIsland.cost || 0; else if (!!fromIsland && fromIsland.hub === "목포" && mainlandCities.includes(to)) surcharge = fromIsland.cost || 0;
                 const baseData = INITIAL_DATA[searchFrom]?.[searchTo] || INITIAL_DATA[searchTo]?.[searchFrom];
-                if (baseData || (searchFrom === searchTo)) {
-                    const finalGen = (baseData?.gen || 0) + surcharge; const finalPre = baseData?.pre ? baseData.pre + surcharge : null; const finalCost = finalPre ? finalPre : finalGen;
-                    setShipFare(shipSurcharge * 2); setManualMainTransport(finalCost * 2);
-                    if (islandConfig && islandConfig.type === 'ship') isShipOnlyRoute = true;
-                    setResult({ type: 'internal', cost: finalCost, baseBusCost: baseData?.pre || baseData?.gen || 0, routeType: (islandConfig && searchFrom !== searchTo) ? 'transfer' : 'direct', viaPoint, surcharge, shipCost: shipSurcharge, isShipOnlyRoute, isShinanRoute: (searchFrom === "목포" || searchTo === "목포") && surcharge > 0 });
-                    // [교정] 섬 지역일 경우 자동 펼침 로직 삭제 (사용자 요청)
-                    // if (fromIsland?.type === 'ship' || toIsland?.type === 'ship') { setShowDetail(true); } 
-                } else { setResult({ type: 'external' }); }
-            };
-
-            const handleModalDismiss = () => {
-                const type = modalState.type;
-                setModalState({ type: null, data: [] });
-                // [교정] 팝업 닫으면 무조건 현재 값으로 강제 계산 (루프 방지)
-                setTimeout(() => performCalculation(origin, destination, true), 0);
-            };
-
-            const getRouteTags = () => {
-                const tags = []; if (!result || result.type !== 'internal') return tags;
-                tags.push(deductions.gov_vehicle ? '관용차' : '자가용'); tags.push("당일", "왕복");
-                const fromConfig = ISLAND_DB[origin]; const toConfig = ISLAND_DB[destination];
-                const isWandoConnected = (l) => ISLAND_DB[l]?.hub === '완도' && ISLAND_DB[l]?.type === 'connected';
-                if ((fromConfig?.type === 'connected' && !isWandoConnected(origin)) || (toConfig?.type === 'connected' && !isWandoConnected(destination))) tags.push("농어촌버스");
-                if (fromConfig?.type === 'ship' || toConfig?.type === 'ship') tags.push("여객선");
-                return tags;
+                if (baseData || (searchFrom === searchTo)) { const finalGen = (baseData?.gen || 0) + surcharge; const finalPre = baseData?.pre ? baseData.pre + surcharge : null; const finalCost = finalPre ? finalPre : finalGen; setShipFare(shipSurcharge * 2); setManualMainTransport(finalCost * 2); setResult({ type: 'internal', cost: finalCost, baseBusCost: baseData?.pre || baseData?.gen || 0, surcharge, shipCost: shipSurcharge, isShipOnlyRoute: islandConfig?.type === 'ship' }); } else setResult({ type: 'external' });
             };
 
             const detailCosts = calculateDetailedCost();
-            const routeTags = getRouteTags();
+            const routeTags = (() => { const tags = []; if (!result || result.type !== 'internal') return tags; tags.push(deductions.gov_vehicle ? '관용차' : '자가용', "당일", "왕복"); const isWandoConnected = (l) => ISLAND_DB[l]?.hub === '완도' && ISLAND_DB[l]?.type === 'connected'; if ((ISLAND_DB[origin]?.type === 'connected' && !isWandoConnected(origin)) || (ISLAND_DB[destination]?.type === 'connected' && !isWandoConnected(destination))) tags.push("농어촌버스"); if (ISLAND_DB[origin]?.type === 'ship' || ISLAND_DB[destination]?.type === 'ship') tags.push("여객선"); return tags; })();
 
-            const MODAL_CONTENT = {
-                daily: { title: "일비", desc: "출장지 내에서 소요되는 교통비, 통신비 등", items: [ { id: 'gov_vehicle', label: "관용차량 이용 : 일비의 ½ 감액", subLabel: "(임차버스, 통학버스 등)" } ] },
-                meal: { title: "식비", desc: "식사에 소요되는 비용(감액 사유)", items: [ { id: 'meal_1', label: "1식 감액" }, { id: 'meal_2', label: "2식 감액" }, { id: 'meal_3', label: "전액 감액" }, { id: 'meal_half', label: "½ 감액" } ] },
-                transport: { title: "교통비", desc: "이동을 위한 육상 교통수단 비용", items: [ { id: 'transport_proof', label: "증거서류 미제출·부적정" }, { id: 'transport_gov_vehicle', label: "공용/임차차량 이용" }, { id: 'transport_passenger', label: "동료 차량 동승", subLabel: "동승자 교통비 미지급" } ] }
+            const getModalContent = (key) => {
+                const destTag = <span className="inline-block px-1.5 py-0.5 mx-1 bg-slate-100 text-slate-600 rounded border border-slate-200 font-bold">{destination}</span>;
+                if (key === 'daily') { return { title: "일비", desc: <span>출장지{destTag} 내에서 소요되는 현지 교통비, 통신비, 음료비 등 여행 중 발생하는 각종 소액의 경비를 충당하기 위한 경비</span>, items: [ { id: 'gov_vehicle', label: "공용차량·임차차량(전세버스 등)을 이용", subLabel: "" } ] }; }
+                if (key === 'meal') { return { title: "식비", desc: "여행(출장) 중 식사에 소요되는 비용을 충당을 위해 지급되는 여비. 밥을 먹을 필요가 없거나 다른 돈으로 밥을 먹었을 때 감액합니다.", items: [ { id: 'meal_1', label: "1식 감액", subLabel: "" }, { id: 'meal_2', label: "2식 감액", subLabel: "" }, { id: 'meal_3', label: "전액 감액", subLabel: "" }, { id: 'meal_half', label: "½ 감액", subLabel: "" } ] }; }
+                if (key === 'transport') { return { title: "교통비", desc: <span>근무지에서 출장 목적지{destTag}로 이동하기 위해 소요되는 교통수단의 비용</span>, items: [ { id: 'transport_proof', label: "증거서류 미제출·부적정" }, { id: 'transport_gov_vehicle', label: "공용/임차차량 이용" }, { id: 'transport_passenger', label: "동료 차량 동승", subLabel: "동승자 교통비 미지급" } ] }; }
             };
+
+            const getMealDeductionLabel = () => { if (deductions.meal_1) return "(-8,330)"; if (deductions.meal_2) return "(-16,670)"; if (deductions.meal_3) return "(-25,000)"; if (deductions.meal_half) return "(-12,500)"; return ""; };
 
             return (
                 <div className="main-wrapper font-pretendard">
-                    <header className="header-teal border-b border-gray-100">
-                        <div className="flex flex-col">
-                            <h1 className="font-gmarket font-black text-3xl text-[#00BFA5] tracking-tighter">yeobi-easy</h1>
-                            <p className="text-[12px] font-bold text-gray-400 tracking-widest mt-0.5">by JHN · for JNE</p>
-                        </div>
-                        <div className="mode-switch-container" onClick={() => setIntraCityOpen(!intraCityOpen)}>
-                            <div className={`mode-switch-slider ${intraCityOpen ? 'intra' : 'extra'}`}></div>
-                            <div className={`mode-text ${!intraCityOpen ? 'active' : 'inactive'}`}>관외</div>
-                            <div className={`mode-text ${intraCityOpen ? 'active' : 'inactive'}`}>관내</div>
-                        </div>
+                    <header className="header-teal">
+                        <div className="flex flex-col"><h1 className="font-gmarket font-black text-3xl text-[#00BFA5] tracking-tighter">yeobi-easy</h1><p className="text-[12px] font-bold text-gray-400 mt-0.5">by JHN · for JNE</p></div>
+                        <div className="mode-switch-container" onClick={() => setIntraCityOpen(!intraCityOpen)}><div className={`mode-switch-slider ${intraCityOpen ? 'intra' : 'extra'}`}></div><div className={`mode-text ${!intraCityOpen ? 'active' : 'inactive'}`}>관외</div><div className={`mode-text ${intraCityOpen ? 'active' : 'inactive'}`}>관내</div></div>
                     </header>
-
-                    <main className="flex-1 p-6 space-y-4 overflow-y-auto">
-                        <div className="space-y-4">
+                    <main className="flex-1 p-6 space-y-6 overflow-y-auto">
+                        <div className="space-y-6">
                             <AutocompleteInput label="출발지" placeholder="예: 광주, ㄱㅈ" value={origin} onChange={setOrigin} onSelect={(city) => { setOrigin(city); performCalculation(city, destination); }} cityList={ALLOWED_CITIES} />
                             <AutocompleteInput label="도착지" placeholder="예: 해남, ㅎㄴ" value={destination} onChange={setDestination} onSelect={(city) => { setDestination(city); performCalculation(origin, city); }} cityList={ALLOWED_CITIES} />
-                            <button onClick={() => performCalculation()} className="w-full h-[68px] bg-[#00BFA5] text-white rounded-2xl text-xl font-bold flex items-center justify-center gap-2 mt-10 hover:opacity-90 active:scale-95 transition-all shadow-sm">
-                                <Icons.Search size={26} /> 조회하기
+                            <button onClick={() => performCalculation()} className="w-full h-[76px] bg-[#00BFA5] text-white rounded-2xl text-2xl font-bold flex items-center justify-center gap-3 mt-6 hover:opacity-90 active:scale-95 transition-all shadow-sm">
+                                <Icons.Search size={30} /> 조회하기
                             </button>
                         </div>
 
                         {result && (
-                            <div className="result-card animate-slide-up pb-6 bg-white">
+                            <div className="result-card animate-slide-up pb-6 bg-white mt-6">
                                 <div className="text-center mb-6">
-                                    <div className="pb-4 flex flex-wrap justify-center gap-2 mb-4 border-b border-gray-100">
-                                        {routeTags.map((tag, i) => (<span key={i} className={`tag-badge ${getTagStyles(tag)}`}>{tag}</span>))}
+                                    <div className="pb-6 flex flex-wrap justify-center gap-2.5 mb-6 border-b border-gray-100">
+                                        {routeTags.map((tag, i) => (<span key={i} className={`tag-badge px-4 py-1.5 text-[13px] ${getTagStyles(tag)}`}>{tag}</span>))}
                                     </div>
-                                    <div className="flex justify-between items-center h-10 px-2">
-                                        <div className="flex items-center">
-                                            <span className="font-bold text-gray-800" style={{fontSize: '18px'}}>요금</span>
-                                            <span className={`tag-side ${getTagStyles('편도')}`}>편도</span>
-                                        </div>
-                                        <span className="text-2xl font-extrabold text-[#00BFA5] font-suit">{fmt(result.type === 'internal' ? (result.surcharge > 0 ? result.baseBusCost : result.cost) : 0)}원</span>
-                                    </div>
-                                    {result.type === 'internal' && result.surcharge > 0 && (
-                                        <div className="flex justify-between items-center h-10 px-2">
-                                            <div className="flex items-center">
-                                                <span className="font-bold text-blue-600" style={{fontSize: '18px'}}>농어촌버스</span>
-                                                <span className={`tag-side ${getTagStyles('편도')}`}>편도</span>
-                                            </div>
-                                            <span className="text-2xl font-extrabold text-blue-600 font-suit">{fmt(result.surcharge)}원</span>
-                                        </div>
-                                    )}
-                                    {result.type === 'internal' && result.shipCost > 0 && (
-                                        <div className="flex justify-between items-center h-8 px-2 mt-1">
-                                            <div className="flex items-center">
-                                                <span className="font-bold text-slate-500" style={{fontSize: '16px'}}>여객선</span>
-                                                <span className={`tag-side ${getTagStyles('편도')}`}>편도</span>
-                                            </div>
-                                            <span className="text-xl font-extrabold text-slate-500 font-suit">{fmt(result.shipCost)}원</span>
-                                        </div>
-                                    )}
-                                    <button onClick={() => setShowDetail(!showDetail)} className={`w-full mt-6 h-[68px] rounded-2xl font-bold text-xl flex items-center justify-center gap-2 shadow-sm transition-all text-white bg-[#00BFA5] ${showDetail ? 'opacity-70' : 'animate-pulse-spread'}`}>
-                                        <Icons.Calculator size={26} />
-                                        <span>여비계산</span>
-                                        <Icons.ChevronDown className={`transition-transform duration-300 ${showDetail ? 'rotate-180' : ''}`} size={22} />
+                                    <div className="flex justify-between items-center h-12 px-2"><div className="flex items-center"><span className="font-bold text-gray-800 text-xl">요금</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-3xl font-extrabold text-[#00BFA5] font-suit">{fmt(result.type === 'internal' ? (result.surcharge > 0 ? result.baseBusCost : result.cost) : 0)}원</span></div>
+                                    {result.type === 'internal' && result.surcharge > 0 && (<div className="flex justify-between items-center h-12 px-2"><div className="flex items-center"><span className="font-bold text-blue-600 text-xl">농어촌버스</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-3xl font-extrabold text-blue-600 font-suit">{fmt(result.surcharge)}원</span></div>)}
+                                    {result.type === 'internal' && result.shipCost > 0 && (<div className="flex justify-between items-center h-10 px-2 mt-1"><div className="flex items-center"><span className="font-bold text-slate-500 text-lg">여객선</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-2xl font-extrabold text-slate-500 font-suit">{fmt(result.shipCost)}원</span></div>)}
+                                    <button onClick={() => setShowDetail(!showDetail)} className={`w-full mt-6 h-[72px] rounded-2xl font-bold text-2xl flex items-center justify-center gap-3 shadow-sm transition-all text-white bg-[#00BFA5] ${showDetail ? 'opacity-70' : 'animate-pulse-spread'}`}>
+                                        <Icons.Calculator size={30} /><span>여비계산</span><Icons.ChevronDown className={`transition-transform duration-300 ${showDetail ? 'rotate-180' : ''}`} size={26} />
                                     </button>
                                 </div>
                                 <div className={`detail-drawer ${showDetail ? 'open' : ''}`}>
-                                    <div className="p-4 pt-4 space-y-5 border-t border-gray-100">
-                                        <div className="relative flex items-center justify-between h-10"><span className="font-bold text-gray-600 w-24" style={{fontSize: '18px'}}>일비</span><button onClick={()=>setActiveModal('daily')} className={`deduct-btn ${deductions.gov_vehicle ? 'active':''} animate-pulse-spread`}>감액</button><span className="text-[18px] font-bold text-gray-900 text-right flex-1 font-suit">{fmt(detailCosts.daily)}원</span></div>
-                                        <div className="relative flex items-center justify-between h-10"><span className="font-bold text-gray-600 w-24" style={{fontSize: '18px'}}>식비</span><button onClick={()=>setActiveModal('meal')} className={`deduct-btn ${(deductions.meal_1||deductions.meal_2||deductions.meal_3||deductions.meal_half) ? 'active':''} animate-pulse-spread`}>감액</button><span className="text-[18px] font-bold text-gray-900 text-right flex-1 font-suit">{fmt(detailCosts.meal)}원</span></div>
-                                        <div className="pt-3 border-t border-dashed border-gray-200">
-                                            <div className="relative flex items-center justify-between h-10">
-                                                <div className="flex items-center">
-                                                    <span className="font-bold text-gray-600" style={{fontSize: '18px'}}>교통비</span>
-                                                    <span className={`tag-side ${getTagStyles('왕복')}`}>왕복</span>
-                                                </div>
-                                                <button onClick={()=>setActiveModal('transport')} className={`deduct-btn ${deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger ? 'active':''} animate-pulse-spread`}>감액</button>
-                                                <div className="text-right flex-1">{!(deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger) ? (<div className="flex items-center justify-end gap-1"><input type="text" inputMode="numeric" value={manualMainTransport === null ? '' : fmt(manualMainTransport)} onChange={(e) => setManualMainTransport(Number(e.target.value.replace(/,/g, '')))} className="ship-fare-input" /><span className="text-[18px] text-gray-900 font-bold">원</span></div>) : <span className="text-[18px] font-bold text-gray-400">0원</span>}</div>
-                                            </div>
-                                            {(result.isShipOnlyRoute || shipFare > 0) && (<div className="relative flex items-center justify-between h-10 mt-2"><span className="font-bold text-gray-600" style={{fontSize: '18px'}}>기타교통비</span><div className="text-right flex-1"><div className="flex items-center justify-end gap-1"><input type="text" inputMode="numeric" value={shipFare === 0 ? '' : fmt(shipFare)} onChange={(e) => setShipFare(Number(e.target.value.replace(/,/g, '')))} className="ship-fare-input" /><span className="text-[18px] text-gray-900 font-bold">원</span></div></div></div>)}
+                                    <div className="p-4 pt-4 space-y-6 border-t border-gray-100">
+                                        <div className="relative flex items-center justify-between h-12"><span className="font-bold text-gray-600 text-xl w-24">일비</span><button onClick={()=>setActiveModal('daily')} className={`deduct-btn ${deductions.gov_vehicle ? 'active':''} animate-pulse-spread`}>감액</button><div className="flex flex-col items-end flex-1"><span className="text-xl font-bold text-gray-900 font-suit">{fmt(detailCosts.daily)}원</span>{deductions.gov_vehicle && <span className="text-[11px] text-rose-500 font-bold leading-none mt-1">(-12,500)</span>}</div></div>
+                                        <div className="relative flex items-center justify-between h-12"><span className="font-bold text-gray-600 text-xl w-24">식비</span><button onClick={()=>setActiveModal('meal')} className={`deduct-btn ${(deductions.meal_1||deductions.meal_2||deductions.meal_3||deductions.meal_half) ? 'active':''} animate-pulse-spread`}>감액</button><div className="flex flex-col items-end flex-1"><span className="text-xl font-bold text-gray-900 font-suit">{fmt(detailCosts.meal)}원</span><span className="text-[11px] text-rose-500 font-bold leading-none mt-1">{getMealDeductionLabel()}</span></div></div>
+                                        <div className="pt-4 border-t border-dashed border-gray-200">
+                                            <div className="relative flex items-center justify-between h-12"><div className="flex items-center"><span className="font-bold text-gray-600 text-xl">교통비</span><span className={`tag-side ${getTagStyles('왕복')}`}>왕복</span></div><button onClick={()=>setActiveModal('transport')} className={`deduct-btn ${deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger ? 'active':''} animate-pulse-spread`}>감액</button><div className="text-right flex-1">{!(deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger) ? (<div className="flex items-center justify-end gap-1"><input type="text" inputMode="numeric" value={manualMainTransport === null ? '' : fmt(manualMainTransport)} onChange={(e) => setManualMainTransport(Number(e.target.value.replace(/,/g, '')))} className="ship-fare-input" /><span className="text-xl text-gray-900 font-bold">원</span></div>) : <span className="text-xl font-bold text-gray-400">0원</span>}</div></div>
+                                            {(shipFare > 0) && (<div className="relative flex items-center justify-between h-12 mt-2"><span className="font-bold text-gray-600 text-xl">기타교통비</span><div className="text-right flex-1"><div className="flex items-center justify-end gap-1"><input type="text" inputMode="numeric" value={shipFare === 0 ? '' : fmt(shipFare)} onChange={(e) => setShipFare(Number(e.target.value.replace(/,/g, '')))} className="ship-fare-input" /><span className="text-xl text-gray-900 font-bold">원</span></div></div></div>)}
                                         </div>
-                                        <div className="pt-5 border-t-2 border-gray-100 flex justify-between items-center"><span className="font-bold text-gray-900 text-[18px]">합계</span><span className="text-[24px] font-extrabold text-[#00BFA5] font-suit">{fmt(detailCosts.total)}<span className="text-[18px] ml-1">원</span></span></div>
+                                        <div className="pt-4 border-t-2 border-gray-100 flex justify-between items-center"><span className="font-bold text-gray-900 text-xl">합계</span><span className="text-3xl font-extrabold text-[#00BFA5] font-suit">{fmt(detailCosts.total)}<span className="text-xl ml-1">원</span></span></div>
                                     </div>
                                 </div>
                             </div>
                         )}
-                        
-                        <div className="mt-5"> {/* [교정] 버튼 간격을 mt-10에서 mt-5로 축소 */}
-                            <a href="https://padlet.com/jbyhee/hyonu-s-padlet-4m26339lwedx23dc" target="_blank" rel="noopener noreferrer" className="w-full h-[68px] bg-[#FFF0F3] text-[#FF4D6D] rounded-2xl flex flex-col items-center justify-center no-underline hover:opacity-90 active:scale-95 transition-all shadow-sm">
-                                <div className="flex items-center gap-2">
-                                    <Icons.Send size={20} />
-                                    <span className="text-[16px] font-bold">요금 정보 및 건의 (Padlet)</span>
-                                </div>
-                                <span className="text-[10px] font-medium opacity-80 mt-1">crafted with passion by 전현우@우수영초등학교</span>
+                        <div className="mt-4">
+                            <a href="https://padlet.com/jbyhee/hyonu-s-padlet-4m26339lwedx23dc" target="_blank" rel="noopener noreferrer" className="w-full h-[72px] bg-[#FFF0F3] text-[#FF4D6D] rounded-2xl flex flex-col items-center justify-center no-underline hover:opacity-90 active:scale-95 transition-all shadow-sm">
+                                <div className="flex items-center gap-2"><Icons.Send size={22} /><span className="text-lg font-bold">요금 정보 및 건의 (Padlet)</span></div>
+                                <span className="text-[11px] font-medium opacity-80 mt-1">crafted with passion by 전현우@우수영초등학교</span>
                             </a>
                         </div>
-
-                        <footer className="mt-10 pb-12 px-10 text-center text-gray-400">
-                        </footer>
                     </main>
 
                     {intraCityOpen && (
                         <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in" onClick={() => setIntraCityOpen(false)}>
                             <div className="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden animate-slide-up" onClick={e => e.stopPropagation()}>
                                 <div className="p-6">
-                                    <div className="flex justify-between items-center mb-6"><h3 className="font-bold text-xl text-gray-900">관내 출장 여비 (참고)</h3><button onClick={() => setIntraCityOpen(false)} className="text-gray-400"><Icons.X size={22} /></button></div>
-                                    <div className="space-y-5">
-                                        <div className="flex justify-between items-center py-2 border-b"><span className="text-lg font-bold text-gray-700">기본 정액</span><span className="text-lg font-bold text-gray-900 font-suit">20,000원</span></div>
-                                        <div className="flex justify-between items-center py-2"><span className="text-base font-bold text-gray-600">4시간 미만 (½ 감액)</span><Toggle checked={intraDeductions.shortTime} onChange={(val) => setIntraDeductions(p => ({...p, shortTime: val}))} /></div>
-                                        <div className="flex justify-between items-center py-2"><span className="text-base font-bold text-gray-600">관용차량 이용 (½ 감액)</span><Toggle checked={intraDeductions.govVehicle} onChange={(val) => setIntraDeductions(p => ({...p, govVehicle: val}))} /></div>
-                                        <div className="mt-8 pt-6 border-t-2 border-gray-200 flex justify-between items-center"><span className="text-xl font-bold text-gray-900">지급 대상액</span><span className="text-2xl font-bold text-blue-600 font-suit">{fmt(20000 - (intraDeductions.shortTime ? 10000 : 0) - (intraDeductions.govVehicle ? 10000 : 0))}원</span></div>
+                                    <div className="flex justify-between items-center mb-6"><h3 className="font-bold text-xl text-gray-900">관내 여비</h3><button onClick={() => setIntraCityOpen(false)} className="text-gray-400"><Icons.X size={22} /></button></div>
+                                    <div className="mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100 text-sm font-medium text-gray-600 leading-relaxed break-keep">근무지 내의 출장은 별도의 영수증 증빙 없이<br/>여행 시간(4시간) 기준 정액 지급됩니다.</div>
+                                    <div className="space-y-4 border-t border-b border-gray-100 py-6">
+                                        <div className="flex justify-between items-center"><span className="text-base font-bold text-gray-700">4시간 미만</span><Toggle checked={intraDeductions.shortTime} onChange={(val) => setIntraDeductions(p => ({...p, shortTime: val}))} /></div>
+                                        <div className="flex justify-between items-center"><span className="text-base font-bold text-gray-700">관용차량 이용</span><Toggle checked={intraDeductions.govVehicle} onChange={(val) => setIntraDeductions(p => ({...p, govVehicle: val}))} /></div>
                                     </div>
-                                    <button onClick={() => setIntraCityOpen(false)} className="bg-[#00BFA5] text-white w-full mt-10 h-14 rounded-xl font-bold text-lg">닫기</button>
+                                    <div className="mt-8 flex justify-between items-center"><span className="text-xl font-bold text-gray-900">지급액</span><span className="text-2xl font-black text-blue-600 font-suit">{fmt(20000 - (intraDeductions.shortTime ? 10000 : 0) - (intraDeductions.govVehicle ? 10000 : 0))}원</span></div>
+                                    <button onClick={() => setIntraCityOpen(false)} className="bg-[#00BFA5] text-white w-full mt-10 h-14 rounded-xl font-bold text-lg shadow-sm">닫기</button>
                                 </div>
                             </div>
                         </div>
                     )}
-                    {activeModal && (
-                        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setActiveModal(null)}>
-                            <div className="bg-white w-full max-w-sm rounded-3xl shadow-2xl animate-in zoom-in-95" onClick={e => e.stopPropagation()}>
-                                <div className="p-7">
-                                    <div className="flex justify-between items-center mb-4"><h3 className="text-xl font-bold text-gray-900">{MODAL_CONTENT[activeModal].title}</h3><button onClick={()=>setActiveModal(null)}><Icons.X size={20} className="text-gray-400"/></button></div>
-                                    <p className="text-sm text-gray-600 font-medium leading-relaxed mb-4 break-keep font-pretendard">{MODAL_CONTENT[activeModal].desc}</p>
-                                    <div className="space-y-3">{MODAL_CONTENT[activeModal].items.map(item => (<div key={item.id} className="flex justify-between items-center py-3 border-b border-gray-100 last:border-0"><div><span className="block text-sm font-bold text-gray-700">{item.label}</span>{item.subLabel && <span className="text-[10px] text-gray-400 font-bold">{item.subLabel}</span>}</div><Toggle checked={deductions[item.id]} onChange={() => { const id = item.id; setDeductions(prev => { const newState = { ...prev }; if (['meal_1','meal_2','meal_3','meal_half'].includes(id)) { if(!prev[id]) { ['meal_1','meal_2','meal_3','meal_half'].forEach(k=>newState[k]=false); } } newState[id] = !prev[id]; if(id==='gov_vehicle') newState['transport_gov_vehicle'] = newState[id]; if(id==='transport_gov_vehicle') newState['gov_vehicle'] = newState[id]; return newState; }); }} /></div>))}</div>
-                                    <button onClick={()=>setActiveModal(null)} className="bg-[#00BFA5] text-white w-full mt-8 h-12 rounded-xl font-bold text-lg">확인</button>
+
+                    {activeModal && (() => {
+                        const content = getModalContent(activeModal);
+                        return (
+                            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in" onClick={() => setActiveModal(null)}>
+                                <div className="bg-white w-full max-w-sm rounded-3xl shadow-2xl animate-in zoom-in-95 overflow-hidden" onClick={e => e.stopPropagation()}>
+                                    <div className="p-7 max-h-[85vh] overflow-y-auto custom-scroll">
+                                        <div className="flex justify-between items-center mb-4"><h3 className="text-xl font-bold text-gray-900">{content.title}</h3><button onClick={()=>setActiveModal(null)}><Icons.X size={20} className="text-gray-400"/></button></div>
+                                        <p className="text-sm text-gray-600 font-medium leading-relaxed mb-4 break-keep font-pretendard">{content.desc}</p>
+                                        {activeModal === 'meal' && (
+                                            <div className="mb-6 space-y-4">
+                                                <div className="p-4 bg-amber-50 rounded-2xl border border-amber-100">
+                                                    <p className="text-[13px] font-bold text-amber-800 mb-2">💡 감액 사유 (식비를 지급하지 않는 경우)</p>
+                                                    <ul className="text-[12px] text-amber-700 space-y-2 list-disc pl-4 leading-snug break-keep">
+                                                        <li>주최 측·초청기관에서 식사를 제공한 경우</li>
+                                                        <li>업무추진비(법인카드)로 식사를 해결한 경우</li>
+                                                        <li>관내·관외출장 중복 (관내 식비 포함 간주)</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        )}
+                                        {activeModal === 'transport' && (
+                                            <div className="mb-6 space-y-4">
+                                                <div className="p-4 bg-blue-50 rounded-2xl border border-blue-100">
+                                                    <p className="text-[13px] font-bold text-blue-800 mb-2">📄 실비 정산 및 증거서류 안내</p>
+                                                    <ul className="text-[12px] text-blue-700 space-y-2.5 list-disc pl-4 leading-snug break-keep">
+                                                        <li><strong>정액 지급되는 일비·식비와 달리 실비 정산 원칙</strong></li>
+                                                        <li><strong>결제내역이 확인되는 증거서류 필수</strong></li>
+                                                        <li><strong>증거서류의 예시:</strong> 출장지의 주유영수증, 톨게이트 영수증(하이패스) 등 차량 이동 사실 및 비용 발생을 증명하는 증빙</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        )}
+                                        <div className="space-y-3">{content.items.map(item => (<div key={item.id} className="flex justify-between items-center py-4 border-t border-gray-100"><div><span className="block text-[15px] font-bold text-gray-700 leading-snug">{item.label}</span>{item.subLabel && <span className="text-[11px] text-gray-400 font-bold mt-1 block">{item.subLabel}</span>}</div><Toggle checked={deductions[item.id]} onChange={() => setDeductions(prev => { const newState = { ...prev }; if (['meal_1','meal_2','meal_3','meal_half'].includes(item.id)) { if(!prev[item.id]) ['meal_1','meal_2','meal_3','meal_half'].forEach(k=>newState[k]=false); } newState[item.id] = !prev[item.id]; return newState; })} /></div>))}</div>
+                                        <button onClick={()=>setActiveModal(null)} className="bg-[#00BFA5] text-white w-full mt-8 h-12 rounded-xl font-bold text-lg shadow-sm">확인</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )}
+                        );
+                    })()}
+
                     {modalState.type && (
-                        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in" onClick={handleModalDismiss}>
+                        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in" onClick={() => { setModalState({ type: null, data: [] }); setTimeout(() => performCalculation(origin, destination, true), 0); }}>
                             <div className="bg-white rounded-[32px] w-full max-w-sm shadow-2xl overflow-hidden animate-in zoom-in-95" onClick={e => e.stopPropagation()}>
-                                <div className="bg-[#00BFA5] p-5 text-white flex justify-between items-center font-bold text-lg font-suit">세부 지역 선택<button onClick={handleModalDismiss}><Icons.X size={20} /></button></div>
+                                <div className="bg-[#00BFA5] p-5 text-white flex justify-between items-center font-bold text-lg font-suit">세부 지역 선택<button onClick={() => { setModalState({ type: null, data: [] }); setTimeout(() => performCalculation(origin, destination, true), 0); }}><Icons.X size={20} /></button></div>
                                 <div className="p-5 max-h-[60vh] overflow-y-auto custom-scroll">
                                     <div className="grid grid-cols-3 gap-2">
-                                        {modalState.data.map((name, idx) => (
-                                            <button key={name} 
-                                                onClick={() => { 
-                                                    const newOrigin = modalState.type === 'origin' ? name : origin;
-                                                    const newDestination = modalState.type === 'destination' ? name : destination;
-                                                    
-                                                    if (modalState.type === 'origin') { setOrigin(name); } 
-                                                    else { setDestination(name); } 
-                                                    
-                                                    setModalState({ type: null, data: [] }); 
-                                                    // [교정] 팝업에서 선택 시, 강제로 계산 실행 (재차 팝업 방지)
-                                                    setTimeout(() => performCalculation(newOrigin, newDestination, true), 0);
-                                                }} 
-                                                className="flex flex-col items-center justify-center gap-1 px-1 py-3 rounded-2xl bg-gray-50 border border-gray-100 transition-all hover:bg-teal-50 active:scale-95 outline-none shadow-sm">
-                                                <span className="text-3xl">{REGION_ICONS[name.replace(/\s/g, "")]}</span>
-                                                <span className="text-[13px] font-bold text-gray-700 break-keep text-center font-pretendard">{name}</span>
-                                            </button>
+                                        {modalState.data.map((name) => (
+                                            <button key={name} onClick={() => { if (modalState.type === 'origin') setOrigin(name); else setDestination(name); setModalState({ type: null, data: [] }); setTimeout(() => performCalculation(modalState.type === 'origin' ? name : origin, modalState.type === 'destination' ? name : destination, true), 0); }} className="flex flex-col items-center justify-center gap-1 px-1 py-3 rounded-2xl bg-gray-50 border border-gray-100 transition-all hover:bg-teal-50 active:scale-95 outline-none shadow-sm"><span className="text-3xl">{REGION_ICONS[name.replace(/\s/g, "")]}</span><span className="text-[13px] font-bold text-gray-700 text-center font-pretendard">{name}</span></button>
                                         ))}
                                     </div>
                                 </div>
@@ -615,7 +391,7 @@
                 </div>
             );
         };
-        const root = ReactDOM.createRoot(document.getElementById('root')); root.render(<App />);
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
     </script>
 </body>
 </html>
