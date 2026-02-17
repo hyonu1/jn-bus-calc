@@ -35,10 +35,9 @@
             --color-bg-base: #E5E8EB;
             --color-text-main: #191F28;
             
-            /* [교정] 사진에서 추출한 색상값 */
-            --color-btn-main: #00BFA5;       /* 사진 왼쪽 버튼 배경 */
-            --color-btn-sub-bg: #FFF0F3;    /* 사진 오른쪽 버튼 배경 (연분홍) */
-            --color-btn-sub-text: #FF4D6D;  /* 사진 오른쪽 버튼 글씨 (진분홍) */
+            --color-btn-main: #00BFA5;
+            --color-btn-sub-bg: #FFF0F3;
+            --color-btn-sub-text: #FF4D6D;
         }
 
         html { scrollbar-gutter: stable; }
@@ -66,7 +65,6 @@
             box-shadow: 0 0 30px rgba(0,0,0,0.08);
         }
 
-        /* PC: 모바일 앱처럼 보이되 위아래로 너무 길어지지 않게 */
         @media (min-width: 768px) {
             body {
                 align-items: center;
@@ -83,7 +81,6 @@
                 overflow-x: hidden;
                 border-radius: 32px;
                 box-shadow: 0 8px 60px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.04);
-                /* 내부 스크롤바 스타일 */
                 scrollbar-width: thin;
                 scrollbar-color: #E2E8F0 transparent;
             }
@@ -122,7 +119,6 @@
             border: 1px solid transparent;
         }
 
-        /* [교정] 가로 크기 통일 및 입체감 제거 평면 스타일 */
         .btn-action {
             width: 100%;
             height: 68px;
@@ -176,7 +172,7 @@
 
         .detail-drawer {
             max-height: 0; overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: max-height 1s cubic-bezier(0.25, 1, 0.5, 1);
             background-color: #ffffff; border-radius: 0 0 16px 16px;
         }
         .detail-drawer.open { max-height: 2000px; }
@@ -231,13 +227,13 @@
 
         const REGION_ICONS = {
             "광주": "🍉", "목포": "⚓", "여수": "🎤", "순천": "🌾", "나주": "🍐", "광양": "⚽",
-            "담양": "🎋", "곡성": "🚂", "구례": "🐻", "고흥": "🚀", "보성": "🍵", "화순": "🪨", "장흥": "🍄",
-            "강진": "🏺", "해남": "🦖", "영암": "🏎️", "무안": "🧅", "함평": "🦋", "영광": "🐟", "장성": "🍂", "완도": "🦪", "진도": "🐕",
+            "담양": "🎋", "곡성": "🚂", "구례": "🐻", "고흥": "🚀", "보성": "🍵", "화순": "🪨", "장흥": "🍄‍",
+            "강진": "🏺", "해남": "🦕", "영암": "🏎️", "무안": "🧅", "함평": "🦋", "영광": "🐟", "장성": "🍂", "완도": "🦪", "진도": "🐕",
             "신안": "🪽", "신안교육청": "🏛️", "남악": "🏛️", "지도": "🧂", "압해": "🐙", "증도": "🚲", "임자": "🌷",
             "자은": "🏖️", "안좌": "😈", "팔금": "🦐", "암태": "🌁", "비금": "🦅", "도초": "🌿", "흑산": "🐟", "하의": "🕊️", "신의": "🧂", "장산": "🏔️",
-            "청산": "🐌", "노화": "🦪", "소안": "🇰🇷", "여서도": "🎣", "금일": "🌊", "생일": "🎂", "보길": "📜", 
-            "금당": "🗿", "군외": "BRIDGE", "신지": "🏖️", "고금": "🚢", "약산": "🐐", "홍도": "🌅", "가거도": "🏝️", "만재도": "🎣", 
-            "진도조도": "🦅", "진도서거차도": "🚢", "진도관매도": "🌲", "고흥득량도": "🌾", "고흥쑥섬(애도)": "🐱",
+            "청산": "🐌", "노화": "🦪", "소안": "🌺", "여서도": "🎣", "금일": "🌊", "생일": "🎂", "보길": "📜", 
+            "금당": "🗿", "군외": "🌅", "신지": "🏖️", "고금": "🚢", "약산": "🐐", "홍도": "🌅", "가거도": "🏝️", "만재도": "🎣", 
+            "진도조도": "🦅", "진도서거차도": "🚢", "진도관매도": "🌲", "고흥득량도": "🌾", "고흥쑥섬(애도)": "🐈",
             "영광안마도": "🐎", "영광낙월": "🌙", "영광송이도": "🐚", "해남어룡도": "🐉"
         };
 
@@ -404,13 +400,18 @@
                 return { daily, meal, transport, total: daily + meal + transport + (shipFare || 0) };
             };
 
-            const performCalculation = (o = origin, d = destination) => {
+            const performCalculation = (o = origin, d = destination, isForce = false) => {
                 const from = normalize(o); const to = normalize(d);
                 setDeductions({ gov_vehicle: false, meal_1: false, meal_2: false, meal_3: false, meal_half: false, transport_proof: false, transport_gov_vehicle: false, transport_passenger: false });
                 setShipFare(0); setManualMainTransport(null); setShowDetail(false);
                 const fromNormalized = o.replace(/\s/g, ""); const toNormalized = d.replace(/\s/g, "");
-                if (POPUP_REGIONS[fromNormalized] && !modalState.type) { setModalState({ type: 'origin', data: POPUP_REGIONS[fromNormalized] }); return; }
-                if (POPUP_REGIONS[toNormalized] && !modalState.type) { setModalState({ type: 'destination', data: POPUP_REGIONS[toNormalized] }); return; }
+                
+                // [교정] 강제 조회가 아닐 때만 팝업 체크
+                if (!isForce) {
+                    if (POPUP_REGIONS[fromNormalized] && !modalState.type) { setModalState({ type: 'origin', data: POPUP_REGIONS[fromNormalized] }); return; }
+                    if (POPUP_REGIONS[toNormalized] && !modalState.type) { setModalState({ type: 'destination', data: POPUP_REGIONS[toNormalized] }); return; }
+                }
+
                 if (!from || !to) return;
                 for (const group of SAME_AREA_GROUPS) { if (group.has(from) && group.has(to)) { setIntraCityOpen(true); return; } }
                 const fromIsland = ISLAND_DB[from]; const toIsland = ISLAND_DB[to];
@@ -426,8 +427,16 @@
                     setShipFare(shipSurcharge * 2); setManualMainTransport(finalCost * 2);
                     if (islandConfig && islandConfig.type === 'ship') isShipOnlyRoute = true;
                     setResult({ type: 'internal', cost: finalCost, baseBusCost: baseData?.pre || baseData?.gen || 0, routeType: (islandConfig && searchFrom !== searchTo) ? 'transfer' : 'direct', viaPoint, surcharge, shipCost: shipSurcharge, isShipOnlyRoute, isShinanRoute: (searchFrom === "목포" || searchTo === "목포") && surcharge > 0 });
-                    if (fromIsland?.type === 'ship' || toIsland?.type === 'ship') { setShowDetail(true); }
+                    // [교정] 섬 지역일 경우 자동 펼침 로직 삭제 (사용자 요청)
+                    // if (fromIsland?.type === 'ship' || toIsland?.type === 'ship') { setShowDetail(true); } 
                 } else { setResult({ type: 'external' }); }
+            };
+
+            const handleModalDismiss = () => {
+                const type = modalState.type;
+                setModalState({ type: null, data: [] });
+                // [교정] 팝업 닫으면 무조건 현재 값으로 강제 계산 (루프 방지)
+                setTimeout(() => performCalculation(origin, destination, true), 0);
             };
 
             const getRouteTags = () => {
@@ -486,13 +495,25 @@
                                         </div>
                                         <span className="text-2xl font-extrabold text-[#00BFA5] font-suit">{fmt(result.type === 'internal' ? (result.surcharge > 0 ? result.baseBusCost : result.cost) : 0)}원</span>
                                     </div>
+                                    {/* 농어촌버스 (Rural Bus) - Modified Styles */}
                                     {result.type === 'internal' && result.surcharge > 0 && (
-                                        <div className="flex justify-between items-center h-10 px-2">
+                                        <div className="flex justify-between items-center h-8 px-2 mt-1"> 
                                             <div className="flex items-center">
-                                                <span className="font-bold text-blue-600" style={{fontSize: '18px'}}>농어촌버스</span>
+                                                <span className="font-bold text-slate-500" style={{fontSize: '16px'}}>농어촌버스</span> {/* Smaller, Muted Color */}
                                                 <span className={`tag-side ${getTagStyles('편도')}`}>편도</span>
                                             </div>
-                                            <span className="text-2xl font-extrabold text-blue-600 font-suit">{fmt(result.surcharge)}원</span>
+                                            <span className="text-xl font-extrabold text-slate-500 font-suit">{fmt(result.surcharge)}원</span> {/* Smaller, Muted Color */}
+                                        </div>
+                                    )}
+
+                                    {/* 여객선 (Ferry) - New Block */}
+                                    {result.type === 'internal' && result.shipCost > 0 && (
+                                        <div className="flex justify-between items-center h-8 px-2 mt-1">
+                                            <div className="flex items-center">
+                                                <span className="font-bold text-slate-500" style={{fontSize: '16px'}}>여객선</span>
+                                                <span className={`tag-side ${getTagStyles('편도')}`}>편도</span>
+                                            </div>
+                                            <span className="text-xl font-extrabold text-slate-500 font-suit">{fmt(result.shipCost)}원</span>
                                         </div>
                                     )}
                                     {/* [교정] 여비계산 버튼: 사진 왼쪽 Teal 색상 매칭, 평면 스타일, 문구 교정, 아이콘 추가 */}
@@ -568,10 +589,31 @@
                         </div>
                     )}
                     {modalState.type && (
-                        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in" onClick={() => setModalState({ type: null, data: [] })}>
+                        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in" onClick={handleModalDismiss}>
                             <div className="bg-white rounded-[32px] w-full max-w-sm shadow-2xl overflow-hidden animate-in zoom-in-95" onClick={e => e.stopPropagation()}>
-                                <div className="bg-[#00BFA5] p-5 text-white flex justify-between items-center font-bold text-lg font-suit">세부 지역 선택<button onClick={() => setModalState({ type: null, data: [] })}><Icons.X size={20} /></button></div>
-                                <div className="p-5 max-h-[60vh] overflow-y-auto custom-scroll"><div className="grid grid-cols-3 gap-2">{modalState.data.map((name, idx) => (<button key={name} onClick={() => { if (modalState.type === 'origin') { setOrigin(name); } else { setDestination(name); } setModalState({ type: null, data: [] }); }} className="flex flex-col items-center justify-center gap-1 px-1 py-3 rounded-2xl bg-gray-50 border border-gray-100 transition-all hover:bg-teal-50 active:scale-95 outline-none shadow-sm"><span className="text-xl">{REGION_ICONS[name.replace(/\s/g, "")]}</span><span className="text-[11px] font-bold text-gray-700 break-keep text-center font-pretendard">{name}</span></button>))}</div></div>
+                                <div className="bg-[#00BFA5] p-5 text-white flex justify-between items-center font-bold text-lg font-suit">세부 지역 선택<button onClick={handleModalDismiss}><Icons.X size={20} /></button></div>
+                                <div className="p-5 max-h-[60vh] overflow-y-auto custom-scroll">
+                                    <div className="grid grid-cols-3 gap-2">
+                                        {modalState.data.map((name, idx) => (
+                                            <button key={name} 
+                                                onClick={() => { 
+                                                    const newOrigin = modalState.type === 'origin' ? name : origin;
+                                                    const newDestination = modalState.type === 'destination' ? name : destination;
+                                                    
+                                                    if (modalState.type === 'origin') { setOrigin(name); } 
+                                                    else { setDestination(name); } 
+                                                    
+                                                    setModalState({ type: null, data: [] }); 
+                                                    // [교정] 팝업에서 선택 시, 강제로 계산 실행 (재차 팝업 방지)
+                                                    setTimeout(() => performCalculation(newOrigin, newDestination, true), 0);
+                                                }} 
+                                                className="flex flex-col items-center justify-center gap-1 px-1 py-3 rounded-2xl bg-gray-50 border border-gray-100 transition-all hover:bg-teal-50 active:scale-95 outline-none shadow-sm">
+                                                <span className="text-3xl">{REGION_ICONS[name.replace(/\s/g, "")]}</span>
+                                                <span className="text-[13px] font-bold text-gray-700 break-keep text-center font-pretendard">{name}</span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     )}
