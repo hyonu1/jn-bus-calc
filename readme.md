@@ -1,4 +1,4 @@
-# 📉 yeobi-easier for JNE (전라남도교육청 여비 계산기)
+# 📉 yeobi-easy by JHN for JNE
 
 [![Hits](https://hits.dwyl.com/hyonu1/jn-bus-calc.svg?style=flat-square&show=true)](https://hits.dwyl.com/hyonu1/jn-bus-calc)
 
