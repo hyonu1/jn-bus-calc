@@ -332,7 +332,7 @@
             const getModalContent = (key) => {
                 const destTag = <span className="inline-block px-1.5 py-0.5 mx-1 bg-slate-100 text-slate-600 rounded border border-slate-200 font-bold align-top relative -top-0.5 text-[10px] leading-none">{destination}</span>;
                 if (key === 'daily') { return { title: "일비", desc: <span>출장지{destTag} 내에서 소요되는 현지 교통비, 통신비, 음료비 등 여행 중 발생하는 각종 소액의 경비를 충당하기 위한 경비</span>, items: [ { id: 'gov_vehicle', label: "공용차량·임차차량(전세버스 등)을 이용", subLabel: "" } ] }; }
-                if (key === 'meal') { return { title: "식비", desc: "여행(출장) 중 식사에 소요되는 비용을 충당을 위해 지급되는 여비. 밥을 먹을 필요가 없거나 다른 돈으로 밥을 먹었을 때 감액합니다.", items: [ { id: 'meal_1', label: "1식 감액", subLabel: "" }, { id: 'meal_2', label: "2식 감액", subLabel: "" }, { id: 'meal_3', label: "전액 감액", subLabel: "" }, { id: 'meal_half', label: "½ 감액", subLabel: "" } ] }; }
+                if (key === 'meal') { return { title: "식비", desc: "여행(출장) 중 식사에 소요되는 비용. 밥을 먹을 필요가 없거나 다른 돈으로 밥을 먹었을 때 감액.", items: [ { id: 'meal_1', label: "1식 감액", subLabel: "" }, { id: 'meal_2', label: "2식 감액", subLabel: "" }, { id: 'meal_3', label: "전액 감액", subLabel: "" }, { id: 'meal_half', label: "½ 감액", subLabel: "" } ] }; }
                 if (key === 'transport') { return { title: "교통비", desc: <span>근무지에서 출장 목적지{destTag}로 이동하기 위해 소요되는 교통수단의 비용</span>, items: [ { id: 'transport_proof', label: "증거서류 미제출·부적정" }, { id: 'transport_gov_vehicle', label: "공용/임차차량 이용" }, { id: 'transport_passenger', label: "동료 차량 동승", subLabel: "동승자 교통비 미지급" } ] }; }
             };
 
@@ -450,7 +450,7 @@
                             <div className="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden animate-slide-up" onClick={e => e.stopPropagation()}>
                                 <div className="p-6">
                                     <div className="flex justify-between items-center mb-6"><h3 className="font-bold text-xl text-gray-900">관내 여비</h3><button onClick={() => setIntraCityOpen(false)} className="text-gray-400"><Icons.X size={22} /></button></div>
-                                    <div className="mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100 text-sm font-medium text-gray-600 leading-relaxed break-keep">근무지 내의 출장은 별도의 영수증 증빙 없이<br/>여행 시간(4시간) 기준 정액 지급됩니다.</div>
+                                    <div className="mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100 text-sm font-medium text-gray-600 leading-relaxed break-keep">근무지 내의 출장은 별도의 영수증 증빙 없이<br/>정액 지급됩니다.</div>
                                     <div className="space-y-4 border-t border-b border-gray-100 py-6">
                                         <div className="flex justify-between items-center"><span className="text-base font-bold text-gray-700">4시간 미만</span><Toggle checked={intraDeductions.shortTime} onChange={(val) => setIntraDeductions(p => ({...p, shortTime: val}))} /></div>
                                         <div className="flex justify-between items-center"><span className="text-base font-bold text-gray-700">관용차량 이용</span><Toggle checked={intraDeductions.govVehicle} onChange={(val) => setIntraDeductions(p => ({...p, govVehicle: val}))} /></div>
