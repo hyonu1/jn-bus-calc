@@ -13,11 +13,9 @@
             theme: {
                 extend: {
                     animation: {
-                        'pulse-spread': 'pulse-spread 2s infinite',
                         'slide-up': 'slideUpModal 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                     },
                     keyframes: {
-                        'pulse-spread': { '0%': { boxShadow: '0 0 0 0 rgba(0, 191, 165, 0.7)' }, '70%': { boxShadow: '0 0 0 10px rgba(0, 191, 165, 0)' }, '100%': { boxShadow: '0 0 0 0 rgba(0, 191, 165, 0)' } },
                         'slideUpModal': { 'from': { transform: 'translateY(20px)', opacity: '0' }, 'to': { transform: 'translateY(0)', opacity: '1' } }
                     }
                 }
@@ -86,43 +84,36 @@
             cursor: pointer; z-index: 10; font-family: var(--font-gmarket); 
             transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
             background-color: #FFFFFF;
-            color: #E11D48; /* Rose-600 */
-            border: 1px solid #FECDD3; /* Rose-200 */
-            box-shadow: 0 3px 0 #FDA4AF; /* Rose-300 (그림자) */
+            color: #E11D48; border: 1px solid #FECDD3; box-shadow: 0 3px 0 #FDA4AF;
         }
-
         .deduct-btn.active { 
-            background-color: #F1F5F9; /* Slate-100 */
-            color: #94A3B8; /* Slate-400 */
-            border: 1px solid #E2E8F0;
-            box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.06);
-            transform: translate(-50%, calc(-50% + 3px));
-            animation: none;
+            background-color: #F1F5F9; color: #94A3B8; border: 1px solid #E2E8F0;
+            box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.06); transform: translate(-50%, calc(-50% + 3px)); animation: none;
         }
 
         .detail-drawer { max-height: 0; overflow: hidden; transition: max-height 1s cubic-bezier(0.25, 1, 0.5, 1); background-color: #ffffff; border-radius: 0 0 16px 16px; }
         .detail-drawer.open { max-height: 2000px; }
         
-        /* [교정] 입력창 스타일 변경: 밑줄 -> 박스 형태 */
+        /* [교정] 입력창 스타일: 네모 박스, 연한 글씨, 숫자 정렬 */
         input.ship-fare-input { 
             text-align: right; 
-            background-color: #F8FAFC; 
-            width: 110px; 
+            background-color: #FFFFFF; 
+            width: 100px; 
             font-family: var(--font-gmarket); 
             font-weight: 700; 
             outline: none; 
-            border: 1px solid #E2E8F0; 
-            border-radius: 8px;
-            padding: 8px 12px; 
+            border: 1px solid #CBD5E1; /* Slate-300 */
+            border-radius: 6px;
+            padding: 6px 8px; 
             margin: 0; 
-            color: #64748B; /* [교정] 옅은 회색 (Slate-500)으로 변경 */
+            color: #94A3B8; /* Slate-400 (연한 회색) */
             font-size: 16px; 
             transition: all 0.2s;
         }
         input.ship-fare-input:focus { 
             border-color: #00BFA5; 
-            background-color: #FFFFFF; 
-            color: #191F28; /* 입력 시엔 잘 보이게 */
+            color: #191F28; /* 입력 시 진하게 */
+            box-shadow: 0 0 0 2px rgba(0, 191, 165, 0.1);
         }
 
         .suggestions-box { position: absolute; left: 0; right: 0; top: 100%; margin-top: 4px; background: white; border: 1px solid #E2E8F0; border-radius: 12px; z-index: 999; box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.15); max-height: 240px; overflow-y: auto; font-family: var(--font-gmarket); }
@@ -205,7 +196,7 @@
             "장성": { "광주": { gen: 2400 }, "목포": { gen: 9600 }, "여수": { gen: 10800 }, "순천": { gen: 6700 }, "나주": { gen: 10800 }, "광양": { gen: 5300 }, "담양": { gen: 7900 }, "곡성": { gen: 12200 }, "구례": { gen: 18600 }, "고흥": { gen: 12900 }, "보성": { gen: 4900 }, "화순": { gen: 13900 }, "장흥": { gen: 14100 }, "강진": { gen: 16100 }, "해남": { gen: 11100 }, "영암": { gen: 8400 }, "무안": { gen: 6900 }, "함평": { gen: 5900 }, "영광": { gen: 9700 }, "완도": { gen: 22900 }, "진도": { gen: 14000 }, "남악": { gen: 15500 } },
             "완도": { "광주": { gen: 20500, pre: 24800 }, "목포": { gen: 15700 }, "여수": { gen: 28200 }, "순천": { gen: 23200 }, "나주": { gen: 16600 }, "광양": { gen: 25800 }, "담양": { gen: 23400 }, "곡성": { gen: 23000 }, "구례": { gen: 28400 }, "고흥": { gen: 25200 }, "보성": { gen: 15400 }, "화순": { gen: 23000 }, "장흥": { gen: 12100 }, "강진": { gen: 7300 }, "해남": { gen: 6700, pre: 8200 }, "영암": { gen: 11600 }, "무안": { gen: 18900 }, "함평": { gen: 20800 }, "영광": { gen: 22900 }, "장성": { gen: 22900 }, "진도": { gen: 14000 }, "남악": { gen: 10100 } },
             "진도": { "광주": { gen: 15300, pre: 19900 }, "목포": { gen: 8300, pre: 10800 }, "여수": { gen: 24800 }, "순천": { gen: 23900 }, "나주": { gen: 17200 }, "광양": { gen: 23400 }, "담양": { gen: 18200 }, "곡성": { gen: 20800 }, "구례": { gen: 11400 }, "해남": { gen: 7300 }, "영암": { gen: 10300 }, "무안": { gen: 11500 }, "함평": { gen: 13400 }, "영광": { gen: 17000 }, "장성": { gen: 17700 }, "완도": { gen: 14000 }, "남악": { gen: 10100 } },
-            "남악": { "광주": { gen: 7200, pre: 9300 }, "목포": { gen: 1700 }, "여수": { gen: 15600, pre: 20200 }, "순천": { gen: 10600, pre: 13800 }, "나주": { gen: 9000 }, "광양": { gen: 11700 }, "담양": { gen: 10100 }, "곡성": { gen: 12700 }, "구례": { gen: 19000 }, "고흥": { gen: 23400 }, "보성": { gen: 13500 }, "화순": { gen: 9700 }, "장흥": { gen: 10000 }, "강진": { gen: 7600 }, "해남": { gen: 8500 }, "영암": { gen: 3700 }, "무안": { gen: 3700 }, "함평": { gen: 2500 }, "영광": { gen: 5500 }, "장성": { gen: 8400 }, "완도": { gen: 18900 }, "진도": { gen: 11500 } } 
+            "남악": { "광주": { gen: 7200, pre: 9300 }, "목포": { gen: 1700 }, "여수": { gen: 15600, pre: 20200 }, "순천": { gen: 10600, pre: 13800 }, "나주": { gen: 9000 }, "광양": { gen: 11700 }, "담양": { gen: 10100 }, "곡성": { gen: 12700 }, "구례": { gen: 19000 }, "고흥": { gen: 23400 }, "보성": { gen: 13500 }, "화순": { gen: 9700 }, "장흥": { gen: 10000 }, "강진": { gen: 7600 }, "해남": { gen: 8500 }, "영암": { gen: 3700 }, "무안": { gen: 3700 }, "함평": { gen: 2500 }, "영광": { gen: 5500 }, "장성": { gen: 8400 }, "완도": { gen: 18900 }, "진도": { gen: 11500 }, "남악": { gen: 3700 } } 
         };
 
         const ALLOWED_CITIES = Object.keys(REGION_ICONS);
@@ -327,11 +318,17 @@
                             <div className="result-card animate-slide-up pb-6 bg-white mt-6">
                                 <div className="text-center mb-6">
                                     <div className="flex justify-between items-center h-12 px-2"><div className="flex items-center"><span className="font-bold text-gray-800 text-xl">요금</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-3xl font-extrabold text-[#00BFA5] font-suit">{fmt(result.type === 'internal' ? (result.surcharge > 0 ? result.baseBusCost : result.cost) : 0)}원</span></div>
-                                    {result.type === 'internal' && result.surcharge > 0 && (<div className="flex justify-between items-center h-12 px-2"><div className="flex items-center"><span className="font-bold text-blue-600 text-lg">농어촌버스</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-3xl font-extrabold text-blue-600 font-suit">{fmt(result.surcharge)}원</span></div>)}
-                                    {result.type === 'internal' && result.shipCost > 0 && (<div className="flex justify-between items-center h-10 px-2 mt-1"><div className="flex items-center"><span className="font-bold text-slate-500 text-lg">여객선</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-2xl font-extrabold text-slate-500 font-suit">{fmt(result.shipCost)}원</span></div>)}
+                                    
+                                    {/* [교정] 농어촌버스: 60% 크기(text-lg), 옅은 녹색(text-emerald-500), 굵기(font-bold) */}
+                                    {result.type === 'internal' && result.surcharge > 0 && (<div className="flex justify-between items-center h-12 px-2"><div className="flex items-center"><span className="font-bold text-emerald-500 text-lg">농어촌버스</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-lg font-bold text-emerald-500 font-suit">{fmt(result.surcharge)}원</span></div>)}
+                                    
+                                    {/* [교정] 여객선: 60% 크기(text-lg), 옅은 파랑(text-sky-500), 굵기(font-bold) */}
+                                    {result.type === 'internal' && result.shipCost > 0 && (<div className="flex justify-between items-center h-10 px-2 mt-1"><div className="flex items-center"><span className="font-bold text-sky-500 text-lg">여객선</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-lg font-bold text-sky-500 font-suit">{fmt(result.shipCost)}원</span></div>)}
+                                    
                                     <div className="pb-4 pt-4 flex flex-wrap justify-center gap-1.5 mb-2">
                                         {routeTags.map((tag, i) => (<span key={i} className={`tag-badge px-2.5 py-1 text-[14px] ${getTagStyles(tag)}`}>{tag}</span>))}
                                     </div>
+
                                     <button onClick={() => setShowDetail(!showDetail)} className={`w-full mt-6 h-[72px] rounded-2xl font-bold text-2xl flex items-center justify-center gap-3 shadow-sm transition-all text-white bg-[#00BFA5] ${showDetail ? 'opacity-70' : 'animate-pulse-spread'}`}>
                                         <Icons.Calculator size={30} /><span>여비계산</span><Icons.ChevronDown className={`transition-transform duration-300 ${showDetail ? 'rotate-180' : ''}`} size={26} />
                                     </button>
@@ -341,37 +338,8 @@
                                         <div className="relative flex items-center justify-between h-12"><span className="font-bold text-gray-600 text-xl w-24">일비</span><button onClick={()=>setActiveModal('daily')} className={`deduct-btn ${deductions.gov_vehicle ? 'active':''} animate-pulse-spread`}>감액</button><div className="flex flex-col items-end flex-1"><span className="text-xl font-bold text-gray-900 font-suit">{fmt(detailCosts.daily)}원</span>{deductions.gov_vehicle && <span className="text-[11px] text-rose-500 font-bold leading-none mt-1">(-12,500)</span>}</div></div>
                                         <div className="relative flex items-center justify-between h-12"><span className="font-bold text-gray-600 text-xl w-24">식비</span><button onClick={()=>setActiveModal('meal')} className={`deduct-btn ${(deductions.meal_1||deductions.meal_2||deductions.meal_3||deductions.meal_half) ? 'active':''} animate-pulse-spread`}>감액</button><div className="flex flex-col items-end flex-1"><span className="text-xl font-bold text-gray-900 font-suit">{fmt(detailCosts.meal)}원</span><span className="text-[11px] text-rose-500 font-bold leading-none mt-1">{getMealDeductionLabel()}</span></div></div>
                                         <div className="pt-4 border-t border-dashed border-gray-200">
-                                            <div className="relative flex items-center justify-between h-12">
-                                                <div className="flex items-center"><span className="font-bold text-gray-600 text-xl">교통비</span><span className={`tag-side ${getTagStyles('왕복')}`}>왕복</span></div>
-                                                <button onClick={()=>setActiveModal('transport')} className={`deduct-btn ${deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger ? 'active':''} animate-pulse-spread`}>감액</button>
-                                                <div className="text-right flex-1">
-                                                    {!(deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger) ? (
-                                                        <div className="flex items-center justify-end gap-1">
-                                                            {/* [교정] 교통비 입력창: 박스형, 클릭 시 지움, 빈값=0 */}
-                                                            <input type="tel" value={manualMainTransport === null ? '' : fmt(manualMainTransport)} 
-                                                                onFocus={() => setManualMainTransport(null)}
-                                                                onChange={(e) => { const val = e.target.value.replace(/,/g, ''); setManualMainTransport(val === '' ? null : Number(val)); }}
-                                                                className="ship-fare-input" placeholder="0" />
-                                                            <span className="text-xl font-bold text-gray-900">원</span>
-                                                        </div>
-                                                    ) : <span className="text-xl font-bold text-gray-400">0원</span>}
-                                                </div>
-                                            </div>
-                                            {/* [교정] 기타교통비: 항상 표시 (조건부 렌더링에서 shipFare > 0 제거 -> result.shipCost > 0 OR isShipOnlyRoute OR shipFare > 0 일때만 보이게) */}
-                                            {(result.isShipOnlyRoute || result.shipCost > 0 || shipFare > 0) && (
-                                                <div className="relative flex items-center justify-between h-12 mt-2">
-                                                    <span className="font-bold text-gray-600 text-xl">기타교통비</span>
-                                                    <div className="text-right flex-1">
-                                                        <div className="flex items-center justify-end gap-1">
-                                                            <input type="tel" value={shipFare === 0 ? '' : fmt(shipFare)} 
-                                                                onFocus={() => setShipFare(0)}
-                                                                onChange={(e) => { const val = e.target.value.replace(/,/g, ''); setShipFare(val === '' ? 0 : Number(val)); }}
-                                                                className="ship-fare-input" placeholder="0" />
-                                                            <span className="text-xl font-bold text-gray-900">원</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
+                                            <div className="relative flex items-center justify-between h-12"><div className="flex items-center"><span className="font-bold text-gray-600 text-xl">교통비</span><span className={`tag-side ${getTagStyles('왕복')}`}>왕복</span></div><button onClick={()=>setActiveModal('transport')} className={`deduct-btn ${deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger ? 'active':''} animate-pulse-spread`}>감액</button><div className="text-right flex-1">{!(deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger) ? (<div className="flex items-center justify-end gap-1"><input type="text" inputMode="numeric" value={manualMainTransport === null ? '' : fmt(manualMainTransport)} onChange={(e) => setManualMainTransport(Number(e.target.value.replace(/,/g, '')))} className="ship-fare-input" /><span className="text-xl text-gray-900 font-bold">원</span></div>) : <span className="text-xl font-bold text-gray-400">0원</span>}</div></div>
+                                            {(shipFare > 0) && (<div className="relative flex items-center justify-between h-12 mt-2"><span className="font-bold text-gray-600 text-xl">기타교통비</span><div className="text-right flex-1"><div className="flex items-center justify-end gap-1"><input type="text" inputMode="numeric" value={shipFare === 0 ? '' : fmt(shipFare)} onChange={(e) => setShipFare(Number(e.target.value.replace(/,/g, '')))} className="ship-fare-input" /><span className="text-xl text-gray-900 font-bold">원</span></div></div></div>)}
                                         </div>
                                         <div className="pt-4 border-t-2 border-gray-100 flex justify-between items-center"><span className="font-bold text-gray-900 text-xl">합계</span><span className="text-3xl font-extrabold text-[#00BFA5] font-suit">{fmt(detailCosts.total)}<span className="text-xl ml-1">원</span></span></div>
                                     </div>
