@@ -196,7 +196,6 @@
         const resolveComplexJamo = (str) => { let result = ""; for (let char of str) { result += COMPLEX_JAMO_MAP[char] || char; } return result; };
         const normalize = (str) => (str || '').trim().replace(/\s/g, "");
         const fmt = (num) => Number(num).toLocaleString('ko-KR');
-        
         const getTagStyles = (tag) => { const map = { '자가용': 'bg-blue-50 text-blue-600 border-blue-100', '관용차': 'bg-rose-50 text-rose-600 border-rose-100', '당일': 'bg-emerald-50 text-emerald-600 border-emerald-100', '왕복': 'bg-purple-50 text-purple-600 border-purple-100', '여객선': 'bg-sky-50 text-sky-600 border-sky-100', '농어촌버스': 'bg-amber-50 text-amber-600 border-amber-100', '편도': 'bg-indigo-50 text-indigo-600 border-indigo-100' }; return map[tag] || 'bg-gray-50 text-gray-600 border-gray-100'; };
 
         const { useState, useEffect } = React;
@@ -214,7 +213,7 @@
                         <Icons.MapPin className="text-gray-300 group-focus-within:text-teal-500 transition-colors shrink-0" />
                         <div className="flex-1 min-w-0">
                             {label && <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-tighter mb-0.5">{label}</label>}
-                            <input type="text" className="w-full bg-transparent outline-none font-gmarket font-bold text-gray-800 text-xl placeholder-gray-300" placeholder={placeholder} value={value || ''} onChange={e => { onChange(e.target.value); setShowSuggestions(true); }} onClick={() => { if (value) { onChange(''); onSelect(''); } }} onFocus={() => setShowSuggestions(true)} onBlur={() => setTimeout(() => setShowSuggestions(false), 200)} onKeyDown={handleKeyDown} autoComplete="off" />
+                            <input type="text" className="w-full bg-transparent outline-none font-gmarket font-bold text-gray-800 text-2xl placeholder-gray-300" placeholder={placeholder} value={value || ''} onChange={e => { onChange(e.target.value); setShowSuggestions(true); }} onClick={() => { if (value) { onChange(''); onSelect(''); } }} onFocus={() => setShowSuggestions(true)} onBlur={() => setTimeout(() => setShowSuggestions(false), 200)} onKeyDown={handleKeyDown} autoComplete="off" />
                         </div>
                         <div className="w-14 flex justify-center items-center shrink-0 pt-2">{value && REGION_ICONS[value.replace(/\s/g, "")] && <span className="text-4xl icon-bounce">{REGION_ICONS[value.replace(/\s/g, "")]}</span>}</div>
                     </div>
@@ -262,8 +261,11 @@
                 for (const group of SAME_AREA_GROUPS) { if (group.has(from) && group.has(to)) { setIntraCityOpen(true); return; } }
                 const fromIsland = ISLAND_DB[from]; const toIsland = ISLAND_DB[to];
                 let searchFrom = from; let searchTo = to; let surcharge = 0; let shipSurcharge = 0; let islandConfig = null; let viaPoint = null;
-                if (fromIsland) { searchFrom = fromIsland.hub; shipSurcharge += (fromIsland.shipCost || 0); islandConfig = fromIsland; viaPoint = fromIsland.via; }
-                if (toIsland) { searchTo = toIsland.hub; shipSurcharge += (toIsland.shipCost || 0); islandConfig = toIsland; viaPoint = toIsland.via; }
+                
+                // [교정] 경유지(viaPoint) 설정 로직 수정: via가 없으면 hub를 기본값으로 사용
+                if (fromIsland) { searchFrom = fromIsland.hub; shipSurcharge += (fromIsland.shipCost || 0); islandConfig = fromIsland; viaPoint = fromIsland.via || fromIsland.hub; }
+                if (toIsland) { searchTo = toIsland.hub; shipSurcharge += (toIsland.shipCost || 0); islandConfig = toIsland; viaPoint = toIsland.via || toIsland.hub; }
+                
                 const mainlandCities = ["광주", "목포", "남악", "나주", "무안", "함평", "영광", "순천", "여수", "장성", "담양", "곡성", "구례", "광양", "보성", "화순", "장흥", "강진", "해남", "영암"];
                 if (mainlandCities.includes(from) && !!toIsland && toIsland.hub === "목포") surcharge = toIsland.cost || 0; else if (!!fromIsland && fromIsland.hub === "목포" && mainlandCities.includes(to)) surcharge = fromIsland.cost || 0;
                 const baseData = INITIAL_DATA[searchFrom]?.[searchTo] || INITIAL_DATA[searchTo]?.[searchFrom];
@@ -271,21 +273,19 @@
             };
 
             const detailCosts = calculateDetailedCost();
-            // [교정] 태그 생성 로직 업데이트: 농어촌버스(추가요금 발생시) 및 경유지 태그 추가
             const routeTags = (() => { 
                 const tags = []; 
                 if (!result || result.type !== 'internal') return tags; 
                 tags.push(deductions.gov_vehicle ? '관용차' : '자가용', "당일", "왕복"); 
                 
-                // [추가] 농어촌버스 태그: 요금에 추가운임(surcharge)이 포함된 경우 표시
+                // [교정] 태그 표시 로직 보완
                 if (result.surcharge > 0) tags.push("농어촌버스");
                 else {
-                    // 기존 로직 유지 (연륙도 등)
                     const isWandoConnected = (l) => ISLAND_DB[l]?.hub === '완도' && ISLAND_DB[l]?.type === 'connected'; 
                     if ((ISLAND_DB[origin]?.type === 'connected' && !isWandoConnected(origin)) || (ISLAND_DB[destination]?.type === 'connected' && !isWandoConnected(destination))) tags.push("농어촌버스"); 
                 }
 
-                // [추가] 경유지 태그: viaPoint가 있으면 표시
+                // [교정] 경유지 태그 추가
                 if (result.viaPoint) tags.push(`${result.viaPoint} 경유`);
 
                 if (result.shipCost > 0 || result.isShipOnlyRoute) tags.push("여객선"); 
@@ -293,7 +293,7 @@
             })();
 
             const getModalContent = (key) => {
-                const destTag = <span className="inline-block px-1.5 py-0.5 mx-1 bg-slate-100 text-slate-600 rounded border border-slate-200 font-bold">{destination}</span>;
+                const destTag = <span className="inline-block px-1.5 py-0.5 mx-1 bg-slate-100 text-slate-600 rounded border border-slate-200 font-bold align-top relative -top-0.5 text-[10px] leading-none">{destination}</span>;
                 if (key === 'daily') { return { title: "일비", desc: <span>출장지{destTag} 내에서 소요되는 현지 교통비, 통신비, 음료비 등 여행 중 발생하는 각종 소액의 경비를 충당하기 위한 경비</span>, items: [ { id: 'gov_vehicle', label: "공용차량·임차차량(전세버스 등)을 이용", subLabel: "" } ] }; }
                 if (key === 'meal') { return { title: "식비", desc: "여행(출장) 중 식사에 소요되는 비용을 충당을 위해 지급되는 여비. 밥을 먹을 필요가 없거나 다른 돈으로 밥을 먹었을 때 감액합니다.", items: [ { id: 'meal_1', label: "1식 감액", subLabel: "" }, { id: 'meal_2', label: "2식 감액", subLabel: "" }, { id: 'meal_3', label: "전액 감액", subLabel: "" }, { id: 'meal_half', label: "½ 감액", subLabel: "" } ] }; }
                 if (key === 'transport') { return { title: "교통비", desc: <span>근무지에서 출장 목적지{destTag}로 이동하기 위해 소요되는 교통수단의 비용</span>, items: [ { id: 'transport_proof', label: "증거서류 미제출·부적정" }, { id: 'transport_gov_vehicle', label: "공용/임차차량 이용" }, { id: 'transport_passenger', label: "동료 차량 동승", subLabel: "동승자 교통비 미지급" } ] }; }
@@ -320,6 +320,8 @@
                             <div className="result-card animate-slide-up pb-6 bg-white mt-6">
                                 <div className="text-center mb-6">
                                     <div className="flex justify-between items-center h-12 px-2"><div className="flex items-center"><span className="font-bold text-gray-800 text-xl">요금</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-3xl font-extrabold text-[#00BFA5] font-suit">{fmt(result.type === 'internal' ? (result.surcharge > 0 ? result.baseBusCost : result.cost) : 0)}원</span></div>
+                                    
+                                    {/* [교정] 농어촌버스 글자 크기 통일 (text-lg) */}
                                     {result.type === 'internal' && result.surcharge > 0 && (<div className="flex justify-between items-center h-12 px-2"><div className="flex items-center"><span className="font-bold text-blue-600 text-lg">농어촌버스</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-3xl font-extrabold text-blue-600 font-suit">{fmt(result.surcharge)}원</span></div>)}
                                     {result.type === 'internal' && result.shipCost > 0 && (<div className="flex justify-between items-center h-10 px-2 mt-1"><div className="flex items-center"><span className="font-bold text-slate-500 text-lg">여객선</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-2xl font-extrabold text-slate-500 font-suit">{fmt(result.shipCost)}원</span></div>)}
                                     
