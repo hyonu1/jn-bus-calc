@@ -306,10 +306,19 @@
                 let searchFrom = from; let searchTo = to; let surcharge = 0; let shipSurcharge = 0; let islandConfig = null; let viaPoint = null;
                 if (fromIsland) { searchFrom = fromIsland.hub; shipSurcharge += (fromIsland.shipCost || 0); islandConfig = fromIsland; viaPoint = fromIsland.via || fromIsland.hub; }
                 if (toIsland) { searchTo = toIsland.hub; shipSurcharge += (toIsland.shipCost || 0); islandConfig = toIsland; viaPoint = toIsland.via || toIsland.hub; }
-                const mainlandCities = ["광주", "목포", "남악", "나주", "무안", "함평", "영광", "순천", "여수", "장성", "담양", "곡성", "구례", "광양", "보성", "화순", "장흥", "강진", "해남", "영암"];
-                if (mainlandCities.includes(from) && !!toIsland && toIsland.hub === "목포") surcharge = toIsland.cost || 0; else if (!!fromIsland && fromIsland.hub === "목포" && mainlandCities.includes(to)) surcharge = fromIsland.cost || 0;
+                
+                // [교정] 농어촌버스 요금 합산 로직 강화: 섬 지역의 cost를 합산하여 요금 정보 하단과 여비계산에 전달
+                surcharge = (fromIsland?.cost || 0) + (toIsland?.cost || 0);
+
                 const baseData = INITIAL_DATA[searchFrom]?.[searchTo] || INITIAL_DATA[searchTo]?.[searchFrom];
-                if (baseData || (searchFrom === searchTo)) { const finalGen = (baseData?.gen || 0) + surcharge; const finalPre = baseData?.pre ? baseData.pre + surcharge : null; const finalCost = finalPre ? finalPre : finalGen; setShipFare(shipSurcharge * 2); setManualMainTransport(finalCost * 2); setResult({ type: 'internal', cost: finalCost, baseBusCost: baseData?.pre || baseData?.gen || 0, surcharge, shipCost: shipSurcharge, isShipOnlyRoute: islandConfig?.type === 'ship', viaPoint }); } else setResult({ type: 'external' });
+                if (baseData || (searchFrom === searchTo)) { 
+                    const finalGen = (baseData?.gen || 0) + surcharge; 
+                    const finalPre = baseData?.pre ? baseData.pre + surcharge : null; 
+                    const finalCost = finalPre ? finalPre : finalGen; 
+                    setShipFare(shipSurcharge * 2); 
+                    setManualMainTransport(finalCost * 2); 
+                    setResult({ type: 'internal', cost: finalCost, baseBusCost: baseData?.pre || baseData?.gen || 0, surcharge, shipCost: shipSurcharge, isShipOnlyRoute: islandConfig?.type === 'ship', viaPoint }); 
+                } else setResult({ type: 'external' });
             };
 
             const detailCosts = calculateDetailedCost();
@@ -457,7 +466,7 @@
                         const content = getModalContent(activeModal);
                         return (
                             <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in" onClick={() => setActiveModal(null)}>
-                                <div className="bg-white w-full max-w-sm rounded-3xl shadow-2xl animate-in zoom-in-95 overflow-hidden" onClick={e => e.stopPropagation()}>
+                                <div className="bg-white w-full max-sm rounded-3xl shadow-2xl animate-in zoom-in-95 overflow-hidden" onClick={e => e.stopPropagation()}>
                                     <div className="p-7 max-h-[85vh] overflow-y-auto custom-scroll">
                                         <div className="flex justify-between items-center mb-4"><h3 className="text-xl font-bold text-gray-900">{content.title}</h3><button onClick={()=>setActiveModal(null)}><Icons.X size={20} className="text-gray-400"/></button></div>
                                         <p className="text-sm text-gray-600 font-medium leading-relaxed mb-4 break-keep font-pretendard">{content.desc}</p>
