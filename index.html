@@ -103,6 +103,7 @@
         .detail-drawer { max-height: 0; overflow: hidden; transition: max-height 1s cubic-bezier(0.25, 1, 0.5, 1); background-color: #ffffff; border-radius: 0 0 16px 16px; }
         .detail-drawer.open { max-height: 2000px; }
         
+        /* [교정] 입력창 스타일: "최소한의 가시성" */
         input.ship-fare-input { 
             text-align: right; 
             background-color: #FFFFFF; 
@@ -110,18 +111,26 @@
             font-family: var(--font-gmarket); 
             font-weight: 700; 
             outline: none; 
-            border: 1px solid #CBD5E1; /* Slate-300 */
+            border: 1px solid #E2E8F0; /* Slate-200: 아주 연한 테두리 */
             border-radius: 6px;
             padding: 6px 8px; 
             margin: 0; 
-            color: #94A3B8; /* Slate-400 (연한 회색) */
+            color: #94A3B8; /* Slate-400: 연한 회색 (기본) */
             font-size: 16px; 
             transition: all 0.2s;
         }
+        
+        /* [교정] 포커스(선택) 시 스타일: "거의 가시권 최소한" */
         input.ship-fare-input:focus { 
-            border-color: #00BFA5; 
-            color: #191F28; /* 입력 시 진하게 */
-            box-shadow: 0 0 0 2px rgba(0, 191, 165, 0.1);
+            border-color: #CBD5E1; /* Slate-300: 살짝만 진해짐 */
+            color: #64748B; /* Slate-500: 조금 더 진해지지만 여전히 회색톤 */
+            box-shadow: none; /* 그림자 효과 제거 */
+        }
+
+        /* [교정] 선택된 텍스트(드래그) 스타일: 은은하게 */
+        input.ship-fare-input::selection {
+            background-color: #F1F5F9; /* Slate-100: 아주 연한 회색 배경 */
+            color: #475569; /* Slate-600 */
         }
 
         .suggestions-box { position: absolute; left: 0; right: 0; top: 100%; margin-top: 4px; background: white; border: 1px solid #E2E8F0; border-radius: 12px; z-index: 999; box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.15); max-height: 240px; overflow-y: auto; font-family: var(--font-gmarket); }
@@ -271,7 +280,7 @@
             const [activeModal, setActiveModal] = useState(null); 
             const [deductions, setDeductions] = useState({ gov_vehicle: false, meal_1: false, meal_2: false, meal_3: false, meal_half: false, transport_proof: false, transport_gov_vehicle: false, transport_passenger: false });
 
-            const calculateDetailedCost = () => { if (!result) return { total: 0 }; let daily = deductions.gov_vehicle ? 12500 : 25000; let meal = deductions.meal_3 ? 0 : deductions.meal_1 ? 16670 : deductions.meal_2 ? 8330 : deductions.meal_half ? 12500 : 25000; let transport = (deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger) ? 0 : (result.type === 'internal' ? Number(manualMainTransport) : 0); return { daily, meal, transport, total: daily + meal + transport + (shipFare || 0) }; };
+            const calculateDetailedCost = () => { if (!result) return { total: 0 }; let daily = deductions.gov_vehicle ? 12500 : 25000; let meal = deductions.meal_3 ? 0 : deductions.meal_1 ? 16670 : deductions.meal_2 ? 8330 : deductions.meal_half ? 12500 : 25000; let transport = (deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger) ? 0 : (result.type === 'internal' ? (manualMainTransport || 0) : 0); return { daily, meal, transport, total: daily + meal + transport + (shipFare || 0) }; };
 
             const performCalculation = (o = origin, d = destination, isForce = false) => {
                 const from = normalize(o); const to = normalize(d);
@@ -336,8 +345,51 @@
                                         <div className="relative flex items-center justify-between h-12"><span className="font-bold text-gray-600 text-xl w-24">일비</span><button onClick={()=>setActiveModal('daily')} className={`deduct-btn ${deductions.gov_vehicle ? 'active':''} animate-pulse-spread`}>감액</button><div className="flex flex-col items-end flex-1"><span className="text-xl font-bold text-gray-900 font-suit">{fmt(detailCosts.daily)}원</span>{deductions.gov_vehicle && <span className="text-[11px] text-rose-500 font-bold leading-none mt-1">(-12,500)</span>}</div></div>
                                         <div className="relative flex items-center justify-between h-12"><span className="font-bold text-gray-600 text-xl w-24">식비</span><button onClick={()=>setActiveModal('meal')} className={`deduct-btn ${(deductions.meal_1||deductions.meal_2||deductions.meal_3||deductions.meal_half) ? 'active':''} animate-pulse-spread`}>감액</button><div className="flex flex-col items-end flex-1"><span className="text-xl font-bold text-gray-900 font-suit">{fmt(detailCosts.meal)}원</span><span className="text-[11px] text-rose-500 font-bold leading-none mt-1">{getMealDeductionLabel()}</span></div></div>
                                         <div className="pt-4 border-t border-dashed border-gray-200">
-                                            <div className="relative flex items-center justify-between h-12"><div className="flex items-center"><span className="font-bold text-gray-600 text-xl">교통비</span><span className={`tag-side ${getTagStyles('왕복')}`}>왕복</span></div><button onClick={()=>setActiveModal('transport')} className={`deduct-btn ${deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger ? 'active':''} animate-pulse-spread`}>감액</button><div className="text-right flex-1">{!(deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger) ? (<div className="flex items-center justify-end gap-1"><input type="text" inputMode="numeric" value={manualMainTransport === null ? '' : fmt(manualMainTransport)} onFocus={(e) => e.target.select()} onChange={(e) => setManualMainTransport(Number(e.target.value.replace(/,/g, '')))} className="ship-fare-input" /><span className="text-xl text-gray-900 font-bold">원</span></div>) : <span className="text-xl font-bold text-gray-400">0원</span>}</div></div>
-                                            {(shipFare > 0) && (<div className="relative flex items-center justify-between h-12 mt-2"><span className="font-bold text-gray-600 text-xl">기타교통비</span><div className="text-right flex-1"><div className="flex items-center justify-end gap-1"><input type="text" inputMode="numeric" value={shipFare === 0 ? '' : fmt(shipFare)} onFocus={(e) => e.target.select()} onChange={(e) => setShipFare(Number(e.target.value.replace(/,/g, '')))} className="ship-fare-input" /><span className="text-xl text-gray-900 font-bold">원</span></div></div></div>)}
+                                            <div className="relative flex items-center justify-between h-12">
+                                                <div className="flex items-center"><span className="font-bold text-gray-600 text-xl">교통비</span><span className={`tag-side ${getTagStyles('왕복')}`}>왕복</span></div>
+                                                <button onClick={()=>setActiveModal('transport')} className={`deduct-btn ${deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger ? 'active':''} animate-pulse-spread`}>감액</button>
+                                                <div className="text-right flex-1">
+                                                    {!(deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger) ? (
+                                                        <div className="flex items-center justify-end gap-1">
+                                                            {/* [교정] onFocus 시 select()로 전체 선택 (값 유지, 타이핑 시 교체) */}
+                                                            <input 
+                                                                type="tel" 
+                                                                value={manualMainTransport === null || manualMainTransport === 0 ? '' : fmt(manualMainTransport)} 
+                                                                onFocus={(e) => e.target.select()}
+                                                                onChange={(e) => { 
+                                                                    const val = e.target.value.replace(/,/g, ''); 
+                                                                    setManualMainTransport(val === '' ? null : Number(val)); 
+                                                                }}
+                                                                className="ship-fare-input" 
+                                                                placeholder="0" 
+                                                            />
+                                                            <span className="text-xl font-bold text-gray-900">원</span>
+                                                        </div>
+                                                    ) : <span className="text-xl font-bold text-gray-400">0원</span>}
+                                                </div>
+                                            </div>
+                                            {(shipFare > 0 || result.isShipOnlyRoute || result.shipCost > 0) && (
+                                                <div className="relative flex items-center justify-between h-12 mt-2">
+                                                    <span className="font-bold text-gray-600 text-xl">기타교통비</span>
+                                                    <div className="text-right flex-1">
+                                                        <div className="flex items-center justify-end gap-1">
+                                                            {/* [교정] onFocus 시 select()로 전체 선택 (값 유지, 타이핑 시 교체) */}
+                                                            <input 
+                                                                type="tel" 
+                                                                value={shipFare === 0 ? '' : fmt(shipFare)} 
+                                                                onFocus={(e) => e.target.select()}
+                                                                onChange={(e) => { 
+                                                                    const val = e.target.value.replace(/,/g, ''); 
+                                                                    setShipFare(val === '' ? 0 : Number(val)); 
+                                                                }}
+                                                                className="ship-fare-input" 
+                                                                placeholder="0" 
+                                                            />
+                                                            <span className="text-xl font-bold text-gray-900">원</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                         <div className="pt-4 border-t-2 border-gray-100 flex justify-between items-center"><span className="font-bold text-gray-900 text-xl">합계</span><span className="text-3xl font-extrabold text-[#00BFA5] font-suit">{fmt(detailCosts.total)}<span className="text-xl ml-1">원</span></span></div>
                                     </div>
@@ -346,7 +398,10 @@
                         )}
                         <div className="mt-4">
                             <a href="https://padlet.com/jbyhee/hyonu-s-padlet-4m26339lwedx23dc" target="_blank" rel="noopener noreferrer" className="w-full h-[76px] bg-[#E0F2F1] border border-[#B2DFDB] text-[#00695C] rounded-2xl flex flex-col items-center justify-center no-underline hover:opacity-90 active:scale-95 transition-all shadow-sm">
-                                <div className="flex items-center gap-2"><Icons.Send size={22} /><span className="text-[17px] font-bold">문의 및 의견 남기기</span></div>
+                                <div className="flex items-center gap-2">
+                                    <Icons.Send size={22} />
+                                    <span className="text-[17px] font-bold">문의 및 의견 남기기</span>
+                                </div>
                                 <span className="text-[11px] font-medium opacity-70 mt-1">crafted with passion by 전현우@우수영초등학교</span>
                             </a>
                         </div>
