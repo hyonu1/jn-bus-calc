@@ -13,9 +13,11 @@
             theme: {
                 extend: {
                     animation: {
+                        'pulse-spread': 'pulse-spread 2s infinite',
                         'slide-up': 'slideUpModal 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                     },
                     keyframes: {
+                        'pulse-spread': { '0%': { boxShadow: '0 0 0 0 rgba(0, 191, 165, 0.7)' }, '70%': { boxShadow: '0 0 0 10px rgba(0, 191, 165, 0)' }, '100%': { boxShadow: '0 0 0 0 rgba(0, 191, 165, 0)' } },
                         'slideUpModal': { 'from': { transform: 'translateY(20px)', opacity: '0' }, 'to': { transform: 'translateY(0)', opacity: '1' } }
                     }
                 }
@@ -84,37 +86,24 @@
             cursor: pointer; z-index: 10; font-family: var(--font-gmarket); 
             transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
             background-color: #FFFFFF;
-            color: #E11D48; border: 1px solid #FECDD3; box-shadow: 0 3px 0 #FDA4AF;
+            color: #E11D48; /* Rose-600 */
+            border: 1px solid #FECDD3; /* Rose-200 */
+            box-shadow: 0 3px 0 #FDA4AF; /* Rose-300 (그림자) */
         }
+
         .deduct-btn.active { 
-            background-color: #F1F5F9; color: #94A3B8; border: 1px solid #E2E8F0;
-            box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.06); transform: translate(-50%, calc(-50% + 3px)); animation: none;
+            background-color: #F1F5F9; /* Slate-100 */
+            color: #94A3B8; /* Slate-400 */
+            border: 1px solid #E2E8F0;
+            box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.06);
+            transform: translate(-50%, calc(-50% + 3px));
+            animation: none;
         }
 
         .detail-drawer { max-height: 0; overflow: hidden; transition: max-height 1s cubic-bezier(0.25, 1, 0.5, 1); background-color: #ffffff; border-radius: 0 0 16px 16px; }
         .detail-drawer.open { max-height: 2000px; }
-        
-        /* [교정] 입력창 스타일: 네모 박스, 연한 글씨, 숫자 정렬 */
-        input.ship-fare-input { 
-            text-align: right; 
-            background-color: #FFFFFF; 
-            width: 100px; 
-            font-family: var(--font-gmarket); 
-            font-weight: 700; 
-            outline: none; 
-            border: 1px solid #CBD5E1; /* Slate-300 */
-            border-radius: 6px;
-            padding: 6px 8px; 
-            margin: 0; 
-            color: #94A3B8; /* Slate-400 (연한 회색) */
-            font-size: 16px; 
-            transition: all 0.2s;
-        }
-        input.ship-fare-input:focus { 
-            border-color: #00BFA5; 
-            color: #191F28; /* 입력 시 진하게 */
-            box-shadow: 0 0 0 2px rgba(0, 191, 165, 0.1);
-        }
+        input.ship-fare-input { text-align: right; background-color: transparent; width: 100px; font-family: var(--font-gmarket); font-weight: 700; outline: none; border-bottom: 2px solid #E2E8F0; padding: 0 2px 2px 0; margin: 0; color: #191F28; font-size: 18px; border-radius: 0; }
+        input.ship-fare-input:focus { border-bottom-color: var(--color-teal); }
 
         .suggestions-box { position: absolute; left: 0; right: 0; top: 100%; margin-top: 4px; background: white; border: 1px solid #E2E8F0; border-radius: 12px; z-index: 999; box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.15); max-height: 240px; overflow-y: auto; font-family: var(--font-gmarket); }
         .suggestion-item { padding: 12px 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #374151; font-weight: 500; }
@@ -163,8 +152,12 @@
             "완도": ["완도", "금일", "노화", "군외", "신지", "고금", "약산", "청산", "소안", "금당", "보길", "생일", "여서도"]
         };
 
+        // [교정] ISLAND_DB: 도초도(Doco) via 수정 ("목포")
         const ISLAND_DB = {
-            "신안": { hub: "목포", cost: 0, type: "connected" }, "신안교육청": { hub: "목포", cost: 0, type: "connected" }, "압해": { hub: "목포", via: "목포", cost: 2000, type: "connected" }, "지도": { hub: "목포", via: "목포", cost: 2000, type: "connected" }, "증도": { hub: "목포", via: "목포", cost: 2000, type: "connected" }, "임자": { hub: "목포", via: "목포", cost: 2000, type: "connected" }, "팔금": { hub: "목포", via: "목포", cost: 2000, type: "connected" }, "암태": { hub: "목포", via: "목포", cost: 2000, type: "connected" }, "자은": { hub: "목포", via: "목포", cost: 2000, type: "connected" }, "안좌": { hub: "목포", via: "목포", cost: 2000, type: "connected" }, "비금": { hub: "목포", via: "목포, 암태", cost: 2000, shipCost: 1000, type: "ship", special: true }, "도초": { hub: "목포", via: "목포, 암태", cost: 0, shipCost: 1000, type: "ship", special: true }, "장산": { hub: "목포", cost: 0, shipCost: 1000, type: "ship" }, "하의": { hub: "목포", cost: 0, shipCost: 1000, type: "ship" }, "신의": { hub: "목포", cost: 0, shipCost: 1000, type: "ship" }, "흑산": { hub: "목포", cost: 0, shipCost: 1000, type: "ship" }, "홍도": { hub: "목포", cost: 0, shipCost: 1000, type: "ship" }, "가거도": { hub: "목포", cost: 0, shipCost: 1000, type: "ship" }, "만재도": { hub: "목포", cost: 0, shipCost: 1000, type: "ship" }, "완도": { hub: "완도", cost: 0, type: "connected", special: true }, "군외": { hub: "완도", cost: 0, type: "connected", special: true }, "신지": { hub: "완도", cost: 0, type: "connected", special: true }, "고금": { hub: "완도", cost: 0, type: "connected", special: true }, "약산": { hub: "완도", cost: 0, type: "connected", special: true }, "청산": { hub: "완도", cost: 0, shipCost: 1000, type: "ship" }, "노화": { hub: "완도", cost: 0, shipCost: 1000, type: "ship" }, "보길": { hub: "완도", cost: 0, shipCost: 1000, type: "ship" }, "소안": { hub: "완도", cost: 0, shipCost: 1000, type: "ship" }, "여서도": { hub: "완도", cost: 0, shipCost: 1000, type: "ship" }, "금일": { hub: "완도", cost: 0, shipCost: 1000, type: "ship" }, "생일": { hub: "완도", cost: 0, shipCost: 1000, type: "ship" }, "진도조도": { hub: "진도", cost: 0, shipCost: 1000, type: "ship" }, "진도관매도": { hub: "진도", cost: 0, shipCost: 1000, type: "ship" }, "진도서거차도": { hub: "진도", cost: 0, shipCost: 1000, type: "ship" }, "고흥득량도": { hub: "고흥", cost: 0, shipCost: 1000, type: "ship" }, "고흥쑥섬(애도)": { hub: "고흥", cost: 0, shipCost: 1000, type: "ship" }, "영광안마도": { hub: "영광", cost: 0, shipCost: 1000, type: "ship" }, "영광낙월": { hub: "영광", cost: 0, shipCost: 1000, type: "ship" }, "영광송이도": { hub: "영광", cost: 0, shipCost: 1000, type: "ship" }, "금당": { hub: "장흥", cost: 0, shipCost: 1000, type: "ship" }, "해남어룡도": { hub: "해남", cost: 0, shipCost: 1000, type: "ship" }
+            "신안": { hub: "목포", cost: 0, type: "connected" }, "신안교육청": { hub: "목포", cost: 0, type: "connected" }, "압해": { hub: "목포", via: "목포", cost: 2000, type: "connected" }, "지도": { hub: "목포", via: "목포", cost: 2000, type: "connected" }, "증도": { hub: "목포", via: "목포", cost: 2000, type: "connected" }, "임자": { hub: "목포", via: "목포", cost: 2000, type: "connected" }, "팔금": { hub: "목포", via: "목포", cost: 2000, type: "connected" }, "암태": { hub: "목포", via: "목포", cost: 2000, type: "connected" }, "자은": { hub: "목포", via: "목포", cost: 2000, type: "connected" }, "안좌": { hub: "목포", via: "목포", cost: 2000, type: "connected" }, 
+            "비금": { hub: "목포", via: "목포, 암태", cost: 2000, shipCost: 1000, type: "ship", special: true }, 
+            "도초": { hub: "목포", via: "목포", cost: 0, shipCost: 1000, type: "ship", special: true }, 
+            "장산": { hub: "목포", cost: 0, shipCost: 1000, type: "ship" }, "하의": { hub: "목포", cost: 0, shipCost: 1000, type: "ship" }, "신의": { hub: "목포", cost: 0, shipCost: 1000, type: "ship" }, "흑산": { hub: "목포", cost: 0, shipCost: 1000, type: "ship" }, "홍도": { hub: "목포", cost: 0, shipCost: 1000, type: "ship" }, "가거도": { hub: "목포", cost: 0, shipCost: 1000, type: "ship" }, "만재도": { hub: "목포", cost: 0, shipCost: 1000, type: "ship" }, "완도": { hub: "완도", cost: 0, type: "connected", special: true }, "군외": { hub: "완도", cost: 0, type: "connected", special: true }, "신지": { hub: "완도", cost: 0, type: "connected", special: true }, "고금": { hub: "완도", cost: 0, type: "connected", special: true }, "약산": { hub: "완도", cost: 0, type: "connected", special: true }, "청산": { hub: "완도", cost: 0, shipCost: 1000, type: "ship" }, "노화": { hub: "완도", cost: 0, shipCost: 1000, type: "ship" }, "보길": { hub: "완도", cost: 0, shipCost: 1000, type: "ship" }, "소안": { hub: "완도", cost: 0, shipCost: 1000, type: "ship" }, "여서도": { hub: "완도", cost: 0, shipCost: 1000, type: "ship" }, "금일": { hub: "완도", cost: 0, shipCost: 1000, type: "ship" }, "생일": { hub: "완도", cost: 0, shipCost: 1000, type: "ship" }, "진도조도": { hub: "진도", cost: 0, shipCost: 1000, type: "ship" }, "진도관매도": { hub: "진도", cost: 0, shipCost: 1000, type: "ship" }, "진도서거차도": { hub: "진도", cost: 0, shipCost: 1000, type: "ship" }, "고흥득량도": { hub: "고흥", cost: 0, shipCost: 1000, type: "ship" }, "고흥쑥섬(애도)": { hub: "고흥", cost: 0, shipCost: 1000, type: "ship" }, "영광안마도": { hub: "영광", cost: 0, shipCost: 1000, type: "ship" }, "영광낙월": { hub: "영광", cost: 0, shipCost: 1000, type: "ship" }, "영광송이도": { hub: "영광", cost: 0, shipCost: 1000, type: "ship" }, "금당": { hub: "장흥", cost: 0, shipCost: 1000, type: "ship" }, "해남어룡도": { hub: "해남", cost: 0, shipCost: 1000, type: "ship" }
         };
 
         const SAME_AREA_GROUPS = [
@@ -196,7 +189,7 @@
             "장성": { "광주": { gen: 2400 }, "목포": { gen: 9600 }, "여수": { gen: 10800 }, "순천": { gen: 6700 }, "나주": { gen: 10800 }, "광양": { gen: 5300 }, "담양": { gen: 7900 }, "곡성": { gen: 12200 }, "구례": { gen: 18600 }, "고흥": { gen: 12900 }, "보성": { gen: 4900 }, "화순": { gen: 13900 }, "장흥": { gen: 14100 }, "강진": { gen: 16100 }, "해남": { gen: 11100 }, "영암": { gen: 8400 }, "무안": { gen: 6900 }, "함평": { gen: 5900 }, "영광": { gen: 9700 }, "완도": { gen: 22900 }, "진도": { gen: 14000 }, "남악": { gen: 15500 } },
             "완도": { "광주": { gen: 20500, pre: 24800 }, "목포": { gen: 15700 }, "여수": { gen: 28200 }, "순천": { gen: 23200 }, "나주": { gen: 16600 }, "광양": { gen: 25800 }, "담양": { gen: 23400 }, "곡성": { gen: 23000 }, "구례": { gen: 28400 }, "고흥": { gen: 25200 }, "보성": { gen: 15400 }, "화순": { gen: 23000 }, "장흥": { gen: 12100 }, "강진": { gen: 7300 }, "해남": { gen: 6700, pre: 8200 }, "영암": { gen: 11600 }, "무안": { gen: 18900 }, "함평": { gen: 20800 }, "영광": { gen: 22900 }, "장성": { gen: 22900 }, "진도": { gen: 14000 }, "남악": { gen: 10100 } },
             "진도": { "광주": { gen: 15300, pre: 19900 }, "목포": { gen: 8300, pre: 10800 }, "여수": { gen: 24800 }, "순천": { gen: 23900 }, "나주": { gen: 17200 }, "광양": { gen: 23400 }, "담양": { gen: 18200 }, "곡성": { gen: 20800 }, "구례": { gen: 11400 }, "해남": { gen: 7300 }, "영암": { gen: 10300 }, "무안": { gen: 11500 }, "함평": { gen: 13400 }, "영광": { gen: 17000 }, "장성": { gen: 17700 }, "완도": { gen: 14000 }, "남악": { gen: 10100 } },
-            "남악": { "광주": { gen: 7200, pre: 9300 }, "목포": { gen: 1700 }, "여수": { gen: 15600, pre: 20200 }, "순천": { gen: 10600, pre: 13800 }, "나주": { gen: 9000 }, "광양": { gen: 11700 }, "담양": { gen: 10100 }, "곡성": { gen: 12700 }, "구례": { gen: 19000 }, "고흥": { gen: 23400 }, "보성": { gen: 13500 }, "화순": { gen: 9700 }, "장흥": { gen: 10000 }, "강진": { gen: 7600 }, "해남": { gen: 8500 }, "영암": { gen: 3700 }, "무안": { gen: 3700 }, "함평": { gen: 2500 }, "영광": { gen: 5500 }, "장성": { gen: 8400 }, "완도": { gen: 18900 }, "진도": { gen: 11500 }, "남악": { gen: 3700 } } 
+            "남악": { "광주": { gen: 7200, pre: 9300 }, "목포": { gen: 1700 }, "여수": { gen: 15600, pre: 20200 }, "순천": { gen: 10600, pre: 13800 }, "나주": { gen: 9000 }, "광양": { gen: 11700 }, "담양": { gen: 10100 }, "곡성": { gen: 12700 }, "구례": { gen: 19000 }, "고흥": { gen: 23400 }, "보성": { gen: 13500 }, "화순": { gen: 9700 }, "장흥": { gen: 10000 }, "강진": { gen: 7600 }, "해남": { gen: 8500 }, "영암": { gen: 3700 }, "무안": { gen: 3700 }, "함평": { gen: 2500 }, "영광": { gen: 5500 }, "장성": { gen: 8400 }, "완도": { gen: 18900 }, "진도": { gen: 11500 } } 
         };
 
         const ALLOWED_CITIES = Object.keys(REGION_ICONS);
@@ -260,14 +253,7 @@
             const [activeModal, setActiveModal] = useState(null); 
             const [deductions, setDeductions] = useState({ gov_vehicle: false, meal_1: false, meal_2: false, meal_3: false, meal_half: false, transport_proof: false, transport_gov_vehicle: false, transport_passenger: false });
 
-            const calculateDetailedCost = () => { 
-                if (!result) return { total: 0 }; 
-                let daily = deductions.gov_vehicle ? 12500 : 25000; 
-                let meal = deductions.meal_3 ? 0 : deductions.meal_1 ? 16670 : deductions.meal_2 ? 8330 : deductions.meal_half ? 12500 : 25000; 
-                // [교정] manualMainTransport가 null일 경우 0으로 처리하여 합계 계산
-                let transport = (deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger) ? 0 : (result.type === 'internal' ? (manualMainTransport || 0) : 0); 
-                return { daily, meal, transport, total: daily + meal + transport + (shipFare || 0) }; 
-            };
+            const calculateDetailedCost = () => { if (!result) return { total: 0 }; let daily = deductions.gov_vehicle ? 12500 : 25000; let meal = deductions.meal_3 ? 0 : deductions.meal_1 ? 16670 : deductions.meal_2 ? 8330 : deductions.meal_half ? 12500 : 25000; let transport = (deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger) ? 0 : (result.type === 'internal' ? Number(manualMainTransport) : 0); return { daily, meal, transport, total: daily + meal + transport + (shipFare || 0) }; };
 
             const performCalculation = (o = origin, d = destination, isForce = false) => {
                 const from = normalize(o); const to = normalize(d);
