@@ -194,7 +194,7 @@
         ];
 
         const INITIAL_DATA = {
-            "광주": { "목포": { gen: 7200, pre: 9300 }, "여수": { gen: 13000, pre: 16800 }, "순천": { gen: 8400, pre: 11000 }, "나주": { gen: 4300 }, "광양": { gen: 8400, pre: 10900 }, "담양": { gen: 2900 }, "곡성": { gen: 5500 }, "구례": { gen: 9800 }, "고흥": { gen: 16200, pre: 21000 }, "보성": { gen: 10500, pre: 11500 }, "화순": { gen: 2500 }, "장흥": { gen: 11500, pre: 14900 }, "강진": { gen: 11700, pre: 15200 }, "해남": { gen: 13700, pre: 16900 }, "영암": { gen: 8700 }, "무안": { gen: 6000, pre: 7800 }, "함평": { gen: 4500, pre: 5800 }, "영광": { gen: 7300, pre: 9500 }, "장성": { gen: 2400 }, "완도": { gen: 20500, pre: 24800 }, "진도": { gen: 15300, pre: 19900 }, "남악": { gen: 7200, pre: 9300 } },
+            "광주": { "목포": { gen: 7200, pre: 9300 }, "여수": { gen: 13000, pre: 16800 }, "순천": { gen: 8400, pre: 11000 }, "나주": { gen: 4300 }, "광양": { gen: 8400, pre: 10900 }, "담양": { gen: 2900 }, "곡성": { gen: 5500 }, "구례": { gen: 9800 }, "고흥": { gen: 16200, pre: 21000 }, "보성": { gen: 10500, pre: 11500 }, "화순": { gen: 2500 }, "장흥": { gen: 11500, pre: 14900 }, "장흥": { gen: 11500, pre: 14900 }, "강진": { gen: 11700, pre: 15200 }, "해남": { gen: 13700, pre: 16900 }, "영암": { gen: 8700 }, "무안": { gen: 6000, pre: 7800 }, "함평": { gen: 4500, pre: 5800 }, "영광": { gen: 7300, pre: 9500 }, "장성": { gen: 2400 }, "완도": { gen: 20500, pre: 24800 }, "진도": { gen: 15300, pre: 19900 }, "남악": { gen: 7200, pre: 9300 } },
             "목포": { "광주": { gen: 7200, pre: 9300 }, "여수": { gen: 16500, pre: 21400 }, "순천": { gen: 11500, pre: 15000 }, "나주": { gen: 7300 }, "광양": { gen: 13700, pre: 17800 }, "담양": { gen: 10100 }, "곡성": { gen: 12700 }, "구례": { gen: 17000 }, "고흥": { gen: 18600 }, "보성": { gen: 13500 }, "화순": { gen: 9700 }, "장흥": { gen: 10200 }, "강진": { gen: 7800 }, "해남": { gen: 8700 }, "영암": { gen: 6400 }, "무안": { gen: 3200 }, "함평": { gen: 5100 }, "영광": { gen: 8700 }, "장성": { gen: 9600 }, "완도": { gen: 15700 }, "진도": { gen: 8300, pre: 10800 }, "남악": { gen: 1700 } },
             "여수": { "광주": { gen: 13000, pre: 16800 }, "목포": { gen: 16500, pre: 21400 }, "순천": { gen: 5000 }, "나주": { gen: 17300 }, "광양": { gen: 7500 }, "담양": { gen: 15900 }, "곡성": { gen: 18500 }, "구례": { gen: 10200 }, "고흥": { gen: 13600 }, "보성": { gen: 12800 }, "화순": { gen: 15500 }, "장흥": { gen: 16100 }, "강진": { gen: 18500 }, "해남": { gen: 21500 }, "영암": { gen: 22400 }, "무안": { gen: 19000 }, "함평": { gen: 17500 }, "영광": { gen: 20300 }, "장성": { gen: 15400 }, "완도": { gen: 28200 }, "진도": { gen: 24800 }, "남악": { gen: 15600, pre: 20200 } },
             "순천": { "광주": { gen: 8400, pre: 11000 }, "목포": { gen: 11500, pre: 15000 }, "여수": { gen: 5000 }, "나주": { gen: 12700 }, "광양": { gen: 2500 }, "담양": { gen: 10100 }, "곡성": { gen: 9400 }, "구례": { gen: 5200 }, "고흥": { gen: 8700 }, "보성": { gen: 7900 }, "화순": { gen: 9700 }, "장흥": { gen: 11100 }, "강진": { gen: 13500 }, "해남": { gen: 16600 }, "영암": { gen: 17500 }, "무안": { gen: 14700, pre: 18200 }, "함평": { gen: 12900 }, "영광": { gen: 15700 }, "장성": { gen: 10800 }, "완도": { gen: 23200 }, "진도": { gen: 23900 }, "남악": { gen: 10600, pre: 13800 } },
@@ -301,7 +301,12 @@
             };
 
             const detailCosts = calculateDetailedCost();
-            const routeTags = (() => { const tags = []; if (!result || result.type !== 'internal') return tags; tags.push(deductions.gov_vehicle ? '관용차' : '자가용', "당일", "왕복"); const isWandoConnected = (l) => ISLAND_DB[l]?.hub === '완도' && ISLAND_DB[l]?.type === 'connected'; if ((ISLAND_DB[origin]?.type === 'connected' && !isWandoConnected(origin)) || (ISLAND_DB[destination]?.type === 'connected' && !isWandoConnected(destination))) tags.push("농어촌버스"); if (result.surcharge > 0) tags.push("농어촌버스"); if (result.viaPoint) tags.push(`${result.viaPoint} 경유`); if (result.shipCost > 0 || result.isShipOnlyRoute) tags.push("여객선"); return tags; })();
+            const routeTags = (() => { const tags = []; if (!result || result.type !== 'internal') return tags; tags.push(deductions.gov_vehicle ? '관용차' : '자가용', "당일", "왕복"); const isWandoConnected = (l) => ISLAND_DB[l]?.hub === '완도' && ISLAND_DB[l]?.type === 'connected'; 
+                // [교정] 중복 태그 원인 제거: 섬 지역 연결 여부와 추가 요금 존재 여부를 하나의 통합 조건으로 판정
+                if (((ISLAND_DB[origin]?.type === 'connected' && !isWandoConnected(origin)) || (ISLAND_DB[destination]?.type === 'connected' && !isWandoConnected(destination))) || (result.surcharge > 0)) {
+                    tags.push("농어촌버스");
+                }
+                if (result.viaPoint) tags.push(`${result.viaPoint} 경유`); if (result.shipCost > 0 || result.isShipOnlyRoute) tags.push("여객선"); return tags; })();
 
             const getModalContent = (key) => {
                 const destTag = <span className="inline-block px-1.5 py-0.5 mx-1 bg-slate-100 text-slate-600 rounded border border-slate-200 font-bold align-top relative -top-0.5 text-[10px] leading-none">{destination}</span>;
@@ -351,7 +356,6 @@
                                                 <div className="text-right flex-1">
                                                     {!(deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger) ? (
                                                         <div className="flex items-center justify-end gap-1">
-                                                            {/* [교정] onFocus 시 select()로 전체 선택 (값 유지, 타이핑 시 교체) */}
                                                             <input 
                                                                 type="tel" 
                                                                 value={manualMainTransport === null || manualMainTransport === 0 ? '' : fmt(manualMainTransport)} 
@@ -373,7 +377,6 @@
                                                     <span className="font-bold text-gray-600 text-xl">기타교통비</span>
                                                     <div className="text-right flex-1">
                                                         <div className="flex items-center justify-end gap-1">
-                                                            {/* [교정] onFocus 시 select()로 전체 선택 (값 유지, 타이핑 시 교체) */}
                                                             <input 
                                                                 type="tel" 
                                                                 value={shipFare === 0 ? '' : fmt(shipFare)} 
