@@ -466,7 +466,7 @@
                         const content = getModalContent(activeModal);
                         return (
                             <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in" onClick={() => setActiveModal(null)}>
-                                <div className="bg-white w-full max-sm rounded-3xl shadow-2xl animate-in zoom-in-95 overflow-hidden" onClick={e => e.stopPropagation()}>
+                                <div className="bg-white w-full max-w-sm rounded-3xl shadow-2xl animate-in zoom-in-95 overflow-hidden" onClick={e => e.stopPropagation()}>
                                     <div className="p-7 max-h-[85vh] overflow-y-auto custom-scroll">
                                         <div className="flex justify-between items-center mb-4"><h3 className="text-xl font-bold text-gray-900">{content.title}</h3><button onClick={()=>setActiveModal(null)}><Icons.X size={20} className="text-gray-400"/></button></div>
                                         <p className="text-sm text-gray-600 font-medium leading-relaxed mb-4 break-keep font-pretendard">{content.desc}</p>
