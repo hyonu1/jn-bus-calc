@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>yeobi-easy</title>
+    <title>yeobi-easy by JHN Crimson Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -12,15 +12,24 @@
         window.tailwind.config = {
             theme: {
                 extend: {
+                    colors: {
+                        crimson: {
+                            800: '#8B0000', 
+                            900: '#6B0000', 
+                        },
+                        tiger: {
+                            yellow: '#F5A623', 
+                            black: '#1C1C1E',  
+                            beige: '#F5F0E6', 
+                        }
+                    },
                     animation: {
-                        'pulse-spread': 'pulse-spread 2s infinite',
-                        'slide-up': 'slideUpModal 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-                        'twinkle-text': 'twinkle 1.5s infinite ease-in-out',
+                        'pulse-spread': 'pulse-spread 2.5s infinite',
+                        'slide-up': 'slideUpModal 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                     },
                     keyframes: {
-                        'pulse-spread': { '0%': { boxShadow: '0 0 0 0 rgba(0, 191, 165, 0.7)' }, '70%': { boxShadow: '0 0 0 10px rgba(0, 191, 165, 0)' }, '100%': { boxShadow: '0 0 0 0 rgba(0, 191, 165, 0)' } },
-                        'slideUpModal': { 'from': { transform: 'translateY(20px)', opacity: '0' }, 'to': { transform: 'translateY(0)', opacity: '1' } },
-                        'twinkle': { '0%, 100%': { opacity: '1', textShadow: '0 0 2px rgba(255,255,255,0.2)' }, '50%': { opacity: '0.6', textShadow: '0 0 8px rgba(255,255,255,0.9)' } }
+                        'pulse-spread': { '0%': { boxShadow: '0 0 0 0 rgba(139, 0, 0, 0.4)' }, '70%': { boxShadow: '0 0 0 10px rgba(139, 0, 0, 0)' }, '100%': { boxShadow: '0 0 0 0 rgba(139, 0, 0, 0)' } },
+                        'slideUpModal': { 'from': { transform: 'translateY(15px)', opacity: '0' }, 'to': { transform: 'translateY(0)', opacity: '1' } }
                     }
                 }
             }
@@ -33,10 +42,11 @@
         :root {
             --font-gmarket: 'GmarketSansMedium', sans-serif;
             --font-pretendard: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-            --color-teal: #00BFA5;
-            --color-bg-base: #E5E8EB;
-            --color-text-main: #191F28;
-            --color-btn-main: #00BFA5;
+            --color-crimson: #8B0000;
+            --color-yellow: #F5A623;
+            --color-black: #1C1C1E;
+            --color-bg-base: #F2F2F7;
+            --color-text-main: #1C1C1E;
         }
 
         html { scrollbar-gutter: stable; }
@@ -46,96 +56,110 @@
         }
 
         .main-wrapper { 
-            width: 100%; max-width: 480px; min-height: 100vh; display: flex; flex-direction: column; background-color: #FFFFFF; position: relative; box-shadow: 0 0 30px rgba(0,0,0,0.08);
+            width: 100%; max-width: 480px; min-height: 100vh; display: flex; flex-direction: column; background-color: var(--color-bg-base); position: relative;
         }
 
         @media (min-width: 768px) {
             body { align-items: center; padding: 24px 0; box-sizing: border-box; overflow-y: auto; }
-            .main-wrapper { min-height: unset; height: auto; max-height: calc(100vh - 48px); overflow-y: auto; overflow-x: hidden; border-radius: 32px; box-shadow: 0 8px 60px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.04); }
+            .main-wrapper { min-height: unset; height: auto; max-height: calc(100vh - 48px); overflow-y: auto; overflow-x: hidden; border-radius: 36px; box-shadow: 0 20px 80px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05); background-color: #F8F9FA; }
         }
 
         .input-group { 
-            background-color: #F8FAFC; border-radius: 18px; padding: 0 20px; display: flex; align-items: center; gap: 16px; width: 100%; box-sizing: border-box; height: 76px; border: 2px solid #E6B0AA; font-family: var(--font-gmarket); 
+            background-color: #FFFFFF; border-radius: 20px; padding: 0 20px; display: flex; align-items: center; gap: 16px; width: 100%; box-sizing: border-box; height: 76px; border: 2px solid transparent; font-family: var(--font-gmarket); 
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04); transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .input-group:focus-within { border-color: #D48888; background-color: #FFFFFF; box-shadow: 0 0 0 2px rgba(230, 176, 170, 0.3); }
+        .input-group:focus-within { border-color: var(--color-crimson); box-shadow: 0 4px 20px rgba(139, 0, 0, 0.12); transform: translateY(-1px); }
 
         .tag-badge {
             display: inline-flex; align-items: center; justify-content: center;
-            border-radius: 6px; font-weight: 800;
+            border-radius: 8px; font-weight: 800;
             margin: 0 2px; font-family: var(--font-gmarket); 
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid transparent;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04); border: 1px solid transparent;
         }
 
         .tag-side {
             display: inline-flex; align-items: center; justify-content: center;
-            padding: 1px 4px; border-radius: 3px; font-size: 9px; font-weight: 700;
+            padding: 1px 4px; border-radius: 4px; font-size: 9px; font-weight: 700;
             margin-left: 2px; white-space: nowrap; font-family: var(--font-pretendard); border: 1px solid transparent;
             position: relative; top: -6px;
         }
 
-        .header-teal { background: white; border-bottom: 1px solid #F1F5F9; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; width: 100%; position: relative; z-index: 40; }
-        .mode-switch-container { display: flex; align-items: center; justify-content: center; background-color: #E2E8F0; border-radius: 99px; width: 110px; height: 38px; position: relative; cursor: pointer; padding: 3px; user-select: none; }
-        .mode-switch-slider { position: absolute; top: 3px; bottom: 3px; width: calc(50% - 3px); background-color: #FFFFFF; border-radius: 99px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
+        .header-teal { 
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); 
+            border-bottom: 1px solid rgba(139, 0, 0, 0.08); padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; 
+            width: 100%; position: sticky; top: 0; z-index: 50; 
+        }
+        .mode-switch-container { display: flex; align-items: center; justify-content: center; background-color: #E5E5EA; border-radius: 99px; width: 110px; height: 38px; position: relative; cursor: pointer; padding: 3px; user-select: none; }
+        .mode-switch-slider { position: absolute; top: 3px; bottom: 3px; width: calc(50% - 3px); background-color: #FFFFFF; border-radius: 99px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 3px 8px rgba(0,0,0,0.12), 0 1px 1px rgba(0,0,0,0.04); }
         .mode-switch-slider.extra { left: 3px; }
         .mode-switch-slider.intra { left: calc(50%); }
-        .mode-text { flex: 1; z-index: 10; text-align: center; font-size: 12px; font-weight: 800; transition: color 0.2s; }
-        .mode-text.active { color: var(--color-teal); }
-        .mode-text.inactive { color: #64748B; }
+        .mode-text { flex: 1; z-index: 10; text-align: center; font-size: 13px; font-weight: 800; transition: color 0.2s; }
+        .mode-text.active { color: var(--color-crimson); }
+        .mode-text.inactive { color: #8E8E93; }
 
         .deduct-btn {
             position: absolute; left: 50%; top: 50%; 
             transform: translate(-50%, -50%); 
-            font-size: 13px; padding: 6px 14px; border-radius: 8px; font-weight: 800;
+            font-size: 12px; padding: 6px 14px; border-radius: 10px; font-weight: 800;
             cursor: pointer; z-index: 10; font-family: var(--font-gmarket); 
-            transition: all 0.1s ease;
-            background-color: #0EA5E9; /* Sky-500 */
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(180deg, #9B1111 0%, #8B0000 50%, #7A0000 100%);
             color: #FFFFFF;
             border: none;
-            box-shadow: 0 4px 0 #0284C7; /* Sky-700 */
+            box-shadow: 
+                0 2px 4px rgba(139, 0, 0, 0.3),
+                0 4px 8px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
         }
-
+        .deduct-btn:hover {
+            background: linear-gradient(180deg, #A51515 0%, #950505 50%, #850000 100%);
+            box-shadow: 
+                0 3px 6px rgba(139, 0, 0, 0.35),
+                0 6px 12px rgba(0, 0, 0, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        }
         .deduct-btn.active { 
-            background-color: #F1F5F9; /* Slate-100 */
-            color: #94A3B8; /* Slate-400 */
-            border: none;
-            box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.06); 
-            transform: translate(-50%, calc(-50% + 4px)); 
-            animation: none;
+            background: linear-gradient(180deg, #E5E0D6 0%, #F5F0E6 100%);
+            color: #8E8E93; 
+            border: 1px solid #D5D0C6;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.12), inset 0 1px 2px rgba(0, 0, 0, 0.08);
+            text-shadow: none;
+            transform: translate(-50%, calc(-50% + 1px)); 
         }
-
-        .detail-drawer { max-height: 0; overflow: hidden; transition: max-height 1s cubic-bezier(0.25, 1, 0.5, 1); background-color: #ffffff; border-radius: 0 0 16px 16px; }
-        .detail-drawer.open { max-height: 2000px; }
         
         input.ship-fare-input { 
             text-align: right; 
-            background-color: #FFFFFF; 
+            background-color: #F8F9FA; 
             width: 84px; 
             font-family: var(--font-gmarket); 
             font-weight: 700; 
             outline: none; 
-            border: 1px solid #E2E8F0; 
-            border-radius: 6px;
+            border: 1px solid #E5E5EA; 
+            border-radius: 8px;
             padding: 6px 8px; 
             margin: 0; 
-            color: #94A3B8; 
-            font-size: 16px; 
+            color: #8E8E93; 
+            font-size: 15px; 
             transition: all 0.2s;
         }
         
         input.ship-fare-input:focus { 
-            border-color: #CBD5E1; 
-            color: #64748B; 
-            box-shadow: none; 
+            border-color: var(--color-yellow); 
+            color: var(--color-black); 
+            background-color: #FFFFFF;
+            box-shadow: 0 2px 8px rgba(245, 166, 35, 0.15); 
         }
 
         input.ship-fare-input::selection {
-            background-color: #F1F5F9; 
-            color: #475569; 
+            background-color: rgba(245, 166, 35, 0.2); 
+            color: #1C1C1E; 
         }
 
-        .suggestions-box { position: absolute; left: 0; right: 0; top: 100%; margin-top: 4px; background: white; border: 1px solid #E2E8F0; border-radius: 12px; z-index: 999; box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.15); max-height: 240px; overflow-y: auto; font-family: var(--font-gmarket); }
-        .suggestion-item { padding: 12px 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #374151; font-weight: 500; }
-        .suggestion-item:hover, .suggestion-item.active { background-color: #E0F2F1; }
+        .suggestions-box { position: absolute; left: 0; right: 0; top: 100%; margin-top: 8px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(139,0,0,0.08); border-radius: 20px; z-index: 999; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12); max-height: 240px; overflow-y: auto; font-family: var(--font-gmarket); }
+        .suggestion-item { padding: 14px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 15px; color: #1C1C1E; font-weight: 500; border-bottom: 1px solid rgba(0,0,0,0.03); }
+        .suggestion-item:last-child { border-bottom: none; }
+        .suggestion-item:hover, .suggestion-item.active { background-color: rgba(245, 166, 35, 0.1); }
 
         @keyframes bounce-custom {
             0%, 100% { transform: translateY(0); }
@@ -143,11 +167,11 @@
         }
         .icon-bounce { display: inline-block; animation: bounce-custom 2s infinite; margin-left: 4px; }
         
-        .toggle-switch { width: 40px; height: 22px; border-radius: 99px; transition: 0.2s; position: relative; }
-        .toggle-knob { width: 18px; height: 18px; background: white; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
-        .toggle-active { background: var(--color-teal); }
-        .toggle-inactive { background: #CBD5E1; }
-        .knob-active { transform: translateX(18px); }
+        .toggle-switch { width: 44px; height: 24px; border-radius: 99px; transition: 0.25s cubic-bezier(0.16, 1, 0.3, 1); position: relative; }
+        .toggle-knob { width: 20px; height: 20px; background: white; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: 0.25s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .toggle-active { background: var(--color-yellow); } 
+        .toggle-inactive { background: #E5E5EA; }
+        .knob-active { transform: translateX(20px); }
     </style>
 </head>
 <body>
@@ -200,7 +224,7 @@
             "순천": { "광주": { gen: 8400, pre: 11000 }, "목포": { gen: 11500, pre: 15000 }, "여수": { gen: 5000 }, "나주": { gen: 12700 }, "광양": { gen: 2500 }, "담양": { gen: 10100 }, "곡성": { gen: 9400 }, "구례": { gen: 5200 }, "고흥": { gen: 8700 }, "보성": { gen: 7900 }, "화순": { gen: 9700 }, "장흥": { gen: 11100 }, "강진": { gen: 13500 }, "해남": { gen: 16600 }, "영암": { gen: 17500 }, "무안": { gen: 14700, pre: 18200 }, "함평": { gen: 12900 }, "영광": { gen: 15700 }, "장성": { gen: 10800 }, "완도": { gen: 23200 }, "진도": { gen: 23900 }, "남악": { gen: 10600, pre: 13800 } },
             "나주": { "광주": { gen: 4300 }, "목포": { gen: 7300 }, "여수": { gen: 17300 }, "순천": { gen: 12700 }, "광양": { gen: 12700 }, "담양": { gen: 7200 }, "곡성": { gen: 9800 }, "구례": { gen: 14100 }, "고흥": { gen: 20500 }, "보성": { gen: 14800 }, "화순": { gen: 6800 }, "장흥": { gen: 9000 }, "강진": { gen: 8200 }, "해남": { gen: 9900 }, "영암": { gen: 4400 }, "무안": { gen: 4100 }, "함평": { gen: 3700 }, "영광": { gen: 7400 }, "장성": { gen: 6700 }, "완도": { gen: 16600 }, "진도": { gen: 17200 }, "남악": { gen: 9000 } },
             "광양": { "광주": { gen: 8400, pre: 10900 }, "목포": { gen: 13700, pre: 17800 }, "여수": { gen: 7500 }, "순천": { gen: 2500 }, "나주": { gen: 12700 }, "담양": { gen: 11300 }, "곡성": { gen: 13900 }, "구례": { gen: 7700 }, "고흥": { gen: 8700 }, "보성": { gen: 9900 }, "화순": { gen: 10900 }, "장흥": { gen: 13200 }, "강진": { gen: 15600 }, "해남": { gen: 19100 }, "영암": { gen: 19500 }, "무안": { gen: 14400 }, "함평": { gen: 12900 }, "영광": { gen: 15700 }, "장성": { gen: 10800 }, "완도": { gen: 25800 }, "진도": { gen: 23400 }, "남악": { gen: 11700 } },
-            "담양": { "광주": { gen: 2900 }, "목포": { gen: 10100 }, "여수": { gen: 15900 }, "순천": { gen: 10100 }, "나주": { gen: 11300 }, "광양": { gen: 11300 }, "곡성": { gen: 8400 }, "구례": { gen: 12700 }, "고흥": { gen: 19100 }, "보성": { gen: 13400 }, "화순": { gen: 8000 }, "장흥": { gen: 14400 }, "강진": { gen: 14600 }, "해남": { gen: 16600 }, "영암": { gen: 11600 }, "무안": { gen: 8900 }, "함평": { gen: 7400 }, "영광": { gen: 10200 }, "장성": { gen: 5300 }, "완도": { gen: 23400 }, "진도": { gen: 18200 }, "남악": { gen: 10100 } },
+            "담양": { "광주": { gen: 2900 }, "목포": { gen: 10100 }, "여수": { gen: 15900 }, "순천": { gen: 10100 }, "나주": { gen: 11300 }, "광양": { gen: 11300 }, "곡성": { gen: 8400 }, "구례": { gen: 12700 }, "고흥": { gen: 19100 }, "보성": { gen: 13400 }, "화순": { 매: 8000 }, "장흥": { gen: 14400 }, "강진": { gen: 14600 }, "해남": { gen: 16600 }, "영암": { gen: 11600 }, "무안": { gen: 8900 }, "함평": { gen: 7400 }, "영광": { gen: 10200 }, "장성": { gen: 5300 }, "완도": { gen: 23400 }, "진도": { gen: 18200 }, "남악": { gen: 10100 } },
             "곡성": { "광주": { gen: 5500 }, "목포": { gen: 12700 }, "여수": { gen: 18500 }, "순천": { gen: 9800 }, "나주": { gen: 9800 }, "광양": { gen: 13900 }, "담양": { gen: 8400 }, "구례": { gen: 4300 }, "고흥": { gen: 21400 }, "보성": { gen: 17300 }, "화순": { gen: 8000 }, "장흥": { gen: 17000 }, "강진": { gen: 2400 }, "해남": { gen: 19200 }, "영암": { gen: 14200 }, "무안": { gen: 11500 }, "함평": { gen: 8800 }, "영광": { gen: 12800 }, "장성": { gen: 7900 }, "완도": { gen: 23000 }, "진도": { gen: 20800 }, "남악": { gen: 12700 } },
             "구례": { "광주": { gen: 9800 }, "목포": { gen: 17000 }, "여수": { gen: 10200 }, "순천": { gen: 5200 }, "나주": { gen: 14100 }, "광양": { gen: 7700 }, "담양": { gen: 12700 }, "곡성": { gen: 4300 }, "고흥": { gen: 13900 }, "보성": { gen: 13100 }, "화순": { gen: 12300 }, "장흥": { gen: 16300 }, "강진": { gen: 11400 }, "해남": { gen: 13700 }, "영암": { gen: 8700 }, "무안": { gen: 6000 }, "함평": { gen: 4500 }, "영광": { gen: 7300 }, "장성": { gen: 2400 }, "완도": { gen: 20500 }, "진도": { gen: 15300 }, "남악": { gen: 7200 } },
             "고흥": { "광주": { gen: 16200, pre: 21000 }, "목포": { gen: 18600 }, "여수": { gen: 13600 }, "순천": { gen: 8700 }, "나주": { gen: 20500 }, "광양": { gen: 10200 }, "담양": { gen: 19100 }, "곡성": { gen: 21400 }, "구례": { gen: 13900 }, "보성": { gen: 9900 }, "화순": { gen: 13700 }, "장흥": { gen: 13100 }, "강진": { gen: 14200 }, "해남": { gen: 18600 }, "영암": { gen: 19500 }, "무안": { gen: 22200 }, "함평": { gen: 20700 }, "영광": { gen: 23500 }, "장성": { gen: 18600 }, "완도": { gen: 25200 }, "진도": { gen: 25900 }, "남악": { gen: 23400 } },
@@ -230,13 +254,13 @@
         
         const getTagStyles = (tag) => { 
             const map = { 
-                '자가용': 'bg-blue-50 text-blue-600 border-blue-100', 
-                '관용차': 'bg-rose-50 text-rose-600 border-rose-100', 
-                '당일': 'bg-emerald-50 text-emerald-600 border-emerald-100', 
-                '왕복': 'bg-slate-50 text-slate-400 border-slate-100', 
-                '여객선': 'bg-sky-50 text-sky-600 border-sky-100', 
-                '농어촌버스': 'bg-amber-50 text-amber-600 border-amber-100', 
-                '편도': 'bg-slate-50 text-slate-400 border-slate-100' 
+                '자가용': 'bg-gray-100 text-gray-700 border-gray-200', 
+                '관용차': 'bg-[#FFFBEB] text-[#D97706] border-[#FDE68A]', 
+                '당일': 'bg-gray-100 text-[#1C1C1E] border-gray-200', 
+                '왕복': 'bg-gray-100 text-gray-500 border-gray-200', 
+                '여객선': 'bg-[#E0F2FE] text-[#0284C7] border-[#BAE6FD]', 
+                '농어촌버스': 'bg-[#D1FAE5] text-[#059669] border-[#A7F3D0]', 
+                '편도': 'bg-gray-100 text-gray-500 border-gray-200' 
             }; 
             return map[tag] || 'bg-gray-50 text-gray-600 border-gray-100'; 
         };
@@ -253,10 +277,10 @@
             return (
                 <div className="relative w-full group">
                     <div className="input-group">
-                        <Icons.MapPin className="text-gray-300 group-focus-within:text-teal-500 transition-colors shrink-0" />
+                        <Icons.MapPin className="text-gray-400 group-focus-within:text-[#8B0000] transition-colors shrink-0" />
                         <div className="flex-1 min-w-0">
-                            {label && <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-tighter mb-0.5">{label}</label>}
-                            <input type="text" className="w-full bg-transparent outline-none font-gmarket font-bold text-gray-800 text-2xl placeholder-gray-300" placeholder={placeholder} value={value || ''} onChange={e => { onChange(e.target.value); setShowSuggestions(true); }} onClick={() => { if (value) { onChange(''); onSelect(''); } }} onFocus={() => setShowSuggestions(true)} onBlur={() => setTimeout(() => setShowSuggestions(false), 200)} onKeyDown={handleKeyDown} autoComplete="off" />
+                            {label && <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-tighter mb-0.5">{label}</label>}
+                            <input type="text" className="w-full bg-transparent outline-none font-gmarket font-bold text-gray-900 text-2xl placeholder-gray-300" placeholder={placeholder} value={value || ''} onChange={e => { onChange(e.target.value); setShowSuggestions(true); }} onClick={() => { if (value) { onChange(''); onSelect(''); } }} onFocus={() => setShowSuggestions(true)} onBlur={() => setTimeout(() => setShowSuggestions(false), 200)} onKeyDown={handleKeyDown} autoComplete="off" />
                         </div>
                         <div className="w-14 flex justify-center items-center shrink-0 pt-2">{value && REGION_ICONS[value.replace(/\s/g, "")] && <span className="text-4xl icon-bounce">{REGION_ICONS[value.replace(/\s/g, "")]}</span>}</div>
                     </div>
@@ -264,7 +288,7 @@
                         <div className="suggestions-box custom-scroll">
                             {suggestions.map((city, idx) => (
                                 <div key={city} onMouseDown={() => handleSelect(city)} onMouseEnter={() => setActiveIndex(idx)} className={`suggestion-item ${idx === activeIndex ? 'active' : ''}`}>
-                                    <span className="text-lg font-bold">{city}</span><span className="text-2xl">{REGION_ICONS[city.replace(/\s/g, "")]}</span>
+                                    <span className="text-[16px] font-bold">{city}</span><span className="text-2xl">{REGION_ICONS[city.replace(/\s/g, "")]}</span>
                                 </div>
                             ))}
                         </div>
@@ -292,6 +316,7 @@
             const [activeModal, setActiveModal] = useState(null); 
             const [deductions, setDeductions] = useState({ gov_vehicle: false, meal_1: false, meal_2: false, meal_3: false, meal_half: false, transport_proof: false, transport_gov_vehicle: false, transport_passenger: false });
 
+            // 로직 절대 보존 구역
             const calculateDetailedCost = () => { if (!result) return { total: 0 }; let daily = deductions.gov_vehicle ? 12500 : 25000; let meal = deductions.meal_3 ? 0 : deductions.meal_1 ? 16670 : deductions.meal_2 ? 8330 : deductions.meal_half ? 12500 : 25000; let transport = (deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger) ? 0 : (result.type === 'internal' ? (manualMainTransport || 0) : 0); return { daily, meal, transport, total: daily + meal + transport + (shipFare || 0) }; };
 
             const performCalculation = (o = origin, d = destination, isForce = false) => {
@@ -307,7 +332,6 @@
                 if (fromIsland) { searchFrom = fromIsland.hub; shipSurcharge += (fromIsland.shipCost || 0); islandConfig = fromIsland; viaPoint = fromIsland.via || fromIsland.hub; }
                 if (toIsland) { searchTo = toIsland.hub; shipSurcharge += (toIsland.shipCost || 0); islandConfig = toIsland; viaPoint = toIsland.via || toIsland.hub; }
                 
-                // [교정] 농어촌버스 요금 합산 로직 강화: 섬 지역의 cost를 합산하여 요금 정보 하단과 여비계산에 전달
                 surcharge = (fromIsland?.cost || 0) + (toIsland?.cost || 0);
 
                 const baseData = INITIAL_DATA[searchFrom]?.[searchTo] || INITIAL_DATA[searchTo]?.[searchFrom];
@@ -321,7 +345,8 @@
                 } else setResult({ type: 'external' });
             };
 
-            const detailCosts = calculateDetailedCost();
+            const detailCosts = calculateDetailedCost(); 
+
             const routeTags = (() => { const tags = []; if (!result || result.type !== 'internal') return tags; tags.push(deductions.gov_vehicle ? '관용차' : '자가용', "당일", "왕복"); const isWandoConnected = (l) => ISLAND_DB[l]?.hub === '완도' && ISLAND_DB[l]?.type === 'connected'; 
                 if (((ISLAND_DB[origin]?.type === 'connected' && !isWandoConnected(origin)) || (ISLAND_DB[destination]?.type === 'connected' && !isWandoConnected(destination))) || (result.surcharge > 0)) {
                     tags.push("농어촌버스");
@@ -330,7 +355,7 @@
             })();
 
             const getModalContent = (key) => {
-                const destTag = <span className="inline-block px-1.5 py-0.5 mx-1 bg-slate-100 text-slate-600 rounded border border-slate-200 font-bold align-top relative -top-0.5 text-[10px] leading-none">{destination}</span>;
+                const destTag = <span className="inline-block px-1.5 py-0.5 mx-1 bg-[#1C1C1E] text-white rounded border border-[#1C1C1E] font-bold align-top relative -top-0.5 text-[10px] leading-none">{destination}</span>;
                 if (key === 'daily') { return { title: "일비", desc: <span>출장지{destTag} 내에서 소요되는 현지 교통비, 통신비, 음료비 등 여행 중 발생하는 각종 소액의 경비를 충당하기 위한 경비</span>, items: [ { id: 'gov_vehicle', label: "공용차량·임차차량(전세버스 등)을 이용", subLabel: "" } ] }; }
                 if (key === 'meal') { return { title: "식비", desc: "여행(출장) 중 식사에 소요되는 비용. 밥을 먹을 필요가 없거나 다른 돈으로 밥을 먹었을 때 감액.", items: [ { id: 'meal_1', label: "1식 감액", subLabel: "" }, { id: 'meal_2', label: "2식 감액", subLabel: "" }, { id: 'meal_3', label: "전액 감액", subLabel: "" }, { id: 'meal_half', label: "½ 감액", subLabel: "" } ] }; }
                 if (key === 'transport') { return { title: "교통비", desc: <span>근무지에서 출장 목적지{destTag}로 이동하기 위해 소요되는 교통수단의 비용</span>, items: [ { id: 'transport_proof', label: "증거서류 미제출·부적정" }, { id: 'transport_gov_vehicle', label: "공용/임차차량 이용" }, { id: 'transport_passenger', label: "동료 차량 동승", subLabel: "동승자 교통비 미지급" } ] }; }
@@ -341,160 +366,184 @@
             return (
                 <div className="main-wrapper font-pretendard">
                     <header className="header-teal">
-                        <div className="flex flex-col"><h1 className="font-gmarket font-black text-3xl text-[#00BFA5] tracking-tighter">yeobi-easy</h1><p className="text-[12px] font-bold text-gray-400 mt-0.5">by JHN · for JNE Fellows</p></div>
-                        <div className="mode-switch-container" onClick={() => setIntraCityOpen(!intraCityOpen)}><div className={`mode-switch-slider ${intraCityOpen ? 'intra' : 'extra'}`}></div><div className={`mode-text ${!intraCityOpen ? 'active' : 'inactive'}`}>관외</div><div className={`mode-text ${intraCityOpen ? 'active' : 'inactive'}`}>관내</div></div>
+                        <div className="flex flex-col"><h1 className="font-gmarket font-black text-[28px] text-[#8B0000] tracking-tighter">yeobi-easy</h1><p className="text-[12px] font-bold text-gray-500 mt-0.5 tracking-tight">by JHN · for JNE Fellows</p></div>
+                        <div className="mode-switch-container" onClick={() => { setIntraCityOpen(!intraCityOpen); setShowDetail(false); }}><div className={`mode-switch-slider ${intraCityOpen ? 'intra' : 'extra'}`}></div><div className={`mode-text ${!intraCityOpen ? 'active' : 'inactive'}`}>관외</div><div className={`mode-text ${intraCityOpen ? 'active' : 'inactive'}`}>관내</div></div>
                     </header>
-                    <main className="flex-1 p-6 space-y-6 overflow-y-auto">
-                        <div className="space-y-6">
-                            <AutocompleteInput label="출발지" placeholder="예: 광주, ㄱㅈ" value={origin} onChange={setOrigin} onSelect={(city) => { setOrigin(city); performCalculation(city, destination); }} cityList={ALLOWED_CITIES} />
-                            <AutocompleteInput label="도착지" placeholder="예: 해남, ㅎㄴ" value={destination} onChange={setDestination} onSelect={(city) => { setDestination(city); performCalculation(origin, city); }} cityList={ALLOWED_CITIES} />
-                            <button onClick={() => performCalculation()} className="w-full h-[76px] bg-[#00BFA5] text-white rounded-2xl text-2xl font-bold flex items-center justify-center gap-3 mt-6 hover:opacity-90 active:scale-95 transition-all shadow-sm">
-                                <Icons.Search size={30} /> 조회하기
-                            </button>
-                        </div>
+                    <main className="flex-1 p-6 space-y-4 overflow-y-auto">
+                        <AutocompleteInput label="출발지" placeholder="예: 광주, ㄱㅈ" value={origin} onChange={setOrigin} onSelect={(city) => { setOrigin(city); performCalculation(city, destination); }} cityList={ALLOWED_CITIES} />
+                        <AutocompleteInput label="도착지" placeholder="예: 해남, ㅎㄴ" value={destination} onChange={setDestination} onSelect={(city) => { setDestination(city); performCalculation(origin, city); }} cityList={ALLOWED_CITIES} />
+                        
+                        <button onClick={() => { setOrigin(''); setDestination(''); setResult(null); setShipFare(0); setManualMainTransport(null); setShowDetail(false); }} className="w-full h-[36px] text-[#8B0000] rounded-full text-[12px] font-bold flex items-center justify-center transition-all border border-[#E5E0D6]" style={{background: 'linear-gradient(180deg, #F7F2E8 0%, #F5F0E6 100%)', boxShadow: '0 1px 2px rgba(0,0,0,0.03), inset 0 1px 0 rgba(255,255,255,0.8)'}}>
+                            Crafted with Passion by 전현우@우수영초등학교
+                        </button>
 
-                        {result && (
-                            <div className="result-card animate-slide-up pb-6 bg-white mt-6">
-                                <div className="text-center mb-6">
-                                    <div className="flex justify-between items-center h-12 px-2"><div className="flex items-center"><span className="font-bold text-gray-800 text-xl">요금</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-3xl font-extrabold text-[#00BFA5] font-suit">{fmt(result.type === 'internal' ? (result.surcharge > 0 ? result.baseBusCost : result.cost) : 0)}원</span></div>
-                                    {result.type === 'internal' && result.surcharge > 0 && (<div className="flex justify-between items-center h-12 px-2"><div className="flex items-center"><span className="font-bold text-emerald-500 text-lg">농어촌버스</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-xl font-bold text-emerald-500 font-suit">{fmt(result.surcharge)}원</span></div>)}
-                                    {result.type === 'internal' && result.shipCost > 0 && (<div className="flex justify-between items-center h-10 px-2 mt-1"><div className="flex items-center"><span className="font-bold text-sky-500 text-lg">여객선</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-xl font-bold text-sky-500 font-suit">{fmt(result.shipCost)}원</span></div>)}
-                                    <div className="pb-4 pt-4 flex flex-wrap justify-center gap-1.5 mb-2">
-                                        {routeTags.map((tag, i) => (<span key={i} className={`tag-badge px-2.5 py-1 text-[14px] ${getTagStyles(tag)}`}>{tag}</span>))}
+                        <div className="pb-5 bg-white mt-4 rounded-[32px] overflow-hidden min-h-[220px] flex flex-col" style={{background: 'linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%)', boxShadow: '0 4px 16px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.02), inset 0 1px 0 rgba(255,255,255,1)', border: '1px solid rgba(0,0,0,0.04)'}}>
+                            <div className="text-center pt-5 px-4 flex-1">
+                                <div className="flex justify-between items-center h-10 px-2">
+                                    <div className="flex items-center">
+                                        <span className="font-bold text-[#1C1C1E] text-xl">요금</span>
+                                        {result && <span className={`tag-side ${getTagStyles('편도')}`}>편도</span>}
                                     </div>
-                                    <button onClick={() => setShowDetail(!showDetail)} className={`w-full mt-6 h-[72px] rounded-2xl font-bold text-2xl flex items-center justify-center gap-3 shadow-sm transition-all text-white bg-[#00BFA5] ${showDetail ? 'opacity-70' : 'animate-pulse-spread'}`}>
-                                        <Icons.Calculator size={30} /><span>여비계산</span><Icons.ChevronDown className={`transition-transform duration-300 ${showDetail ? 'rotate-180' : ''}`} size={26} />
+                                    <span className="text-3xl font-extrabold text-[#8B0000] font-suit">
+                                        {result ? `${fmt(result.type === 'internal' ? (result.surcharge > 0 ? result.baseBusCost : result.cost) : 0)}원` : ''}
+                                    </span>
+                                </div>
+                                
+                                {result && result.type === 'internal' && result.surcharge > 0 && (<div className="flex justify-between items-center h-8 px-2 mt-1"><div className="flex items-center"><span className="font-bold text-[#059669] text-[15px]">농어촌버스</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-[17px] font-bold text-[#059669] font-suit">{fmt(result.surcharge)}원</span></div>)}
+                                {result && result.type === 'internal' && result.shipCost > 0 && (<div className="flex justify-between items-center h-8 px-2 mt-1"><div className="flex items-center"><span className="font-bold text-[#0284C7] text-[15px]">여객선</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-[17px] font-bold text-[#0284C7] font-suit">{fmt(result.shipCost)}원</span></div>)}
+                                
+                                <div className="pb-1 pt-3 flex flex-wrap justify-center gap-1.5 min-h-[32px]">
+                                    {result && routeTags.map((tag, i) => (<span key={i} className={`tag-badge px-2.5 py-1 text-[13px] ${getTagStyles(tag)}`}>{tag}</span>))}
+                                </div>
+                                
+                                <div className="flex gap-2.5 mt-5">
+                                    <a href="https://padlet.com/jbyhee/hyonu-s-padlet-4m26339lwedx23dc" target="_blank" rel="noopener noreferrer" className="flex-1 h-[56px] border border-[#E5E0D6] text-[#1C1C1E] rounded-[16px] flex flex-col items-center justify-center no-underline transition-all" style={{background: 'linear-gradient(180deg, #F7F2E8 0%, #F5F0E6 100%)', boxShadow: '0 2px 4px rgba(0,0,0,0.03), inset 0 1px 0 rgba(255,255,255,0.8)'}}>
+                                        <div className="flex items-center gap-1.5">
+                                            <Icons.Send size={15} className="text-[#8B0000]" />
+                                            <span className="text-[13px] font-bold">피드백 남기기</span>
+                                        </div>
+                                        <span className="text-[9px] font-medium text-gray-500 mt-0.5">전현우@우수영초등학교</span>
+                                    </a>
+                                    <button onClick={() => { if(result) setShowDetail(true); }} disabled={!result} className={`flex-1 h-[56px] rounded-[16px] font-bold text-[15px] flex items-center justify-center gap-1.5 transition-all ${result ? 'text-white' : 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'}`} style={result ? {background: 'linear-gradient(180deg, #9B1111 0%, #8B0000 50%, #7A0000 100%)', boxShadow: '0 4px 12px rgba(139,0,0,0.25), 0 2px 4px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.15)'} : {}}>
+                                        <Icons.Calculator size={18} className={result ? "text-[#F5A623]" : "text-gray-300"} /><span>여비 계산</span>
                                     </button>
                                 </div>
-                                <div className={`detail-drawer ${showDetail ? 'open' : ''}`}>
-                                    <div className="p-4 pt-4 space-y-6 border-t border-gray-100">
-                                        <div className="relative flex items-center justify-between h-12">
-                                            <span className="font-bold text-gray-600 text-xl w-24">일비</span>
-                                            <button onClick={()=>setActiveModal('daily')} className={`deduct-btn ${deductions.gov_vehicle ? 'active':''}`}>
-                                                <span className={!deductions.gov_vehicle ? "animate-twinkle-text" : ""}>감액</span>
-                                            </button>
-                                            <div className="flex flex-col items-end flex-1"><span className="text-xl font-bold text-gray-900 font-suit">{fmt(detailCosts.daily)}원</span>{deductions.gov_vehicle && <span className="text-[11px] text-rose-500 font-bold leading-none mt-1">(-12,500)</span>}</div>
-                                        </div>
-                                        <div className="relative flex items-center justify-between h-12">
-                                            <span className="font-bold text-gray-600 text-xl w-24">식비</span>
-                                            <button onClick={()=>setActiveModal('meal')} className={`deduct-btn ${(deductions.meal_1||deductions.meal_2||deductions.meal_3||deductions.meal_half) ? 'active':''}`}>
-                                                <span className={!(deductions.meal_1||deductions.meal_2||deductions.meal_3||deductions.meal_half) ? "animate-twinkle-text" : ""}>감액</span>
-                                            </button>
-                                            <div className="flex flex-col items-end flex-1"><span className="text-xl font-bold text-gray-900 font-suit">{fmt(detailCosts.meal)}원</span><span className="text-[11px] text-rose-500 font-bold leading-none mt-1">{getMealDeductionLabel()}</span></div>
-                                        </div>
-                                        <div className="pt-4 border-t border-dashed border-gray-200">
-                                            <div className="relative flex items-center justify-between h-12">
-                                                <div className="flex items-center"><span className="font-bold text-gray-600 text-xl">교통비</span><span className={`tag-side ${getTagStyles('왕복')}`}>왕복</span></div>
-                                                <button onClick={()=>setActiveModal('transport')} className={`deduct-btn ${deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger ? 'active':''}`}>
-                                                    <span className={!(deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger) ? "animate-twinkle-text" : ""}>감액</span>
-                                                </button>
-                                                <div className="text-right flex-1">
-                                                    {!(deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger) ? (
-                                                        <div className="flex items-center justify-end gap-1">
-                                                            <input 
-                                                                type="tel" 
-                                                                value={manualMainTransport === null || manualMainTransport === 0 ? '' : fmt(manualMainTransport)} 
-                                                                onFocus={(e) => e.target.select()}
-                                                                onChange={(e) => { 
-                                                                    const val = e.target.value.replace(/,/g, ''); 
-                                                                    setManualMainTransport(val === '' ? null : Number(val)); 
-                                                                }}
-                                                                className="ship-fare-input" 
-                                                                placeholder="0" 
-                                                            />
-                                                            <span className="text-xl font-bold text-gray-900">원</span>
-                                                        </div>
-                                                    ) : <span className="text-xl font-bold text-gray-400">0원</span>}
-                                                </div>
-                                            </div>
-                                            {(shipFare > 0 || result.isShipOnlyRoute || result.shipCost > 0) && (
-                                                <div className="relative flex items-center justify-between h-12 mt-2">
-                                                    <span className="font-bold text-gray-600 text-xl">기타교통비</span>
-                                                    <div className="text-right flex-1">
-                                                        <div className="flex items-center justify-end gap-1">
-                                                            <input 
-                                                                type="tel" 
-                                                                value={shipFare === 0 ? '' : fmt(shipFare)} 
-                                                                onFocus={(e) => e.target.select()}
-                                                                onChange={(e) => { 
-                                                                    const val = e.target.value.replace(/,/g, ''); 
-                                                                    setShipFare(val === '' ? 0 : Number(val)); 
-                                                                }}
-                                                                className="ship-fare-input" 
-                                                                placeholder="0" 
-                                                            />
-                                                            <span className="text-xl font-bold text-gray-900">원</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                        <div className="pt-4 border-t-2 border-gray-100 flex justify-between items-center"><span className="font-bold text-gray-900 text-xl">합계</span><span className="text-3xl font-extrabold text-[#00BFA5] font-suit">{fmt(detailCosts.total)}<span className="text-xl ml-1">원</span></span></div>
-                                    </div>
-                                </div>
                             </div>
-                        )}
-                        <div className="mt-4">
-                            <a href="https://padlet.com/jbyhee/hyonu-s-padlet-4m26339lwedx23dc" target="_blank" rel="noopener noreferrer" className="w-full h-[76px] bg-[#E0F2F1] border border-[#B2DFDB] text-[#00695C] rounded-2xl flex flex-col items-center justify-center no-underline hover:opacity-90 active:scale-95 transition-all shadow-sm">
-                                <div className="flex items-center gap-2">
-                                    <Icons.Send size={22} />
-                                    <span className="text-[17px] font-bold">문의 및 의견 남기기</span>
-                                </div>
-                                <span className="text-[11px] font-medium opacity-70 mt-1">Crafted with Passion by 전현우@우수영초등학교</span>
-                            </a>
                         </div>
                     </main>
 
-                    {intraCityOpen && (
-                        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in" onClick={() => setIntraCityOpen(false)}>
-                            <div className="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden animate-slide-up" onClick={e => e.stopPropagation()}>
-                                <div className="p-6">
-                                    <div className="flex justify-between items-center mb-6"><h3 className="font-bold text-xl text-gray-900">관내 여비</h3><button onClick={() => setIntraCityOpen(false)} className="text-gray-400"><Icons.X size={22} /></button></div>
-                                    <div className="mb-6 p-4 bg-gray-50 rounded-xl border border-gray-100 text-sm font-medium text-gray-600 leading-relaxed break-keep">근무지 내의 출장은 별도의 영수증 증빙 없이<br/>정액 지급됩니다.</div>
-                                    <div className="space-y-4 border-t border-b border-gray-100 py-6">
-                                        <div className="flex justify-between items-center"><span className="text-base font-bold text-gray-700">4시간 미만</span><Toggle checked={intraDeductions.shortTime} onChange={(val) => setIntraDeductions(p => ({...p, shortTime: val}))} /></div>
-                                        <div className="flex justify-between items-center"><span className="text-base font-bold text-gray-700">관용차량 이용</span><Toggle checked={intraDeductions.govVehicle} onChange={(val) => setIntraDeductions(p => ({...p, govVehicle: val}))} /></div>
+                    {/* 여비 상세 계산 팝업 (가독성 & 음각 효과 최적화) */}
+                    {showDetail && (
+                        <div className="fixed inset-0 z-[130] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in" onClick={() => setShowDetail(false)}>
+                            <div className="bg-white w-full max-w-sm rounded-[28px] overflow-hidden animate-slide-up border border-[#8B0000]/10" style={{background: 'linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%)', boxShadow: '0 25px 50px rgba(0,0,0,0.25), 0 10px 20px rgba(0,0,0,0.1)'}} onClick={e => e.stopPropagation()}>
+                                <div className="p-5 pb-4 flex justify-between items-center border-b border-gray-100">
+                                    <h3 className="font-black text-[20px] text-[#1C1C1E] tracking-tight">여비 상세 계산</h3>
+                                    <button onClick={() => setShowDetail(false)} className="text-gray-400 hover:text-[#8B0000] transition-colors"><Icons.X size={22} /></button>
+                                </div>
+                                
+                                <div className="p-6 space-y-5 bg-white">
+                                    <div className="relative flex items-center justify-between h-12">
+                                        <span className="font-bold text-gray-700 text-[18px] w-24">일비</span>
+                                        <button onClick={()=>setActiveModal('daily')} className={`deduct-btn ${deductions.gov_vehicle ? 'active':''}`}>
+                                            <span>감액</span>
+                                        </button>
+                                        <div className="flex flex-col items-end flex-1"><span className="text-xl font-bold text-[#1C1C1E] font-suit">{fmt(detailCosts.daily)}원</span>{deductions.gov_vehicle && <span className="text-[11px] text-[#8B0000] font-bold leading-none mt-1">(-12,500)</span>}</div>
                                     </div>
-                                    <div className="mt-8 flex justify-between items-center"><span className="text-xl font-bold text-gray-900">지급액</span><span className="text-2xl font-black text-blue-600 font-suit">{fmt(20000 - (intraDeductions.shortTime ? 10000 : 0) - (intraDeductions.govVehicle ? 10000 : 0))}원</span></div>
-                                    <button onClick={() => setIntraCityOpen(false)} className="bg-[#00BFA5] text-white w-full mt-10 h-14 rounded-xl font-bold text-lg shadow-sm">닫기</button>
+                                    <div className="relative flex items-center justify-between h-12">
+                                        <span className="font-bold text-gray-700 text-[18px] w-24">식비</span>
+                                        <button onClick={()=>setActiveModal('meal')} className={`deduct-btn ${(deductions.meal_1||deductions.meal_2||deductions.meal_3||deductions.meal_half) ? 'active':''}`}>
+                                            <span>감액</span>
+                                        </button>
+                                        <div className="flex flex-col items-end flex-1"><span className="text-xl font-bold text-[#1C1C1E] font-suit">{fmt(detailCosts.meal)}원</span><span className="text-[11px] text-[#8B0000] font-bold leading-none mt-1">{getMealDeductionLabel()}</span></div>
+                                    </div>
+                                    <div className="pt-4 border-t border-dashed border-gray-200">
+                                        <div className="relative flex items-center justify-between h-12">
+                                            <div className="flex items-center"><span className="font-bold text-gray-700 text-[18px]">교통비</span><span className={`tag-side ${getTagStyles('왕복')}`}>왕복</span></div>
+                                            <button onClick={()=>setActiveModal('transport')} className={`deduct-btn ${deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger ? 'active':''}`}>
+                                                <span>감액</span>
+                                            </button>
+                                            <div className="text-right flex-1">
+                                                {!(deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger) ? (
+                                                    <div className="flex items-center justify-end gap-1.5">
+                                                        <input 
+                                                            type="tel" 
+                                                            value={manualMainTransport === null || manualMainTransport === 0 ? '' : fmt(manualMainTransport)} 
+                                                            onFocus={(e) => e.target.select()}
+                                                            onChange={(e) => { 
+                                                                const val = e.target.value.replace(/,/g, ''); 
+                                                                setManualMainTransport(val === '' ? null : Number(val)); 
+                                                            }}
+                                                            className="ship-fare-input !py-1.5 !text-[16px]" 
+                                                            placeholder="0" 
+                                                        />
+                                                        <span className="text-xl font-bold text-gray-900">원</span>
+                                                    </div>
+                                                ) : <span className="text-xl font-bold text-gray-400">0원</span>}
+                                            </div>
+                                        </div>
+                                        {(shipFare > 0 || result.isShipOnlyRoute || result.shipCost > 0) && (
+                                            <div className="relative flex items-center justify-between h-12 mt-4">
+                                                <span className="font-bold text-gray-700 text-[18px]">기타교통비</span>
+                                                <div className="text-right flex-1">
+                                                    <div className="flex items-center justify-end gap-1.5">
+                                                        <input 
+                                                            type="tel" 
+                                                            value={shipFare === 0 ? '' : fmt(shipFare)} 
+                                                            onFocus={(e) => e.target.select()}
+                                                            onChange={(e) => { 
+                                                                const val = e.target.value.replace(/,/g, ''); 
+                                                                setShipFare(val === '' ? 0 : Number(val)); 
+                                                            }}
+                                                            className="ship-fare-input !py-1.5 !text-[16px]" 
+                                                            placeholder="0" 
+                                                        />
+                                                        <span className="text-xl font-bold text-gray-900">원</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="pt-4 border-t-2 border-gray-200 flex justify-between items-center"><span className="font-bold text-[#1C1C1E] text-[20px]">합계</span><span className="text-3xl font-black text-[#8B0000] font-suit">{fmt(detailCosts.total)}<span className="text-[20px] ml-1.5">원</span></span></div>
+                                    
+                                    {/* 확인 버튼 음각 (Engraved) 인터랙션 */}
+                                    <button onClick={() => setShowDetail(false)} className="w-full mt-6 h-14 rounded-[20px] font-bold text-[18px] transition-all border border-[#E5E0D6] text-[#8B0000]" style={{background: 'linear-gradient(180deg, #F7F2E8 0%, #F5F0E6 50%, #EDE8DE 100%)', boxShadow: '0 2px 4px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)'}} onMouseOver={e => e.target.style.background = 'linear-gradient(180deg, #EDE8DE 0%, #EAE5DB 100%)'} onMouseOut={e => e.target.style.background = 'linear-gradient(180deg, #F7F2E8 0%, #F5F0E6 50%, #EDE8DE 100%)'}>확인</button>
                                 </div>
                             </div>
                         </div>
                     )}
 
+                    {/* 관내 여비 팝업 */}
+                    {intraCityOpen && (
+                        <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in" onClick={() => setIntraCityOpen(false)}>
+                            <div className="bg-white w-full max-w-sm rounded-[28px] overflow-hidden animate-slide-up" style={{background: 'linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%)', boxShadow: '0 25px 50px rgba(0,0,0,0.25), 0 10px 20px rgba(0,0,0,0.1)'}} onClick={e => e.stopPropagation()}>
+                                <div className="p-6">
+                                    <div className="flex justify-between items-center mb-5"><h3 className="font-bold text-[22px] text-[#1C1C1E]">관내 여비</h3><button onClick={() => setIntraCityOpen(false)} className="text-gray-400 hover:text-gray-600 transition-colors"><Icons.X size={22} /></button></div>
+                                    <div className="mb-5 p-4 bg-[#F8F9FA] rounded-xl border border-gray-200 text-[14px] font-medium text-gray-700 leading-relaxed break-keep shadow-inner">근무지 내의 출장은 별도의 영수증 증빙 없이 정액 지급됩니다.</div>
+                                    <div className="space-y-5 border-t border-b border-gray-100 py-5">
+                                        <div className="flex justify-between items-center"><span className="text-[17px] font-bold text-gray-800">4시간 미만</span><Toggle checked={intraDeductions.shortTime} onChange={(val) => setIntraDeductions(p => ({...p, shortTime: val}))} /></div>
+                                        <div className="flex justify-between items-center"><span className="text-[17px] font-bold text-gray-800">관용차량 이용</span><Toggle checked={intraDeductions.govVehicle} onChange={(val) => setIntraDeductions(p => ({...p, govVehicle: val}))} /></div>
+                                    </div>
+                                    <div className="mt-6 flex justify-between items-center"><span className="text-[20px] font-bold text-[#1C1C1E]">지급액</span><span className="text-[26px] font-black text-[#8B0000] font-suit">{fmt(20000 - (intraDeductions.shortTime ? 10000 : 0) - (intraDeductions.govVehicle ? 10000 : 0))}원</span></div>
+                                    <button onClick={() => setIntraCityOpen(false)} className="w-full mt-8 h-14 rounded-[20px] font-bold text-[18px] transition-all border border-[#E5E0D6] text-[#8B0000]" style={{background: 'linear-gradient(180deg, #F7F2E8 0%, #F5F0E6 50%, #EDE8DE 100%)', boxShadow: '0 2px 4px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)'}}>닫기</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* 감액 사유 모달 */}
                     {activeModal && (() => {
                         const content = getModalContent(activeModal);
                         return (
-                            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in" onClick={() => setActiveModal(null)}>
-                                <div className="bg-white w-full max-w-sm rounded-3xl shadow-2xl animate-in zoom-in-95 overflow-hidden" onClick={e => e.stopPropagation()}>
-                                    <div className="p-7 max-h-[85vh] overflow-y-auto custom-scroll">
-                                        <div className="flex justify-between items-center mb-4"><h3 className="text-xl font-bold text-gray-900">{content.title}</h3><button onClick={()=>setActiveModal(null)}><Icons.X size={20} className="text-gray-400"/></button></div>
-                                        <p className="text-sm text-gray-600 font-medium leading-relaxed mb-4 break-keep font-pretendard">{content.desc}</p>
+                            <div className="fixed inset-0 z-[140] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in" onClick={() => setActiveModal(null)}>
+                                <div className="bg-white w-full max-w-sm rounded-[28px] animate-in zoom-in-95 overflow-hidden border border-[#F5A623]/30" style={{background: 'linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%)', boxShadow: '0 25px 50px rgba(0,0,0,0.25), 0 10px 20px rgba(0,0,0,0.1)'}} onClick={e => e.stopPropagation()}>
+                                    <div className="p-6 max-h-[85vh] overflow-y-auto custom-scroll">
+                                        <div className="flex justify-between items-center mb-4"><h3 className="text-[20px] font-bold text-[#1C1C1E]">{content.title}</h3><button onClick={()=>setActiveModal(null)}><Icons.X size={22} className="text-gray-400 hover:text-gray-600 transition-colors"/></button></div>
+                                        <p className="text-[14px] text-gray-600 font-medium leading-relaxed mb-5 break-keep font-pretendard">{content.desc}</p>
                                         {activeModal === 'meal' && (
-                                            <div className="mb-6 space-y-4">
-                                                <div className="p-4 bg-amber-50 rounded-2xl border border-amber-100">
-                                                    <p className="text-[13px] font-bold text-amber-800 mb-2">💡 감액 사유</p>
-                                                    <ul className="text-[12px] text-amber-700 space-y-2 list-disc pl-4 leading-snug break-keep">
+                                            <div className="mb-5 space-y-3">
+                                                <div className="p-4 bg-[#FFFBEB] rounded-xl border border-[#FDE68A]">
+                                                    <p className="text-[14px] font-bold text-[#D97706] mb-1.5">💡 감액 사유</p>
+                                                    <ul className="text-[13px] text-[#B45309] space-y-1.5 list-disc pl-4 leading-snug break-keep">
                                                         <li>주최 측·초청기관에서 식사를 제공한 경우</li>
                                                         <li>업무추진비(법인카드)로 식사를 해결한 경우</li>
-                                                        <li>관내·관외출장 중복됐을 때(관내출장에도 우선 식비가 포함됨. 혹 관내출장을 부지급으로 해도, 통상적인 식사시간에 따라 감액, 일관적 기준 중요)</li>
+                                                        <li>관내·관외출장 중복됐을 때 (식사시간 기준)</li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         )}
                                         {activeModal === 'transport' && (
-                                            <div className="mb-6 space-y-4">
-                                                <div className="p-4 bg-blue-50 rounded-2xl border border-blue-100">
-                                                    <p className="text-[13px] font-bold text-blue-800 mb-2">📄 실비 정산 및 증거서류 안내</p>
-                                                    <ul className="text-[12px] text-blue-700 space-y-2.5 list-disc pl-4 leading-snug break-keep">
-                                                        <li><strong>정액 지급되는 일비·식비와 달리 실비 정산 원칙</strong></li>
-                                                        <li><strong>결제내역이 확인되는 증거서류 필수</strong></li>
-                                                        <li><strong>증거서류의 예시:</strong> 출장지의 주유영수증, 톨게이트 영수증(하이패스) 등 차량 이동 사실 및 비용 발생을 증명하는 증빙</li>
+                                            <div className="mb-5 space-y-3">
+                                                <div className="p-4 bg-[#F8F9FA] rounded-xl border border-gray-200">
+                                                    <p className="text-[14px] font-bold text-[#1C1C1E] mb-1.5">📄 실비 정산 및 증거서류 안내</p>
+                                                    <ul className="text-[13px] text-gray-600 space-y-1.5 list-disc pl-4 leading-snug break-keep">
+                                                        <li><strong>정액 지급과 달리 실비 정산 원칙</strong></li>
+                                                        <li>결제내역이 확인되는 증거서류 필수</li>
+                                                        <li>예시: 주유영수증, 톨게이트 영수증 등</li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         )}
-                                        <div className="space-y-3">{content.items.map(item => (<div key={item.id} className="flex justify-between items-center py-4 border-t border-gray-100"><div><span className="block text-[15px] font-bold text-gray-700 leading-snug">{item.label}</span>{item.subLabel && <span className="text-[11px] text-gray-400 font-bold mt-1 block">{item.subLabel}</span>}</div><Toggle checked={deductions[item.id]} onChange={() => setDeductions(prev => { 
+                                        <div className="space-y-2">{content.items.map(item => (<div key={item.id} className="flex justify-between items-center py-4 border-t border-gray-100"><div><span className="block text-[15px] font-bold text-gray-800 leading-snug">{item.label}</span>{item.subLabel && <span className="text-[12px] text-gray-500 font-bold mt-0.5 block">{item.subLabel}</span>}</div><Toggle checked={deductions[item.id]} onChange={() => setDeductions(prev => { 
                                             const newState = { ...prev }; 
                                             if (['meal_1','meal_2','meal_3','meal_half'].includes(item.id)) { if(!prev[item.id]) ['meal_1','meal_2','meal_3','meal_half'].forEach(k=>newState[k]=false); } 
                                             newState[item.id] = !prev[item.id]; 
@@ -502,21 +551,22 @@
                                             if (item.id === 'transport_gov_vehicle') { newState['gov_vehicle'] = newState[item.id]; }
                                             return newState; 
                                         })} /></div>))}</div>
-                                        <button onClick={()=>setActiveModal(null)} className="bg-[#00BFA5] text-white w-full mt-8 h-12 rounded-xl font-bold text-lg shadow-sm">확인</button>
+                                        <button onClick={()=>setActiveModal(null)} className="w-full mt-6 h-14 rounded-[20px] font-bold text-[18px] transition-all border border-[#E5E0D6] text-[#8B0000]" style={{background: 'linear-gradient(180deg, #F7F2E8 0%, #F5F0E6 50%, #EDE8DE 100%)', boxShadow: '0 2px 4px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)'}}>확인</button>
                                     </div>
                                 </div>
                             </div>
                         );
                     })()}
 
+                    {/* 세부 지역 선택 모달 */}
                     {modalState.type && (
                         <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in" onClick={() => { setModalState({ type: null, data: [] }); setTimeout(() => performCalculation(origin, destination, true), 0); }}>
-                            <div className="bg-white rounded-[32px] w-full max-w-sm shadow-2xl overflow-hidden animate-in zoom-in-95" onClick={e => e.stopPropagation()}>
-                                <div className="bg-[#00BFA5] p-5 text-white flex justify-between items-center font-bold text-lg font-suit">세부 지역 선택<button onClick={() => { setModalState({ type: null, data: [] }); setTimeout(() => performCalculation(origin, destination, true), 0); }}><Icons.X size={20} /></button></div>
+                            <div className="bg-white rounded-[28px] w-full max-w-sm shadow-2xl overflow-hidden animate-in zoom-in-95" onClick={e => e.stopPropagation()}>
+                                <div style={{background: 'linear-gradient(180deg, #9B1111 0%, #8B0000 100%)'}} className="p-5 text-white flex justify-between items-center font-bold text-[18px] font-suit">세부 지역 선택<button onClick={() => { setModalState({ type: null, data: [] }); setTimeout(() => performCalculation(origin, destination, true), 0); }} className="hover:opacity-70 transition-opacity"><Icons.X size={22} /></button></div>
                                 <div className="p-5 max-h-[60vh] overflow-y-auto custom-scroll">
-                                    <div className="grid grid-cols-3 gap-2">
+                                    <div className="grid grid-cols-3 gap-3">
                                         {modalState.data.map((name) => (
-                                            <button key={name} onClick={() => { if (modalState.type === 'origin') setOrigin(name); else setDestination(name); setModalState({ type: null, data: [] }); setTimeout(() => performCalculation(modalState.type === 'origin' ? name : origin, modalState.type === 'destination' ? name : destination, true), 0); }} className="flex flex-col items-center justify-center gap-1 px-1 py-3 rounded-2xl bg-gray-50 border border-gray-100 transition-all hover:bg-teal-50 active:scale-95 outline-none shadow-sm"><span className="text-3xl">{REGION_ICONS[name.replace(/\s/g, "")]}</span><span className="text-[13px] font-bold text-gray-700 text-center font-pretendard">{name}</span></button>
+                                            <button key={name} onClick={() => { if (modalState.type === 'origin') setOrigin(name); else setDestination(name); setModalState({ type: null, data: [] }); setTimeout(() => performCalculation(modalState.type === 'origin' ? name : origin, modalState.type === 'destination' ? name : destination, true), 0); }} className="flex flex-col items-center justify-center gap-1.5 px-2 py-4 rounded-[16px] bg-[#F8F9FA] border border-transparent transition-all hover:bg-white hover:border-[#F5A623] hover:shadow-[0_4px_12px_rgba(245,166,35,0.15)] active:scale-95 outline-none"><span className="text-[26px]">{REGION_ICONS[name.replace(/\s/g, "")]}</span><span className="text-[13px] font-bold text-gray-700 text-center font-pretendard">{name}</span></button>
                                         ))}
                                     </div>
                                 </div>
