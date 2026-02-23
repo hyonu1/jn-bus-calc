@@ -49,19 +49,13 @@
             --color-text-main: #1C1C1E;
         }
 
-        html { scrollbar-gutter: stable; }
-        body { 
-            font-family: var(--font-pretendard); background-color: var(--color-bg-base); color: var(--color-text-main); margin: 0;
-            display: flex; justify-content: center; min-height: 100vh; overflow-y: scroll; overflow-x: hidden; -webkit-font-smoothing: antialiased;
-        }
-
-        .main-wrapper { 
-            width: 100%; max-width: 480px; min-height: 100vh; display: flex; flex-direction: column; background-color: var(--color-bg-base); position: relative;
-        }
-
+        html, body { margin: 0; padding: 0; font-family: var(--font-pretendard); color: var(--color-text-main); -webkit-font-smoothing: antialiased; background-color: var(--color-bg-base); }
+        body { display: flex; justify-content: center; }
+        .main-wrapper { width: 100%; max-width: 480px; min-height: 100vh; display: flex; flex-direction: column; background-color: var(--color-bg-base); }
+        .scroll-area { flex: 1; }
         @media (min-width: 768px) {
-            body { align-items: center; padding: 24px 0; box-sizing: border-box; overflow-y: auto; }
-            .main-wrapper { min-height: unset; height: auto; max-height: calc(100vh - 48px); overflow-y: auto; overflow-x: hidden; border-radius: 36px; box-shadow: 0 20px 80px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05); background-color: #F8F9FA; }
+            body { background-color: #D0D0D8; align-items: flex-start; padding: 24px 0; box-sizing: border-box; min-height: 100vh; }
+            .main-wrapper { min-height: unset; border-radius: 36px; overflow: hidden; box-shadow: 0 24px 80px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.06); }
         }
 
         .input-group { 
@@ -172,6 +166,185 @@
         .toggle-active { background: var(--color-yellow); } 
         .toggle-inactive { background: #E5E5EA; }
         .knob-active { transform: translateX(20px); }
+
+        /* ── 헤더: 상단 고정, 콘텐츠와 자연스럽게 연결 ── */
+        .header-teal {
+            background: var(--color-bg-base) !important;
+            border-bottom: 1px solid rgba(139, 0, 0, 0.10) !important;
+            padding: 9px 18px !important;
+            display: flex !important; align-items: center !important; justify-content: space-between !important;
+            width: 100% !important; box-sizing: border-box !important;
+        }
+        .header-teal h1 { font-size: 22px !important; }
+        .header-teal p { margin-top: 1px !important; font-size: 10px !important; }
+        .content-main { padding-top: 24px !important; padding-bottom: 32px !important; }
+
+        /* ── 하단바: 위아래 넉넉한 여백으로 숨통 ── */
+        .bottom-nav {
+            width: 100%; height: 58px;
+            background: var(--color-bg-base);
+            border-top: 1px solid rgba(139, 0, 0, 0.10);
+            display: flex; align-items: center; justify-content: space-around;
+            box-sizing: border-box; padding: 0 28px;
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .nav-btn {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; background: none; border: none; outline: none;
+            gap: 3px; padding: 6px 12px;
+            color: #8B0000;
+            transition: opacity 0.15s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .nav-btn:active { opacity: 0.5; }
+        .nav-btn-label { font-size: 10px; font-weight: 700; color: #8B0000; font-family: var(--font-pretendard); }
+
+        /* ── 아이폰 클래식 홈버튼 ── */
+        .home-btn-wrap {
+            position: relative; display: flex; flex-direction: column; align-items: center;
+            cursor: pointer; -webkit-tap-highlight-color: transparent;
+        }
+        .home-btn {
+            width: 48px; height: 48px; border-radius: 50%;
+            background: linear-gradient(145deg, #e8e8e8 0%, #d0d0d0 40%, #c0c0c0 60%, #b8b8b8 100%);
+            border: 1.5px solid rgba(0,0,0,0.18);
+            box-shadow:
+                0 4px 8px rgba(0,0,0,0.22),
+                0 1px 2px rgba(0,0,0,0.15),
+                inset 0 1px 1px rgba(255,255,255,0.7),
+                inset 0 -2px 4px rgba(0,0,0,0.15);
+            display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
+            transition: all 0.1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .home-btn::before {
+            content: '';
+            width: 36px; height: 36px; border-radius: 50%;
+            background: linear-gradient(145deg, #d4d4d4 0%, #bebebe 50%, #b0b0b0 100%);
+            border: 1px solid rgba(0,0,0,0.12);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.18), inset 0 1px 2px rgba(0,0,0,0.12), 0 1px 0 rgba(255,255,255,0.5);
+            position: absolute;
+        }
+        .home-btn::after {
+            content: '';
+            width: 22px; height: 22px; border-radius: 4px;
+            border: 2px solid rgba(139,0,0,0.55);
+            position: absolute; z-index: 1;
+        }
+        .home-btn:active {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.25), inset 0 2px 5px rgba(0,0,0,0.2), inset 0 1px 2px rgba(0,0,0,0.12);
+            transform: scale(0.94);
+        }
+
+        /* ── 히스토리 말풍선 툴팁: 시계 버튼 바로 위 ── */
+        .history-tooltip {
+            position: absolute; bottom: calc(100% + 10px); right: -8px;
+            background: rgba(245, 240, 230, 0.99);
+            border: 1px solid rgba(139,0,0,0.15);
+            border-radius: 14px;
+            padding: 8px 0;
+            min-width: 220px;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.16), 0 2px 6px rgba(0,0,0,0.08);
+            z-index: 300;
+            animation: tooltipIn 0.18s cubic-bezier(0.16,1,0.3,1) forwards;
+        }
+        .history-tooltip::after {
+            content: '';
+            position: absolute; bottom: -7px; right: 18px;
+            width: 14px; height: 14px;
+            background: rgba(245, 240, 230, 0.99);
+            border-right: 1px solid rgba(139,0,0,0.15);
+            border-bottom: 1px solid rgba(139,0,0,0.15);
+            transform: rotate(45deg);
+            border-radius: 2px;
+        }
+        @keyframes tooltipIn {
+            from { opacity: 0; transform: translateY(6px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .tooltip-item {
+            padding: 9px 16px; display: flex; align-items: center; justify-content: space-between;
+            cursor: pointer; transition: background 0.1s;
+            border-bottom: 1px solid rgba(139,0,0,0.07);
+        }
+        .tooltip-item:last-child { border-bottom: none; }
+        .tooltip-item:hover { background: rgba(139,0,0,0.06); }
+        .tooltip-item:active { background: rgba(139,0,0,0.12); }
+        .tooltip-empty { padding: 12px 16px; text-align: center; font-size: 12px; color: #8E8E93; font-weight: 600; }
+
+        /* ── 상태 표시 버튼 ── */
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        @keyframes dotTrail {
+            0%   { content: ''; }
+            25%  { content: '.'; }
+            50%  { content: '..'; }
+            75%  { content: '...'; }
+            100% { content: ''; }
+        }
+        @keyframes statusDots {
+            0%, 20%  { color: transparent; text-shadow: 6px 0 0 transparent, 12px 0 0 transparent; }
+            40%      { color: rgba(139,0,0,0.6); text-shadow: 6px 0 0 transparent, 12px 0 0 transparent; }
+            60%      { color: rgba(139,0,0,0.9); text-shadow: 6px 0 0 rgba(139,0,0,0.6), 12px 0 0 transparent; }
+            80%,100% { color: #8B0000; text-shadow: 6px 0 0 rgba(139,0,0,0.9), 12px 0 0 rgba(139,0,0,0.6); }
+        }
+        .status-bar-idle {
+            width: 100%; height: 38px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            font-size: 12px; font-weight: 700; font-family: var(--font-pretendard);
+            color: #8E8E93;
+            background: linear-gradient(180deg, #EFEFEF 0%, #E8E8E8 100%);
+            border: 1px solid #D8D8D8;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 1px 2px rgba(0,0,0,0.04);
+        }
+        .status-bar-working {
+            width: 100%; height: 38px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            font-size: 12px; font-weight: 700; font-family: var(--font-pretendard);
+            color: #8B0000;
+            background: linear-gradient(180deg, #F5EFE6 0%, #EDE5D8 100%);
+            border: 1px solid rgba(139,0,0,0.18);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 3px rgba(139,0,0,0.08);
+            animation: statusPulse 1.4s ease-in-out infinite;
+        }
+        .status-bar-done {
+            width: 100%; height: 38px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            font-size: 12px; font-weight: 700; font-family: var(--font-pretendard);
+            color: #8B0000;
+            background: linear-gradient(180deg, #F7F2E8 0%, #F5F0E6 50%, #EDE8DE 100%);
+            border: 1px solid rgba(139,0,0,0.14);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 2px 4px rgba(139,0,0,0.06);
+            cursor: default;
+        }
+        .dots-anim {
+            display: inline-flex; gap: 3px; align-items: center;
+        }
+        .dots-anim span {
+            width: 4px; height: 4px; border-radius: 50%; background: #8B0000;
+        }
+        .dots-anim span:nth-child(1) { animation: dotBounce 1.2s 0s infinite; }
+        .dots-anim span:nth-child(2) { animation: dotBounce 1.2s 0.2s infinite; }
+        .dots-anim span:nth-child(3) { animation: dotBounce 1.2s 0.4s infinite; }
+        @keyframes dotBounce {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+            40% { transform: scale(1.2); opacity: 1; }
+        }
+
+        /* ── 확인 버튼: 노란색 배경 → 클릭 시 흰색 반전 ── */
+        .confirm-btn-yellow {
+            background: linear-gradient(180deg, #F7F2E8 0%, #F5F0E6 50%, #EDE8DE 100%) !important;
+            color: #8B0000 !important;
+            border: 1px solid #E5E0D6 !important;
+            transition: all 0.15s !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8) !important;
+        }
+        .confirm-btn-yellow:active {
+            background: linear-gradient(180deg, #EDE8DE 0%, #EAE5DB 100%) !important;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.08) !important;
+        }
     </style>
 </head>
 <body>
@@ -184,7 +357,9 @@
             ChevronDown: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m6 9 6 6 6-6"/></svg>,
             X: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>,
             Send: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="22" x2="11" y1="2" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>,
-            Calculator: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg>
+            Calculator: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/></svg>,
+            Rocket: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>,
+            Clock: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         };
 
         const REGION_ICONS = {
@@ -315,6 +490,9 @@
             const [intraDeductions, setIntraDeductions] = useState({ shortTime: false, govVehicle: false });
             const [activeModal, setActiveModal] = useState(null); 
             const [deductions, setDeductions] = useState({ gov_vehicle: false, meal_1: false, meal_2: false, meal_3: false, meal_half: false, transport_proof: false, transport_gov_vehicle: false, transport_passenger: false });
+            const [showHistory, setShowHistory] = useState(false);
+            const [history, setHistory] = useState(() => { try { return JSON.parse(localStorage.getItem('yeobi_history') || '[]'); } catch { return []; } });
+            const [calcStatus, setCalcStatus] = React.useState('idle'); // 'idle' | 'working' | 'done'
 
             // 로직 절대 보존 구역
             const calculateDetailedCost = () => { if (!result) return { total: 0 }; let daily = deductions.gov_vehicle ? 12500 : 25000; let meal = deductions.meal_3 ? 0 : deductions.meal_1 ? 16670 : deductions.meal_2 ? 8330 : deductions.meal_half ? 12500 : 25000; let transport = (deductions.transport_proof || deductions.transport_gov_vehicle || deductions.transport_passenger) ? 0 : (result.type === 'internal' ? (manualMainTransport || 0) : 0); return { daily, meal, transport, total: daily + meal + transport + (shipFare || 0) }; };
@@ -323,6 +501,7 @@
                 const from = normalize(o); const to = normalize(d);
                 setDeductions({ gov_vehicle: false, meal_1: false, meal_2: false, meal_3: false, meal_half: false, transport_proof: false, transport_gov_vehicle: false, transport_passenger: false });
                 setShipFare(0); setManualMainTransport(null); setShowDetail(false);
+                if (from && to) setCalcStatus('working');
                 const fromNormalized = o.replace(/\s/g, ""); const toNormalized = d.replace(/\s/g, "");
                 if (!isForce) { if (POPUP_REGIONS[fromNormalized] && !modalState.type) { setModalState({ type: 'origin', data: POPUP_REGIONS[fromNormalized] }); return; } if (POPUP_REGIONS[toNormalized] && !modalState.type) { setModalState({ type: 'destination', data: POPUP_REGIONS[toNormalized] }); return; } }
                 if (!from || !to) return;
@@ -341,8 +520,20 @@
                     const finalCost = finalPre ? finalPre : finalGen; 
                     setShipFare(shipSurcharge * 2); 
                     setManualMainTransport(finalCost * 2); 
-                    setResult({ type: 'internal', cost: finalCost, baseBusCost: baseData?.pre || baseData?.gen || 0, surcharge, shipCost: shipSurcharge, isShipOnlyRoute: islandConfig?.type === 'ship', viaPoint }); 
-                } else setResult({ type: 'external' });
+                    const newResult = { type: 'internal', cost: finalCost, baseBusCost: baseData?.pre || baseData?.gen || 0, surcharge, shipCost: shipSurcharge, isShipOnlyRoute: islandConfig?.type === 'ship', viaPoint };
+                    setResult(newResult);
+                    setTimeout(() => setCalcStatus('done'), 300);
+                    // 히스토리 저장 (유효한 관외 결과만)
+                    if (o && d) {
+                        setHistory(prev => {
+                            const entry = { origin: o, destination: d, cost: finalCost, ts: Date.now() };
+                            const filtered = prev.filter(h => !(h.origin === o && h.destination === d));
+                            const next = [entry, ...filtered].slice(0, 3);
+                            try { localStorage.setItem('yeobi_history', JSON.stringify(next)); } catch {}
+                            return next;
+                        });
+                    }
+                } else { setResult({ type: 'external' }); setTimeout(() => setCalcStatus('done'), 300); }
             };
 
             const detailCosts = calculateDetailedCost(); 
@@ -366,18 +557,36 @@
             return (
                 <div className="main-wrapper font-pretendard">
                     <header className="header-teal">
-                        <div className="flex flex-col"><h1 className="font-gmarket font-black text-[28px] text-[#8B0000] tracking-tighter">yeobi-easy</h1><p className="text-[12px] font-bold text-gray-500 mt-0.5 tracking-tight">by JHN · for JNE Fellows</p></div>
+                        <div className="flex flex-col"><h1 className="font-gmarket font-black text-[#8B0000] tracking-tighter" style={{fontSize:'22px'}}>yeobi-easy</h1><p className="font-bold text-gray-500 tracking-tight" style={{fontSize:'10px',marginTop:'1px'}}>by JHN · for JNE Fellows</p></div>
                         <div className="mode-switch-container" onClick={() => { setIntraCityOpen(!intraCityOpen); setShowDetail(false); }}><div className={`mode-switch-slider ${intraCityOpen ? 'intra' : 'extra'}`}></div><div className={`mode-text ${!intraCityOpen ? 'active' : 'inactive'}`}>관외</div><div className={`mode-text ${intraCityOpen ? 'active' : 'inactive'}`}>관내</div></div>
                     </header>
-                    <main className="flex-1 p-6 space-y-4 overflow-y-auto">
+                    <div className="scroll-area content-main px-5 pt-8 pb-8 space-y-5">
                         <AutocompleteInput label="출발지" placeholder="예: 남악, ㄴㅇ" value={origin} onChange={setOrigin} onSelect={(city) => { setOrigin(city); performCalculation(city, destination); }} cityList={ALLOWED_CITIES} />
                         <AutocompleteInput label="도착지" placeholder="예: 광주, ㄱㅈ" value={destination} onChange={setDestination} onSelect={(city) => { setDestination(city); performCalculation(origin, city); }} cityList={ALLOWED_CITIES} />
                         
-                        <button onClick={() => { setOrigin(''); setDestination(''); setResult(null); setShipFare(0); setManualMainTransport(null); setShowDetail(false); }} className="w-full h-[36px] text-[#8B0000] rounded-full text-[12px] font-bold flex items-center justify-center transition-all border border-[#E5E0D6]" style={{background: 'linear-gradient(180deg, #F7F2E8 0%, #F5F0E6 100%)', boxShadow: '0 1px 2px rgba(0,0,0,0.03), inset 0 1px 0 rgba(255,255,255,0.8)'}}>
-                            Crafted with Passion by 전현우@우수영초등학교
-                        </button>
+                        {/* ── 상태 모니터 버튼 ── */}
+                        {calcStatus === 'idle' && (
+                            <div className="status-bar-idle">
+                                <span style={{fontSize:'13px'}}>○</span>
+                                <span>출발지 · 도착지를 입력하세요</span>
+                            </div>
+                        )}
+                        {calcStatus === 'working' && (
+                            <div className="status-bar-working">
+                                <div className="dots-anim">
+                                    <span/><span/><span/>
+                                </div>
+                                <span>요금 산출 중</span>
+                            </div>
+                        )}
+                        {calcStatus === 'done' && (
+                            <div className="status-bar-done">
+                                <span style={{fontSize:'13px', color:'#8B0000'}}>✓</span>
+                                <span>Crafted with Passion · 전현우@우수영초등학교</span>
+                            </div>
+                        )}
 
-                        <div className="pb-5 bg-white mt-4 rounded-[32px] overflow-hidden min-h-[220px] flex flex-col" style={{background: 'linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%)', boxShadow: '0 4px 16px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.02), inset 0 1px 0 rgba(255,255,255,1)', border: '1px solid rgba(0,0,0,0.04)'}}>
+                        <div className="pb-6 bg-white mt-4 rounded-[32px] overflow-hidden min-h-[220px] flex flex-col" style={{background: 'linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%)', boxShadow: '0 4px 16px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.02), inset 0 1px 0 rgba(255,255,255,1)', border: '1px solid rgba(0,0,0,0.04)'}}>
                             <div className="text-center pt-5 px-4 flex-1">
                                 <div className="flex justify-between items-center h-10 px-2">
                                     <div className="flex items-center">
@@ -410,9 +619,57 @@
                                 </div>
                             </div>
                         </div>
-                    </main>
+                    </div>
 
-                    {/* 여비 상세 계산 팝업 (가독성 & 음각 효과 최적화) */}
+                    {/* ── 아이폰 클래식 하단 네비게이션 ── */}
+                    <nav className="bottom-nav">
+                        {/* 왼쪽: 공사중 – 새 버전 준비중 */}
+                        <a href="https://hyonu1.github.io/yeobi-easier/" target="_blank" rel="noopener noreferrer" className="nav-btn" style={{textDecoration:'none'}}>
+                            <span style={{fontSize:'24px', lineHeight:1}}>🚧</span>
+                        </a>
+
+                        {/* 중앙: 클래식 홈버튼 */}
+                        <div className="home-btn-wrap" onClick={() => {
+                            setDestination(''); setResult(null); setShipFare(0); setManualMainTransport(null); setShowDetail(false);
+                            setDeductions({ gov_vehicle: false, meal_1: false, meal_2: false, meal_3: false, meal_half: false, transport_proof: false, transport_gov_vehicle: false, transport_passenger: false });
+                            setShowHistory(false); setCalcStatus('idle');
+                        }}>
+                            <div className="home-btn" />
+                        </div>
+
+                        {/* 오른쪽: 히스토리 – 툴팁이 이 버튼 바로 위에 뜸 */}
+                        <div style={{position:'relative'}}>
+                            {showHistory && (
+                                <>
+                                    <div style={{position:'fixed',inset:0,zIndex:190}} onClick={() => setShowHistory(false)} />
+                                    <div className="history-tooltip">
+                                        {history.length === 0
+                                            ? <div className="tooltip-empty">최근 기록이 없습니다</div>
+                                            : history.map((h, i) => (
+                                                <div key={i} className="tooltip-item" onClick={() => {
+                                                    setOrigin(h.origin); setDestination(h.destination);
+                                                    setShowHistory(false);
+                                                    setTimeout(() => performCalculation(h.origin, h.destination, true), 0);
+                                                }}>
+                                                    <div>
+                                                        <span style={{fontSize:'13px',fontWeight:700,color:'#1C1C1E'}}>{h.origin}</span>
+                                                        <span style={{fontSize:'12px',color:'#8E8E93',margin:'0 4px'}}>→</span>
+                                                        <span style={{fontSize:'13px',fontWeight:700,color:'#8B0000'}}>{h.destination}</span>
+                                                    </div>
+                                                    <span style={{fontSize:'12px',fontWeight:700,color:'#8B0000',marginLeft:'8px'}}>{fmt(h.cost)}원</span>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                </>
+                            )}
+                            <button className="nav-btn" onClick={() => setShowHistory(v => !v)}>
+                                <Icons.Clock style={{color:'#8B0000', opacity: showHistory ? 1 : 0.7}} />
+                            </button>
+                        </div>
+                    </nav>
+
+
                     {showDetail && (
                         <div className="fixed inset-0 z-[130] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in" onClick={() => setShowDetail(false)}>
                             <div className="bg-white w-full max-w-sm rounded-[28px] overflow-hidden animate-slide-up border border-[#8B0000]/10" style={{background: 'linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%)', boxShadow: '0 25px 50px rgba(0,0,0,0.25), 0 10px 20px rgba(0,0,0,0.1)'}} onClick={e => e.stopPropagation()}>
@@ -485,8 +742,8 @@
                                     </div>
                                     <div className="pt-4 border-t-2 border-gray-200 flex justify-between items-center"><span className="font-bold text-[#1C1C1E] text-[20px]">합계</span><span className="text-3xl font-black text-[#8B0000] font-suit">{fmt(detailCosts.total)}<span className="text-[20px] ml-1.5">원</span></span></div>
                                     
-                                    {/* 확인 버튼 음각 (Engraved) 인터랙션 */}
-                                    <button onClick={() => setShowDetail(false)} className="w-full mt-6 h-14 rounded-[20px] font-bold text-[18px] transition-all border border-[#E5E0D6] text-[#8B0000]" style={{background: 'linear-gradient(180deg, #F7F2E8 0%, #F5F0E6 50%, #EDE8DE 100%)', boxShadow: '0 2px 4px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)'}} onMouseOver={e => e.target.style.background = 'linear-gradient(180deg, #EDE8DE 0%, #EAE5DB 100%)'} onMouseOut={e => e.target.style.background = 'linear-gradient(180deg, #F7F2E8 0%, #F5F0E6 50%, #EDE8DE 100%)'}>확인</button>
+                                    {/* 확인 버튼: 노란색 배경 → 클릭 시 흰색 반전 */}
+                                    <button onClick={() => setShowDetail(false)} className="w-full mt-6 h-14 rounded-[20px] font-bold text-[18px] confirm-btn-yellow">확인</button>
                                 </div>
                             </div>
                         </div>
