@@ -50,12 +50,13 @@
         }
 
         html, body { margin: 0; padding: 0; font-family: var(--font-pretendard); color: var(--color-text-main); -webkit-font-smoothing: antialiased; background-color: var(--color-bg-base); }
-        body { display: flex; justify-content: center; }
-        .main-wrapper { width: 100%; max-width: 480px; min-height: 100vh; display: flex; flex-direction: column; background-color: var(--color-bg-base); }
-        .scroll-area { flex: 1; }
+        body { display: flex; justify-content: center; align-items: flex-start; min-height: 100dvh; }
+        .main-wrapper { width: 100%; max-width: 480px; min-height: 100dvh; display: flex; flex-direction: column; background-color: var(--color-bg-base); }
+        .scroll-area { flex: 1; overflow-y: auto; }
         @media (min-width: 768px) {
-            body { background-color: #D0D0D8; align-items: flex-start; padding: 24px 0; box-sizing: border-box; min-height: 100vh; }
-            .main-wrapper { min-height: unset; border-radius: 36px; overflow: hidden; box-shadow: 0 24px 80px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.06); }
+            body { background-color: #D0D0D8; align-items: center; padding: 24px 0; box-sizing: border-box; min-height: 100dvh; }
+            .main-wrapper { min-height: unset; max-height: calc(100dvh - 48px); border-radius: 36px; overflow: hidden; box-shadow: 0 24px 80px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.06); }
+            .scroll-area { overflow-y: auto; }
         }
 
         .input-group { 
@@ -167,13 +168,14 @@
         .toggle-inactive { background: #E5E5EA; }
         .knob-active { transform: translateX(20px); }
 
-        /* ── 헤더: 상단 고정, 콘텐츠와 자연스럽게 연결 ── */
+        /* ── 헤더: 자연스럽게 흐름에 포함 ── */
         .header-teal {
             background: var(--color-bg-base) !important;
             border-bottom: 1px solid rgba(139, 0, 0, 0.10) !important;
             padding: 9px 18px !important;
             display: flex !important; align-items: center !important; justify-content: space-between !important;
             width: 100% !important; box-sizing: border-box !important;
+            position: static !important;
         }
         .header-teal h1 { font-size: 22px !important; }
         .header-teal p { margin-top: 1px !important; font-size: 10px !important; }
@@ -187,6 +189,8 @@
             display: flex; align-items: center; justify-content: space-around;
             box-sizing: border-box; padding: 0 28px;
             padding-bottom: env(safe-area-inset-bottom, 0px);
+            position: static;
+            flex-shrink: 0;
         }
         .nav-btn {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -206,34 +210,46 @@
         }
         .home-btn {
             width: 48px; height: 48px; border-radius: 50%;
-            background: linear-gradient(145deg, #e8e8e8 0%, #d0d0d0 40%, #c0c0c0 60%, #b8b8b8 100%);
-            border: 1.5px solid rgba(0,0,0,0.18);
+            background: linear-gradient(145deg, #e2e2e2 0%, #d8d8d8 30%, #c8c8c8 60%, #bcbcbc 100%);
+            border: 1.5px solid rgba(0,0,0,0.20);
             box-shadow:
-                0 4px 8px rgba(0,0,0,0.22),
-                0 1px 2px rgba(0,0,0,0.15),
-                inset 0 1px 1px rgba(255,255,255,0.7),
-                inset 0 -2px 4px rgba(0,0,0,0.15);
+                0 5px 10px rgba(0,0,0,0.25),
+                0 2px 4px rgba(0,0,0,0.18),
+                inset 0 2px 2px rgba(255,255,255,0.75),
+                inset 0 -3px 6px rgba(0,0,0,0.18),
+                inset 0 0 0 8px rgba(0,0,0,0.04);
             display: flex; align-items: center; justify-content: center;
             position: relative; overflow: hidden;
-            transition: all 0.1s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.12s cubic-bezier(0.16, 1, 0.3, 1);
         }
+        /* 안쪽 원형 링 */
         .home-btn::before {
             content: '';
-            width: 36px; height: 36px; border-radius: 50%;
-            background: linear-gradient(145deg, #d4d4d4 0%, #bebebe 50%, #b0b0b0 100%);
-            border: 1px solid rgba(0,0,0,0.12);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.18), inset 0 1px 2px rgba(0,0,0,0.12), 0 1px 0 rgba(255,255,255,0.5);
+            width: 38px; height: 38px; border-radius: 50%;
+            background: linear-gradient(150deg, #d0d0d0 0%, #c0c0c0 40%, #b4b4b4 70%, #acacac 100%);
+            border: 1px solid rgba(0,0,0,0.14);
+            box-shadow:
+                inset 0 3px 6px rgba(0,0,0,0.22),
+                inset 0 1px 3px rgba(0,0,0,0.14),
+                0 1px 0 rgba(255,255,255,0.55);
             position: absolute;
         }
+        /* 크림슨 둥근 사각형 각인 */
         .home-btn::after {
             content: '';
-            width: 22px; height: 22px; border-radius: 4px;
-            border: 2px solid rgba(139,0,0,0.55);
+            width: 20px; height: 20px;
+            border-radius: 5px;
+            background: transparent;
+            border: 2.5px solid rgba(139, 0, 0, 0.70);
+            box-shadow:
+                0 1px 2px rgba(0,0,0,0.15),
+                inset 0 1px 1px rgba(255,255,255,0.08);
             position: absolute; z-index: 1;
+            filter: drop-shadow(0 1px 1px rgba(139,0,0,0.3));
         }
         .home-btn:active {
-            box-shadow: 0 1px 3px rgba(0,0,0,0.25), inset 0 2px 5px rgba(0,0,0,0.2), inset 0 1px 2px rgba(0,0,0,0.12);
-            transform: scale(0.94);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.28), inset 0 3px 7px rgba(0,0,0,0.22), inset 0 1px 3px rgba(0,0,0,0.15);
+            transform: scale(0.92);
         }
 
         /* ── 히스토리 말풍선 툴팁: 시계 버튼 바로 위 ── */
@@ -586,7 +602,7 @@
                             </div>
                         )}
 
-                        <div className="pb-6 bg-white mt-4 rounded-[32px] overflow-hidden min-h-[220px] flex flex-col" style={{background: 'linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%)', boxShadow: '0 4px 16px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.02), inset 0 1px 0 rgba(255,255,255,1)', border: '1px solid rgba(0,0,0,0.04)'}}>
+                        <div className="pb-6 bg-white mt-4 rounded-[32px] overflow-hidden flex flex-col" style={{background: 'linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%)', boxShadow: '0 4px 16px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.02), inset 0 1px 0 rgba(255,255,255,1)', border: '1px solid rgba(0,0,0,0.04)'}}>
                             <div className="text-center pt-5 px-4 flex-1">
                                 <div className="flex justify-between items-center h-10 px-2">
                                     <div className="flex items-center">
@@ -673,12 +689,12 @@
                     {showDetail && (
                         <div className="fixed inset-0 z-[130] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in" onClick={() => setShowDetail(false)}>
                             <div className="bg-white w-full max-w-sm rounded-[28px] overflow-hidden animate-slide-up border border-[#8B0000]/10" style={{background: 'linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%)', boxShadow: '0 25px 50px rgba(0,0,0,0.25), 0 10px 20px rgba(0,0,0,0.1)'}} onClick={e => e.stopPropagation()}>
-                                <div className="p-5 pb-4 flex justify-between items-center border-b border-gray-100">
+                                <div className="p-4 pb-3 flex justify-between items-center border-b border-gray-100">
                                     <h3 className="font-black text-[20px] text-[#1C1C1E] tracking-tight">여비 상세 계산</h3>
                                     <button onClick={() => setShowDetail(false)} className="text-gray-400 hover:text-[#8B0000] transition-colors"><Icons.X size={22} /></button>
                                 </div>
                                 
-                                <div className="p-6 space-y-5 bg-white">
+                                <div className="p-4 space-y-3 bg-white">
                                     <div className="relative flex items-center justify-between h-12">
                                         <span className="font-bold text-gray-700 text-[18px] w-24">일비</span>
                                         <button onClick={()=>setActiveModal('daily')} className={`deduct-btn ${deductions.gov_vehicle ? 'active':''}`}>
@@ -740,10 +756,10 @@
                                             </div>
                                         )}
                                     </div>
-                                    <div className="pt-4 border-t-2 border-gray-200 flex justify-between items-center"><span className="font-bold text-[#1C1C1E] text-[20px]">합계</span><span className="text-3xl font-black text-[#8B0000] font-suit">{fmt(detailCosts.total)}<span className="text-[20px] ml-1.5">원</span></span></div>
+                                    <div className="pt-3 border-t-2 border-gray-200 flex justify-between items-center"><span className="font-bold text-[#1C1C1E] text-[18px]">합계</span><span className="text-[28px] font-black text-[#8B0000] font-suit">{fmt(detailCosts.total)}<span className="text-[18px] ml-1.5">원</span></span></div>
                                     
                                     {/* 확인 버튼: 노란색 배경 → 클릭 시 흰색 반전 */}
-                                    <button onClick={() => setShowDetail(false)} className="w-full mt-6 h-14 rounded-[20px] font-bold text-[18px] confirm-btn-yellow">확인</button>
+                                    <button onClick={() => setShowDetail(false)} className="w-full mt-4 h-12 rounded-[20px] font-bold text-[18px] confirm-btn-yellow">확인</button>
                                 </div>
                             </div>
                         </div>
@@ -753,15 +769,15 @@
                     {intraCityOpen && (
                         <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in" onClick={() => setIntraCityOpen(false)}>
                             <div className="bg-white w-full max-w-sm rounded-[28px] overflow-hidden animate-slide-up" style={{background: 'linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%)', boxShadow: '0 25px 50px rgba(0,0,0,0.25), 0 10px 20px rgba(0,0,0,0.1)'}} onClick={e => e.stopPropagation()}>
-                                <div className="p-6">
-                                    <div className="flex justify-between items-center mb-5"><h3 className="font-bold text-[22px] text-[#1C1C1E]">관내 여비</h3><button onClick={() => setIntraCityOpen(false)} className="text-gray-400 hover:text-gray-600 transition-colors"><Icons.X size={22} /></button></div>
-                                    <div className="mb-5 p-4 bg-[#F8F9FA] rounded-xl border border-gray-200 text-[14px] font-medium text-gray-700 leading-relaxed break-keep shadow-inner">근무지 내의 출장은 별도의 영수증 증빙 없이 정액 지급됩니다.</div>
-                                    <div className="space-y-5 border-t border-b border-gray-100 py-5">
-                                        <div className="flex justify-between items-center"><span className="text-[17px] font-bold text-gray-800">4시간 미만</span><Toggle checked={intraDeductions.shortTime} onChange={(val) => setIntraDeductions(p => ({...p, shortTime: val}))} /></div>
-                                        <div className="flex justify-between items-center"><span className="text-[17px] font-bold text-gray-800">관용차량 이용</span><Toggle checked={intraDeductions.govVehicle} onChange={(val) => setIntraDeductions(p => ({...p, govVehicle: val}))} /></div>
+                                <div className="p-5">
+                                    <div className="flex justify-between items-center mb-4"><h3 className="font-bold text-[20px] text-[#1C1C1E]">관내 여비</h3><button onClick={() => setIntraCityOpen(false)} className="text-gray-400 hover:text-gray-600 transition-colors"><Icons.X size={22} /></button></div>
+                                    <div className="mb-4 p-3 bg-[#F8F9FA] rounded-xl border border-gray-200 text-[13px] font-medium text-gray-700 leading-relaxed break-keep shadow-inner">근무지 내의 출장은 별도의 영수증 증빙 없이 정액 지급됩니다.</div>
+                                    <div className="space-y-4 border-t border-b border-gray-100 py-4">
+                                        <div className="flex justify-between items-center"><span className="text-[16px] font-bold text-gray-800">4시간 미만</span><Toggle checked={intraDeductions.shortTime} onChange={(val) => setIntraDeductions(p => ({...p, shortTime: val}))} /></div>
+                                        <div className="flex justify-between items-center"><span className="text-[16px] font-bold text-gray-800">관용차량 이용</span><Toggle checked={intraDeductions.govVehicle} onChange={(val) => setIntraDeductions(p => ({...p, govVehicle: val}))} /></div>
                                     </div>
-                                    <div className="mt-6 flex justify-between items-center"><span className="text-[20px] font-bold text-[#1C1C1E]">지급액</span><span className="text-[26px] font-black text-[#8B0000] font-suit">{fmt(20000 - (intraDeductions.shortTime ? 10000 : 0) - (intraDeductions.govVehicle ? 10000 : 0))}원</span></div>
-                                    <button onClick={() => setIntraCityOpen(false)} className="w-full mt-8 h-14 rounded-[20px] font-bold text-[18px] transition-all border border-[#E5E0D6] text-[#8B0000]" style={{background: 'linear-gradient(180deg, #F7F2E8 0%, #F5F0E6 50%, #EDE8DE 100%)', boxShadow: '0 2px 4px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)'}}>닫기</button>
+                                    <div className="mt-4 flex justify-between items-center"><span className="text-[18px] font-bold text-[#1C1C1E]">지급액</span><span className="text-[24px] font-black text-[#8B0000] font-suit">{fmt(20000 - (intraDeductions.shortTime ? 10000 : 0) - (intraDeductions.govVehicle ? 10000 : 0))}원</span></div>
+                                    <button onClick={() => setIntraCityOpen(false)} className="w-full mt-5 h-12 rounded-[20px] font-bold text-[17px] transition-all border border-[#E5E0D6] text-[#8B0000]" style={{background: 'linear-gradient(180deg, #F7F2E8 0%, #F5F0E6 50%, #EDE8DE 100%)', boxShadow: '0 2px 4px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)'}}>닫기</button>
                                 </div>
                             </div>
                         </div>
@@ -773,14 +789,14 @@
                         return (
                             <div className="fixed inset-0 z-[140] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in" onClick={() => setActiveModal(null)}>
                                 <div className="bg-white w-full max-w-sm rounded-[28px] animate-in zoom-in-95 overflow-hidden border border-[#F5A623]/30" style={{background: 'linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%)', boxShadow: '0 25px 50px rgba(0,0,0,0.25), 0 10px 20px rgba(0,0,0,0.1)'}} onClick={e => e.stopPropagation()}>
-                                    <div className="p-6 max-h-[85vh] overflow-y-auto custom-scroll">
-                                        <div className="flex justify-between items-center mb-4"><h3 className="text-[20px] font-bold text-[#1C1C1E]">{content.title}</h3><button onClick={()=>setActiveModal(null)}><Icons.X size={22} className="text-gray-400 hover:text-gray-600 transition-colors"/></button></div>
-                                        <p className="text-[14px] text-gray-600 font-medium leading-relaxed mb-5 break-keep font-pretendard">{content.desc}</p>
+                                    <div className="p-4 max-h-[85vh] overflow-y-auto custom-scroll">
+                                        <div className="flex justify-between items-center mb-3"><h3 className="text-[18px] font-bold text-[#1C1C1E]">{content.title}</h3><button onClick={()=>setActiveModal(null)}><Icons.X size={22} className="text-gray-400 hover:text-gray-600 transition-colors"/></button></div>
+                                        <p className="text-[13px] text-gray-600 font-medium leading-relaxed mb-4 break-keep font-pretendard">{content.desc}</p>
                                         {activeModal === 'meal' && (
-                                            <div className="mb-5 space-y-3">
-                                                <div className="p-4 bg-[#FFFBEB] rounded-xl border border-[#FDE68A]">
-                                                    <p className="text-[14px] font-bold text-[#D97706] mb-1.5">💡 감액 사유</p>
-                                                    <ul className="text-[13px] text-[#B45309] space-y-1.5 list-disc pl-4 leading-snug break-keep">
+                                            <div className="mb-4 space-y-2">
+                                                <div className="p-3 bg-[#FFFBEB] rounded-xl border border-[#FDE68A]">
+                                                    <p className="text-[13px] font-bold text-[#D97706] mb-1">💡 감액 사유</p>
+                                                    <ul className="text-[12px] text-[#B45309] space-y-1 list-disc pl-4 leading-snug break-keep">
                                                         <li>주최 측·초청기관에서 식사를 제공한 경우</li>
                                                         <li>업무추진비(법인카드)로 식사를 해결한 경우</li>
                                                         <li>관내·관외출장 중복됐을 때 (식사시간 기준)</li>
@@ -789,10 +805,10 @@
                                             </div>
                                         )}
                                         {activeModal === 'transport' && (
-                                            <div className="mb-5 space-y-3">
-                                                <div className="p-4 bg-[#F8F9FA] rounded-xl border border-gray-200">
-                                                    <p className="text-[14px] font-bold text-[#1C1C1E] mb-1.5">📄 실비 정산 및 증거서류 안내</p>
-                                                    <ul className="text-[13px] text-gray-600 space-y-1.5 list-disc pl-4 leading-snug break-keep">
+                                            <div className="mb-4 space-y-2">
+                                                <div className="p-3 bg-[#F8F9FA] rounded-xl border border-gray-200">
+                                                    <p className="text-[13px] font-bold text-[#1C1C1E] mb-1">📄 실비 정산 및 증거서류 안내</p>
+                                                    <ul className="text-[12px] text-gray-600 space-y-1 list-disc pl-4 leading-snug break-keep">
                                                         <li><strong>정액 지급과 달리 실비 정산 원칙</strong></li>
                                                         <li>결제내역이 확인되는 증거서류 필수</li>
                                                         <li>예시: 주유영수증, 톨게이트 영수증 등</li>
@@ -808,7 +824,7 @@
                                             if (item.id === 'transport_gov_vehicle') { newState['gov_vehicle'] = newState[item.id]; }
                                             return newState; 
                                         })} /></div>))}</div>
-                                        <button onClick={()=>setActiveModal(null)} className="w-full mt-6 h-14 rounded-[20px] font-bold text-[18px] transition-all border border-[#E5E0D6] text-[#8B0000]" style={{background: 'linear-gradient(180deg, #F7F2E8 0%, #F5F0E6 50%, #EDE8DE 100%)', boxShadow: '0 2px 4px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)'}}>확인</button>
+                                        <button onClick={()=>setActiveModal(null)} className="w-full mt-4 h-12 rounded-[20px] font-bold text-[17px] transition-all border border-[#E5E0D6] text-[#8B0000]" style={{background: 'linear-gradient(180deg, #F7F2E8 0%, #F5F0E6 50%, #EDE8DE 100%)', boxShadow: '0 2px 4px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.8)'}}>확인</button>
                                     </div>
                                 </div>
                             </div>
@@ -837,4 +853,3 @@
     </script>
 </body>
 </html>
-
