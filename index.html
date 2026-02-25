@@ -577,8 +577,8 @@
                         <div className="mode-switch-container" onClick={() => { setIntraCityOpen(!intraCityOpen); setShowDetail(false); }}><div className={`mode-switch-slider ${intraCityOpen ? 'intra' : 'extra'}`}></div><div className={`mode-text ${!intraCityOpen ? 'active' : 'inactive'}`}>관외</div><div className={`mode-text ${intraCityOpen ? 'active' : 'inactive'}`}>관내</div></div>
                     </header>
                     <div className="scroll-area content-main px-5 pt-8 pb-8 space-y-5">
-                        <AutocompleteInput label="출발지" placeholder="예: 남악, ㄴㅇ" value={origin} onChange={setOrigin} onSelect={(city) => { setOrigin(city); performCalculation(city, destination); }} cityList={ALLOWED_CITIES} />
-                        <AutocompleteInput label="도착지" placeholder="예: 광주, ㄱㅈ" value={destination} onChange={setDestination} onSelect={(city) => { setDestination(city); performCalculation(origin, city); }} cityList={ALLOWED_CITIES} />
+                        <AutocompleteInput label="출발지" placeholder="출발지를 입력하세요." value={origin} onChange={setOrigin} onSelect={(city) => { setOrigin(city); performCalculation(city, destination); }} cityList={ALLOWED_CITIES} />
+                        <AutocompleteInput label="도착지" placeholder="도착지를 입력하세요." value={destination} onChange={setDestination} onSelect={(city) => { setDestination(city); performCalculation(origin, city); }} cityList={ALLOWED_CITIES} />
                         
                         {/* ── 상태 모니터 버튼 ── */}
                         {calcStatus === 'idle' && (
