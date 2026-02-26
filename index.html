@@ -525,7 +525,7 @@
                     <header className="header-teal">
                         <div className="flex flex-col">
                             <h1 className="font-gmarket font-black text-[#8B0000] tracking-tighter" style={{fontSize:'22px'}}>yeobi-easy</h1>
-                            <p className="font-bold text-gray-500 tracking-tight" style={{fontSize:'10px',marginTop:'1px'}}>전현우(aka병희) · for all my fellas</p>
+                            <p className="font-bold text-gray-500 tracking-tight" style={{fontSize:'10px',marginTop:'1px'}}>by jhn · for jne fellows</p>
                         </div>
                         <div className="mode-switch-container" onClick={()=>{setIntraCityOpen(!intraCityOpen);setShowDetail(false);}}>
                             <div className={`mode-switch-slider ${intraCityOpen?'intra':'extra'}`}></div>
@@ -567,7 +567,7 @@
                                 <div className="flex gap-2.5 mt-5">
                                     <a href="https://padlet.com/jbyhee/hyonu-s-padlet-4m26339lwedx23dc" target="_blank" rel="noopener noreferrer" className="flex-1 h-[56px] border border-[#E5E0D6] text-[#1C1C1E] rounded-[16px] flex flex-col items-center justify-center no-underline transition-all cursor-pointer" style={{background:'linear-gradient(180deg,#F7F2E8 0%,#F5F0E6 100%)',boxShadow:'0 2px 4px rgba(0,0,0,0.03),inset 0 1px 0 rgba(255,255,255,0.8)',touchAction:'manipulation',WebkitTapHighlightColor:'rgba(139,0,0,0.08)'}}>
                                         <div className="flex items-center gap-1.5"><Icons.Send size={15} className="text-[#8B0000]"/><span className="text-[13px] font-bold">피드백 남기기</span></div>
-                                        <span className="text-[9px] font-medium text-gray-500 mt-0.5">to 전현우@우수영초등학교</span>
+                                        <span className="text-[9px] font-medium text-gray-500 mt-0.5">to jhn@usyes</span>
                                     </a>
                                     <button onClick={()=>{if(result)setShowDetail(true);}} disabled={!result} className={`flex-1 h-[56px] rounded-[16px] font-bold text-[15px] flex items-center justify-center gap-1.5 transition-all ${result?'text-white':'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'}`} style={result?{background:'linear-gradient(180deg,#9B1111 0%,#8B0000 50%,#7A0000 100%)',boxShadow:'0 4px 12px rgba(139,0,0,0.25),0 2px 4px rgba(0,0,0,0.1),inset 0 1px 0 rgba(255,255,255,0.15)'}:{}}>
                                         <Icons.Calculator size={18} className={result?"text-[#F5A623]":"text-gray-300"}/><span>여비 계산</span>
