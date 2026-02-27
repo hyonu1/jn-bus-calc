@@ -683,7 +683,12 @@
                             <div className="text-center pt-5 px-4 flex-1">
                                 {/* 경유지 없는 경우: 기존 표시 */}
                                 {(!result||!result.segments) && (<>
-                                    <div className="px-2">
+                                    {/* 1. 태그 - 컴팩트, 한 줄 */}
+                                    {result&&<div className="flex flex-nowrap justify-center gap-1 mb-2 overflow-x-auto px-1" style={{scrollbarWidth:'none'}}>
+                                        {routeTags.map((tag,i)=><span key={i} className={`tag-badge whitespace-nowrap px-2 py-0.5 text-[11px] ${getTagStyles(tag)}`}>{tag}</span>)}
+                                    </div>}
+                                    {/* 2. 요금 */}
+                                    <div className="px-2 pb-2 border-b border-[#F0F0F0]">
                                         <div className="flex justify-between items-center h-10">
                                             <div className="flex items-center">
                                                 <span className="font-bold text-[#1C1C1E] text-xl">요금</span>
@@ -693,15 +698,22 @@
                                                 {result?`${fmt(result.type==='internal'?(result.surcharge>0?result.baseBusCost:result.cost):0)}원`:''}
                                             </span>
                                         </div>
-                                        {result&&result.type==='internal'&&<div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium -mt-1 mb-0.5">왕복 {fmt((result.surcharge>0?result.baseBusCost:result.cost)*2)}원</span></div>}
+                                        {result&&result.type==='internal'&&<div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium">(왕복 {fmt((result.surcharge>0?result.baseBusCost:result.cost)*2)}원)</span></div>}
                                     </div>
-                                    {result&&result.type==='internal'&&result.surcharge>0&&<div className="px-2"><div className="flex justify-between items-center h-8"><div className="flex items-center"><span className="font-bold text-[#059669] text-[15px]">농어촌버스</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-[17px] font-bold text-[#059669]">{fmt(result.surcharge)}원</span></div><div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium -mt-1 mb-0.5">왕복 {fmt(result.surcharge*2)}원</span></div></div>}
-                                    {result&&result.type==='internal'&&result.shipCost>0&&<div className="px-2 mt-1"><div className="flex justify-between items-center h-8"><div className="flex items-center"><span className="font-bold text-[#0284C7] text-[15px]">여객선</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-[17px] font-bold text-[#0284C7]">{fmt(result.shipCost)}원</span></div><div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium -mt-1 mb-0.5">왕복 {fmt(result.shipCost*2)}원</span></div></div>}
+                                    {/* 3. 농어촌버스 */}
+                                    {result&&result.type==='internal'&&result.surcharge>0&&<div className="px-2 pb-2 border-b border-[#F0F0F0]"><div className="flex justify-between items-center h-8"><div className="flex items-center"><span className="font-bold text-[#059669] text-[15px]">농어촌버스</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-[17px] font-bold text-[#059669]">{fmt(result.surcharge)}원</span></div><div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium">(왕복 {fmt(result.surcharge*2)}원)</span></div></div>}
+                                    {/* 4. 여객선 */}
+                                    {result&&result.type==='internal'&&result.shipCost>0&&<div className="px-2 pb-2 border-b border-[#F0F0F0]"><div className="flex justify-between items-center h-8"><div className="flex items-center"><span className="font-bold text-[#0284C7] text-[15px]">여객선</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-[17px] font-bold text-[#0284C7]">{fmt(result.shipCost)}원</span></div><div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium">(왕복 {fmt(result.shipCost*2)}원)</span></div></div>}
                                 </>)}
 
                                 {/* 경유지 있는 경우: 구간별 표시 */}
                                 {result&&result.segments&&(<>
-                                    <div className="px-2">
+                                    {/* 1. 태그 - 컴팩트, 한 줄 */}
+                                    <div className="flex flex-nowrap justify-center gap-1 mb-2 overflow-x-auto px-1" style={{scrollbarWidth:'none'}}>
+                                        {routeTags.map((tag,i)=><span key={i} className={`tag-badge whitespace-nowrap px-2 py-0.5 text-[11px] ${getTagStyles(tag)}`}>{tag}</span>)}
+                                    </div>
+                                    {/* 2. 합계 요금 */}
+                                    <div className="px-2 pb-2 border-b border-[#F0F0F0]">
                                         <div className="flex justify-between items-center h-10">
                                             <div className="flex items-center gap-1.5">
                                                 <span className="font-bold text-[#1C1C1E] text-xl">합계</span>
@@ -709,8 +721,13 @@
                                             </div>
                                             <span className="text-3xl font-extrabold text-[#8B0000]">{fmt(result.cost)}원</span>
                                         </div>
-                                        <div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium -mt-1 mb-0.5">왕복 {fmt(result.cost*2)}원</span></div>
+                                        <div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium">(왕복 {fmt(result.cost*2)}원)</span></div>
                                     </div>
+                                    {/* 3. 농어촌버스 합계 */}
+                                    {result.surcharge>0&&<div className="px-2 pb-2 border-b border-[#F0F0F0]"><div className="flex justify-between items-center h-8"><div className="flex items-center"><span className="font-bold text-[#059669] text-[15px]">농어촌버스</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-[17px] font-bold text-[#059669]">{fmt(result.surcharge)}원</span></div><div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium">(왕복 {fmt(result.surcharge*2)}원)</span></div></div>}
+                                    {/* 4. 여객선 합계 */}
+                                    {result.shipCost>0&&<div className="px-2 pb-2 border-b border-[#F0F0F0]"><div className="flex justify-between items-center h-8"><div className="flex items-center"><span className="font-bold text-[#0284C7] text-[15px]">여객선 합계</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-[17px] font-bold text-[#0284C7]">{fmt(result.shipCost)}원</span></div><div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium">(왕복 {fmt(result.shipCost*2)}원)</span></div></div>}
+                                    {/* 5. 경로 구간 표시 */}
                                     <div className="mt-2 mx-2 rounded-2xl overflow-hidden border border-gray-100">
                                         {result.segments.map((seg,i)=>(
                                             <div key={i} className="via-result-row" style={{background: i%2===0?'#FAFAFA':'#F5F5F5'}}>
@@ -725,11 +742,8 @@
                                             </div>
                                         ))}
                                     </div>
-                                    {result.shipCost>0&&<div className="px-2 mt-1"><div className="flex justify-between items-center h-8"><div className="flex items-center"><span className="font-bold text-[#0284C7] text-[15px]">여객선 합계</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-[17px] font-bold text-[#0284C7]">{fmt(result.shipCost)}원</span></div><div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium -mt-1 mb-0.5">왕복 {fmt(result.shipCost*2)}원</span></div></div>}
                                 </>)}
-                                <div className="pb-1 pt-3 flex flex-wrap justify-center gap-1.5 min-h-[32px]">
-                                    {result&&routeTags.map((tag,i)=><span key={i} className={`tag-badge px-2.5 py-1 text-[13px] ${getTagStyles(tag)}`}>{tag}</span>)}
-                                </div>
+
                                 <div className="flex gap-2.5 mt-5">
                                     <a href="https://padlet.com/jbyhee/hyonu-s-padlet-4m26339lwedx23dc" target="_blank" rel="noopener noreferrer" className="flex-1 h-[56px] border border-[#E5E0D6] text-[#1C1C1E] rounded-[16px] flex flex-col items-center justify-center no-underline transition-all cursor-pointer" style={{background:'linear-gradient(180deg,#F7F2E8 0%,#F5F0E6 100%)',boxShadow:'0 2px 4px rgba(0,0,0,0.03),inset 0 1px 0 rgba(255,255,255,0.8)',touchAction:'manipulation',WebkitTapHighlightColor:'rgba(139,0,0,0.08)'}}>
                                         <div className="flex items-center gap-1.5"><Icons.Send size={15} className="text-[#8B0000]"/><span className="text-[13px] font-bold">피드백 남기기</span></div>
