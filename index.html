@@ -622,9 +622,9 @@
 
             const getModalContent = (key) => {
                 const dTag=<span className="inline-block px-1.5 py-0.5 mx-1 bg-[#1C1C1E] text-white rounded border border-[#1C1C1E] font-bold align-top relative -top-0.5 text-[10px] leading-none">{destination}</span>;
-                if(key==='daily')return{title:"일비",desc:<span>출장지{dTag} 내에서 소요되는 현지 교통비, 통신비, 음료비 등 여행 중 발생하는 각종 소액의 경비를 충당하기 위한 경비</span>,items:[{id:'gov_vehicle',label:"공용차량·임차차량(전세버스 등)을 이용",subLabel:""}]};
+                if(key==='daily')return{title:"일비",desc:<span>출장지{dTag} 내에서 소요되는 현지 교통비, 통신비, 음료비 등 여행 중 발생하는 각종 소액의 경비를 충당하기 위한 경비</span>,items:[{id:'gov_vehicle',label:"공용·임차차량(전세버스 등) 이용",subLabel:""}]};
                 if(key==='meal')return{title:"식비",desc:"여행(출장) 중 식사에 소요되는 비용. 밥을 먹을 필요가 없거나 다른 돈으로 밥을 먹었을 때 감액.",items:[{id:'meal_1',label:"1식 감액",subLabel:""},{id:'meal_2',label:"2식 감액",subLabel:""},{id:'meal_3',label:"전액 감액",subLabel:""},{id:'meal_half',label:"½ 감액",subLabel:""}]};
-                if(key==='transport')return{title:"교통비",desc:<span>근무지에서 출장 목적지{dTag}로 이동하기 위해 소요되는 교통수단의 비용</span>,items:[{id:'transport_proof',label:"증거서류 미제출·부적정"},{id:'transport_gov_vehicle',label:"공용/임차차량 이용"},{id:'transport_passenger',label:"동료 차량 동승",subLabel:"동승자 교통비 미지급"}]};
+                if(key==='transport')return{title:"교통비",desc:<span>근무지에서 출장 목적지{dTag}로 이동하기 위해 소요되는 교통수단의 비용</span>,items:[{id:'transport_proof',label:"증거서류 미제출·부적정"},{id:'transport_gov_vehicle',label:"관용·임차차량 이용"},{id:'transport_passenger',label:"동료 차량 동승",subLabel:"동승자 교통비 미지급"}]};
             };
 
             const getMealLabel=()=>{if(deductions.meal_1)return"(-8,330)";if(deductions.meal_2)return"(-16,670)";if(deductions.meal_3)return"(-25,000)";if(deductions.meal_half)return"(-12,500)";return"";};
