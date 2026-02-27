@@ -660,7 +660,7 @@
                         ) : (
                             <div className="flex items-center gap-2">
                                 <div className="flex-1 min-w-0">
-                                    <AutocompleteInput label="경유지" placeholder="경유 도시를 입력하세요." value={waypoint}
+                                    <AutocompleteInput label="경유지" placeholder="경유지를 입력하세요." value={waypoint}
                                         onChange={(v)=>{ setWaypoint(v); }}
                                         onSelect={(city)=>{ setWaypoint(city); performCalculation(origin, destination, false, city); }}
                                         cityList={ALLOWED_CITIES} />
