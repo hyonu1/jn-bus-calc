@@ -521,7 +521,8 @@
                 const daily = deductions.gov_vehicle ? 12500 : 25000;
                 const meal = deductions.meal_3 ? 0 : deductions.meal_1 ? 16670 : deductions.meal_2 ? 8330 : deductions.meal_half ? 12500 : 25000;
                 const transport = (deductions.transport_proof||deductions.transport_gov_vehicle||deductions.transport_passenger) ? 0 : (result.type==='internal'?(manualMainTransport||0):0);
-                return { daily, meal, transport, total: daily+meal+transport+(shipFare||0) };
+                const surchargeTotal = (deductions.transport_proof||deductions.transport_gov_vehicle||deductions.transport_passenger) ? 0 : (result.type==='internal'?(result.surcharge||0)*2:0);
+                return { daily, meal, transport, surchargeTotal, total: daily+meal+transport+surchargeTotal+(shipFare||0) };
             };
 
             // 단일 구간 요금 계산 헬퍼
@@ -558,7 +559,7 @@
                     const seg = calcSegment(o, d);
                     if (seg) {
                         setShipFare(seg.shipCost*2);
-                        setManualMainTransport(seg.cost*2);
+                        setManualMainTransport(seg.base*2);
                         setResult({ type:'internal', cost:seg.cost, baseBusCost:seg.base, surcharge:seg.surcharge, shipCost:seg.shipCost, isShipOnlyRoute:seg.isShip, viaPoint:seg.viaPoint, segments:null });
                         setTimeout(()=>setCalcStatus('done'),300);
                         setHistory(prev => {
@@ -580,13 +581,14 @@
                 const seg2 = calcSegment(viaHubRaw, d);
 
                 if (seg1 && seg2) {
-                    const totalCost = seg1.cost + seg2.cost;
+                    const totalBase = seg1.base + seg2.base;
+                    const totalSurcharge = seg1.surcharge + seg2.surcharge;
                     const totalShip = seg1.shipCost + seg2.shipCost;
                     setShipFare(totalShip*2);
-                    setManualMainTransport(totalCost*2);
+                    setManualMainTransport(totalBase*2);
                     setResult({
                         type:'internal',
-                        cost: totalCost,
+                        cost: totalBase + totalSurcharge,
                         baseBusCost: seg1.base + seg2.base,
                         surcharge: seg1.surcharge + seg2.surcharge,
                         shipCost: totalShip,
@@ -829,6 +831,12 @@
                                                 ):<span className="text-xl font-bold text-gray-400">0원</span>}
                                             </div>
                                         </div>
+                                        {result.surcharge>0&&!(deductions.transport_proof||deductions.transport_gov_vehicle||deductions.transport_passenger)&&(
+                                            <div className="flex items-center justify-between h-10 mt-1 px-1">
+                                                <div className="flex items-center gap-1"><span className="text-[15px] font-bold text-[#059669]">농어촌버스</span><span className="text-[11px] text-[#AEAEB2]">(자동합산)</span></div>
+                                                <span className="text-[17px] font-bold text-[#059669]">+{fmt(result.surcharge*2)}원</span>
+                                            </div>
+                                        )}
                                         {(shipFare>0||result.isShipOnlyRoute||result.shipCost>0)&&(
                                             <div className="relative flex items-center justify-between h-12 mt-4">
                                                 <span className="font-bold text-gray-700 text-[18px]">기타교통비</span>
@@ -882,6 +890,12 @@
                                                 ):<span className="text-xl font-bold text-gray-400">0원</span>}
                                             </div>
                                         </div>
+                                        {result.surcharge>0&&!(deductions.transport_proof||deductions.transport_gov_vehicle||deductions.transport_passenger)&&(
+                                            <div className="flex items-center justify-between h-10 mt-1 px-1">
+                                                <div className="flex items-center gap-1"><span className="text-[15px] font-bold text-[#059669]">농어촌버스</span><span className="text-[11px] text-[#AEAEB2]">(자동합산)</span></div>
+                                                <span className="text-[17px] font-bold text-[#059669]">+{fmt(result.surcharge*2)}원</span>
+                                            </div>
+                                        )}
                                         {(shipFare>0||result.isShipOnlyRoute||result.shipCost>0)&&(
                                             <div className="relative flex items-center justify-between h-12 mt-4">
                                                 <span className="font-bold text-gray-700 text-[18px]">기타교통비</span>
