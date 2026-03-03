@@ -67,22 +67,31 @@
             border: 1px solid rgba(139,0,0,0.08); border-radius: 20px;
             z-index: 9999; box-shadow: 0 12px 32px rgba(0,0,0,0.12);
             max-height: 240px; overflow-y: auto; font-family: var(--font-gmarket);
-            overscroll-behavior: contain; /* Samsung Browser deprecated webkit 대체 */
+            overscroll-behavior: contain;
         }
-        /* suggestions-box가 부모 overflow에 잘리지 않도록 */
         .relative.w-full.group { overflow: visible !important; }
         .suggestion-item {
             padding: 14px 20px; cursor: pointer;
             display: flex; justify-content: space-between; align-items: center;
             font-size: 15px; color: #1C1C1E; font-weight: 500;
             border-bottom: 1px solid rgba(0,0,0,0.03);
-            /* 터치 피드백 */
             -webkit-tap-highlight-color: rgba(245,166,35,0.15);
             user-select: none;
         }
         .suggestion-item:last-child { border-bottom: none; }
         .suggestion-item:hover, .suggestion-item.active { background-color: rgba(245,166,35,0.1); }
         .suggestion-item:active { background-color: rgba(245,166,35,0.2); }
+
+        /* ── 경로 레이블 ── */
+        .route-label {
+            font-size: 10px;
+            font-family: var(--font-pretendard);
+            font-weight: 600;
+            color: #AEAEB2;
+            letter-spacing: -0.2px;
+            margin-top: 1px;
+            line-height: 1.2;
+        }
 
         @keyframes bounce-custom { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20%); } }
         .icon-bounce { display: inline-block; animation: bounce-custom 2s infinite; }
@@ -127,14 +136,12 @@
             cursor: pointer; flex-shrink: 0;
             transition: background 0.15s;
             -webkit-tap-highlight-color: transparent;
-            /* 터치 영역 확보 */
             touch-action: manipulation;
         }
         .clear-btn:hover { background: #C7C7CC; }
         .clear-btn:active { background: #AEAEB2; transform: scale(0.9); }
 
         /* ── 경유지 ── */
-        /* add-via-btn: status-bar 동일 높이·스타일, 2/3 폭 가운데 정렬 */
         .add-via-btn { width: 100%; height: 32px; display: flex; align-items: center; justify-content: center; gap: 7px; border-radius: 12px; border: 1px solid #D8D8D8; background: linear-gradient(180deg,#EFEFEF 0%,#E8E8E8 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.8),0 1px 2px rgba(0,0,0,0.04); color: #8E8E93; font-size: 14px; font-weight: 700; font-family: var(--font-pretendard); cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
         .add-via-btn:hover { background: linear-gradient(180deg,#E8E0D8 0%,#E0D8D0 100%); border-color: rgba(139,0,0,0.2); color: #8B0000; }
         .add-via-btn:active { transform: scale(0.98); box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
@@ -251,30 +258,16 @@
 
         const { useState, useEffect, useRef, useCallback } = React;
 
-        // ══════════════════════════════════════════════════════════════
-        //  AutocompleteInput  –  크로스브라우저 완전 재설계
-        //
-        //  핵심 변경:
-        //  1. onBlur 타이머 방식 완전 폐기
-        //     → isSelectingRef 플래그로 선택 중 blur를 무시
-        //  2. suggestion 선택: onPointerDown(모든 포인팅 디바이스) 사용
-        //     → iOS Safari / Android / 마우스 모두 커버
-        //  3. 외부 클릭 감지: document 레벨 pointerdown 리스너
-        //     → overlay div 방식보다 안정적
-        //  4. autocomplete 완전 차단: name 난수화 + autocomplete 속성
-        //  5. IME Enter 처리 강화: compositionEnd 이벤트 추적
-        // ══════════════════════════════════════════════════════════════
         const AutocompleteInput = ({ value, onChange, onSelect, placeholder, label, cityList }) => {
             const [suggestions, setSuggestions] = useState([]);
             const [isOpen, setIsOpen] = useState(false);
             const [activeIndex, setActiveIndex] = useState(-1);
-            const isSelectingRef = useRef(false);   // 선택 동작 중 blur 무시 플래그
-            const isComposingRef = useRef(false);   // IME 조합 중 플래그
+            const isSelectingRef = useRef(false);
+            const isComposingRef = useRef(false);
             const containerRef = useRef(null);
             const inputRef = useRef(null);
             const uniqueId = useRef('ac_' + Math.random().toString(36).slice(2));
 
-            // 자동완성 계산
             useEffect(() => {
                 const v = (value || '').trim();
                 if (!v || cityList.includes(v)) { setSuggestions([]); return; }
@@ -286,9 +279,6 @@
                 setSuggestions(list);
             }, [value, cityList]);
 
-            // 외부 클릭 → 닫기
-            // ※ capture(true) 사용 금지 → 피드백 버튼 등 모든 클릭을 가로채는 버그 발생
-            // ※ isOpen일 때만 등록 → 불필요한 전역 간섭 없음
             useEffect(() => {
                 if (!isOpen) return;
                 const handler = (e) => {
@@ -297,8 +287,6 @@
                         setActiveIndex(-1);
                     }
                 };
-                // pointerdown이 있으면 그것만 사용 (Chrome Android 이중발화 방지)
-                // 없는 구형 환경(드물음)에서만 touchstart 폴백
                 const usePointer = window.PointerEvent != null;
                 if (usePointer) {
                     document.addEventListener('pointerdown', handler, false);
@@ -327,8 +315,7 @@
             const handleClear = useCallback((e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                // onPointerDown + onClick 둘 다 등록 시 이중 호출 방지
-                if (e.type === 'click' && e.detail === 0) return; // pointerdown이 이미 처리
+                if (e.type === 'click' && e.detail === 0) return;
                 onChange('');
                 onSelect('');
                 setIsOpen(false);
@@ -341,9 +328,6 @@
                 const raw = e.target.value;
                 onChange(raw);
                 setActiveIndex(-1);
-
-                // 입력값을 normalize해서 cityList에 있으면 즉시 onSelect
-                // → "광주", "광주 ", " 해남" 등 직접 타이핑도 조회됨
                 const normalized = raw.replace(/\s/g, '');
                 if (normalized && cityList.includes(normalized)) {
                     onSelect(normalized);
@@ -357,8 +341,6 @@
             const handleFocus = () => setIsOpen(true);
 
             const handleBlur = () => {
-                // onClick보다 blur가 먼저 오므로 setTimeout으로 플래그 확인
-                // Safari는 click까지 ~200ms 소요 → 250ms로 여유 확보
                 setTimeout(() => {
                     if (isSelectingRef.current) {
                         isSelectingRef.current = false;
@@ -370,7 +352,7 @@
             };
 
             const handleKeyDown = (e) => {
-                if (isComposingRef.current) return; // IME 조합 중 Enter 무시
+                if (isComposingRef.current) return;
                 if (!isOpen || suggestions.length === 0) return;
                 if (e.key === 'ArrowDown') {
                     e.preventDefault();
@@ -388,11 +370,8 @@
                 }
             };
 
-            // IME 조합 추적 (삼성/안드로이드 한글 이중발화 방지)
             const handleCompositionStart = () => { isComposingRef.current = true; };
             const handleCompositionEnd = (e) => {
-                // Firefox: compositionEnd 직후 onChange가 한번 더 발화됨
-                // → 다음 이벤트 루프에서 flag 해제
                 setTimeout(() => { isComposingRef.current = false; }, 0);
             };
 
@@ -429,7 +408,6 @@
                                 <span className="text-2xl icon-bounce" style={{flexShrink:0}}>{REGION_ICONS[value.replace(/\s/g,"")]}</span>
                             )}
                         </div>
-                        {/* 우측: X버튼 */}
                         <div className="flex items-center gap-2 shrink-0">
                             {value && (
                                 <button
@@ -448,15 +426,12 @@
                         </div>
                     </div>
 
-                    {/* 제안 목록 */}
                     {showList && (
                         <div className="suggestions-box">
                             {suggestions.map((city, idx) => (
                                 <div
                                     key={city}
                                     className={`suggestion-item ${idx === activeIndex ? 'active' : ''}`}
-                                    // onPointerDown: blur 이전에 선택 중 플래그 세팅 (preventDefault 없이)
-                                    // onClick: 실제 선택 실행 - 모든 브라우저/디바이스 안정 동작
                                     onPointerDown={() => { isSelectingRef.current = true; }}
                                     onClick={() => { handleSelect(city); }}
                                     onPointerEnter={() => setActiveIndex(idx)}
@@ -477,9 +452,83 @@
             </button>
         );
 
+        // ══════════════════════════════════════════════════════
+        // 경로 레이블 계산 헬퍼
+        // 반환: { fareRoute, ruralRoute, shipRoute }
+        //   fareRoute  : 요금 항목 아래 표시할 출발→도착 경로
+        //   ruralRoute : 농어촌버스 항목 아래 표시할 경로 (없으면 null)
+        //   shipRoute  : 여객선 항목 아래 표시할 경로 (없으면 null)
+        // ══════════════════════════════════════════════════════
+        // ══════════════════════════════════════════════════════════════
+        //  calcRouteLabels  ―  출발지·도착지 양방향 완전 처리
+        //
+        //  핵심 원칙:
+        //  · 요금(시외버스)은 항상 hub→hub 구간만 표시
+        //    (섬/연륙지는 hub로 치환, 일반지는 그대로)
+        //  · 농어촌버스: 출발/도착이 신안연륙지(connected,!special)일 때 발생
+        //    복수 구간은 쉼표로 한 줄 표시
+        //  · 여객선: 출발/도착이 ship 타입일 때 발생
+        //    비금 특수케이스(암태 경유) 별도 처리
+        //    복수 구간은 쉼표로 한 줄 표시
+        // ══════════════════════════════════════════════════════════════
+        const calcRouteLabels = (fromRaw, toRaw) => {
+            const to   = normalize(toRaw);
+            const from = normalize(fromRaw);
+            const toI   = ISLAND_DB[to];
+            const fromI = ISLAND_DB[from];
+
+            const destHub = toI   ? toI.hub   : to;
+            const origHub = fromI ? fromI.hub : from;
+
+            // ── 요금 경로: origHub→destHub (실제 시외버스 구간) ──
+            const fareRoute = `${origHub}→${destHub}`;
+
+            // ── 농어촌버스 경로 ──
+            // 출발지가 신안연륙지(connected, !special)면 → "출발지→origHub"
+            // 도착지가 신안연륙지(connected, !special)면 → "destHub→도착지"
+            // 비금 출발: "출발지→암태" (비금은 암태 경유 연륙)
+            // 비금 도착: "목포→암태"
+            const ruralParts = [];
+            if (fromI && fromI.type === 'connected' && !fromI.special) {
+                ruralParts.push(`${fromRaw}→${origHub}`);
+            } else if (from === '비금') {
+                ruralParts.push(`비금→암태`);
+            }
+            if (toI && toI.type === 'connected' && !toI.special) {
+                ruralParts.push(`${destHub}→${toRaw}`);
+            } else if (to === '비금') {
+                ruralParts.push(`목포→암태`);
+            }
+            const ruralRoute = ruralParts.length > 0 ? ruralParts.join(', ') : null;
+
+            // ── 여객선 경로 ──
+            // 출발지가 ship이면 → "출발지→origHub"
+            // 비금 출발: "암태→비금" (역방향이므로 암태에서 타는 것)
+            // 도착지가 ship이면 → "destHub→도착지"
+            // 비금 도착: "암태→비금"
+            const shipParts = [];
+            if (fromI && fromI.type === 'ship') {
+                if (from === '비금') {
+                    shipParts.push(`암태→비금`);
+                } else {
+                    shipParts.push(`${fromRaw}→${origHub}`);
+                }
+            }
+            if (toI && toI.type === 'ship') {
+                if (to === '비금') {
+                    shipParts.push(`암태→비금`);
+                } else {
+                    shipParts.push(`${destHub}→${toRaw}`);
+                }
+            }
+            const shipRoute = shipParts.length > 0 ? shipParts.join(', ') : null;
+
+            return { fareRoute, ruralRoute, shipRoute };
+        };
+
         const App = () => {
             const [origin, setOrigin] = useState('');
-            const [waypoint, setWaypoint] = useState('');       // 경유지
+            const [waypoint, setWaypoint] = useState('');
             const [showWaypoint, setShowWaypoint] = useState(false);
             const [destination, setDestination] = useState('');
             const [result, setResult] = useState(null);
@@ -497,7 +546,6 @@
 
             const resetDeductions = () => setDeductions({gov_vehicle:false,meal_1:false,meal_2:false,meal_3:false,meal_half:false,transport_proof:false,transport_gov_vehicle:false,transport_passenger:false});
 
-            // 경유지 포함 hub 매핑 (신안→목포, 완도섬→완도)
             const ISLAND_HUB_FOR_VIA = {
                 "신안":"목포","신안교육청":"목포","압해":"목포","지도":"목포","증도":"목포",
                 "임자":"목포","팔금":"목포","암태":"목포","자은":"목포","안좌":"목포",
@@ -525,7 +573,6 @@
                 return { daily, meal, transport, surchargeTotal, total: daily+meal+transport+surchargeTotal+(shipFare||0) };
             };
 
-            // 단일 구간 요금 계산 헬퍼
             const calcSegment = (fromRaw, toRaw) => {
                 const from = normalize(fromRaw); const to = normalize(toRaw);
                 if (!from || !to) return null;
@@ -537,7 +584,9 @@
                 const bd = INITIAL_DATA[sFrom]?.[sTo] || INITIAL_DATA[sTo]?.[sFrom];
                 if (!bd) return null;
                 const base = bd.pre||bd.gen||0;
-                return { cost: base+surcharge, base, surcharge, shipCost, viaPoint, isShip: (fromI?.type==='ship'||toI?.type==='ship') };
+                // 경로 레이블 추가
+                const routeLabels = calcRouteLabels(fromRaw, toRaw);
+                return { cost: base+surcharge, base, surcharge, shipCost, viaPoint, isShip: (fromI?.type==='ship'||toI?.type==='ship'), routeLabels };
             };
 
             const performCalculation = (o=origin, d=destination, isForce=false, via=waypoint) => {
@@ -552,7 +601,6 @@
                 }
                 if (!from || !to) return;
 
-                // 경유지 없음 → 기존 로직
                 const viaN = normalize(via);
                 if (!viaN) {
                     for (const g of SAME_AREA_GROUPS) { if (g.has(from) && g.has(to)) { setIntraCityOpen(true); return; } }
@@ -560,7 +608,7 @@
                     if (seg) {
                         setShipFare(seg.shipCost*2);
                         setManualMainTransport(seg.base*2);
-                        setResult({ type:'internal', cost:seg.cost, baseBusCost:seg.base, surcharge:seg.surcharge, shipCost:seg.shipCost, isShipOnlyRoute:seg.isShip, viaPoint:seg.viaPoint, segments:null });
+                        setResult({ type:'internal', cost:seg.cost, baseBusCost:seg.base, surcharge:seg.surcharge, shipCost:seg.shipCost, isShipOnlyRoute:seg.isShip, viaPoint:seg.viaPoint, segments:null, routeLabels:seg.routeLabels });
                         setTimeout(()=>setCalcStatus('done'),300);
                         setHistory(prev => {
                             const entry={origin:o,destination:d,cost:seg.cost,ts:Date.now()};
@@ -572,10 +620,8 @@
                     return;
                 }
 
-                // 경유지 있음 → 두 구간 합산
-                // 신안/완도 등 섬 입력 → hub 도시로 치환
                 const viaHub = getViaHub(via);
-                const viaHubRaw = viaHub; // 이미 정규화된 hub명
+                const viaHubRaw = viaHub;
 
                 const seg1 = calcSegment(o, viaHubRaw);
                 const seg2 = calcSegment(viaHubRaw, d);
@@ -586,6 +632,9 @@
                     const totalShip = seg1.shipCost + seg2.shipCost;
                     setShipFare(totalShip*2);
                     setManualMainTransport(totalBase*2);
+                    // 경유지 있을 때: 출발지·도착지 양방향 레이블 합산
+                    const origLabels = calcRouteLabels(o, viaHubRaw);
+                    const destRouteLabels = calcRouteLabels(viaHubRaw, d);
                     setResult({
                         type:'internal',
                         cost: totalBase + totalSurcharge,
@@ -598,7 +647,21 @@
                             { from:o, to:viaHubRaw, cost:seg1.cost, base:seg1.base, surcharge:seg1.surcharge, shipCost:seg1.shipCost },
                             { from:viaHubRaw, to:d, cost:seg2.cost, base:seg2.base, surcharge:seg2.surcharge, shipCost:seg2.shipCost }
                         ],
-                        viaLabel: viaHub
+                        viaLabel: viaHub,
+                        // 경유지 있는 경우: 요금 origHub→viaHub→destHub, 농어촌/여객선은 양쪽 합산
+                        routeLabels: (() => {
+                            const fromN2 = normalize(o); const toN2 = normalize(d);
+                            const fromI2 = ISLAND_DB[fromN2]; const toI2 = ISLAND_DB[toN2];
+                            const origHub2 = fromI2 ? fromI2.hub : fromN2;
+                            const destHub2 = toI2   ? toI2.hub   : toN2;
+                            const ruralAll = [origLabels.ruralRoute, destRouteLabels.ruralRoute].filter(Boolean).join(', ') || null;
+                            const shipAll  = [origLabels.shipRoute,  destRouteLabels.shipRoute ].filter(Boolean).join(', ') || null;
+                            return {
+                                fareRoute: `${origHub2}→${viaHub}→${destHub2}`,
+                                ruralRoute: ruralAll,
+                                shipRoute: shipAll
+                            };
+                        })()
                     });
                     setTimeout(()=>setCalcStatus('done'),300);
                 } else {
@@ -629,6 +692,14 @@
 
             const getMealLabel=()=>{if(deductions.meal_1)return"(-8,330)";if(deductions.meal_2)return"(-16,670)";if(deductions.meal_3)return"(-25,000)";if(deductions.meal_half)return"(-12,500)";return"";};
 
+            // 경로 레이블 렌더링 컴포넌트
+            const RouteLabel = ({ route }) => {
+                if (!route) return null;
+                return (
+                    <div className="route-label">{route}</div>
+                );
+            };
+
             return (
                 <div className="main-wrapper font-pretendard">
                     <header className="header-teal">
@@ -644,14 +715,11 @@
                     </header>
 
                     <div className="scroll-area content-main px-7 pt-7 pb-8 space-y-3">
-                        {/* 출발지 */}
-                        {/* 출발지 */}
                         <AutocompleteInput label="출발지" placeholder="출발지를 입력하세요." value={origin}
                             onChange={(v)=>{ setOrigin(v); }}
                             onSelect={(city)=>{ setOrigin(city); performCalculation(city, destination, false, waypoint); }}
                             cityList={ALLOWED_CITIES} />
 
-                        {/* 경유지 버튼 or 입력창 */}
                         {!showWaypoint ? (
                             <button className="add-via-btn" onClick={()=>setShowWaypoint(true)}>
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
@@ -671,7 +739,6 @@
                             </div>
                         )}
 
-                        {/* 도착지 */}
                         <AutocompleteInput label="도착지" placeholder="도착지를 입력하세요." value={destination}
                             onChange={(v)=>{ setDestination(v); }}
                             onSelect={(city)=>{ setDestination(city); performCalculation(origin, city, false, waypoint); }}
@@ -683,18 +750,22 @@
 
                         <div className="pb-6 mt-4 rounded-[32px] overflow-hidden flex flex-col" style={{background:'linear-gradient(180deg,#FFFFFF 0%,#FAFAFA 100%)',boxShadow:'0 4px 16px rgba(0,0,0,0.04),0 8px 32px rgba(0,0,0,0.02),inset 0 1px 0 rgba(255,255,255,1)',border:'1px solid rgba(0,0,0,0.04)'}}>
                             <div className="text-center pt-5 px-4 flex-1">
-                                {/* 경유지 없는 경우: 기존 표시 */}
+
+                                {/* ── 경유지 없는 경우 ── */}
                                 {(!result||!result.segments) && (<>
-                                    {/* 1. 태그 - 컴팩트, 한 줄 */}
                                     {result&&<div className="flex flex-nowrap justify-center gap-1 mb-2 overflow-x-auto px-1" style={{scrollbarWidth:'none'}}>
                                         {routeTags.map((tag,i)=><span key={i} className={`tag-badge whitespace-nowrap px-2 py-0.5 text-[11px] ${getTagStyles(tag)}`}>{tag}</span>)}
                                     </div>}
-                                    {/* 2. 요금 */}
+
+                                    {/* 요금 */}
                                     <div className={`px-2 pb-2 ${result&&result.type==='internal'&&(result.surcharge>0||result.shipCost>0)?'border-b border-[#F0F0F0]':''}`}>
                                         <div className="flex justify-between items-center h-10">
-                                            <div className="flex items-center">
-                                                <span className="font-bold text-[#1C1C1E] text-xl">요금</span>
-                                                {result&&<span className={`tag-side ${getTagStyles('편도')}`}>편도</span>}
+                                            <div className="flex flex-col items-start">
+                                                <div className="flex items-center">
+                                                    <span className="font-bold text-[#1C1C1E] text-xl">요금</span>
+                                                    {result&&<span className={`tag-side ${getTagStyles('편도')}`}>편도</span>}
+                                                </div>
+                                                {result&&result.type==='internal'&&result.routeLabels&&<RouteLabel route={result.routeLabels.fareRoute}/>}
                                             </div>
                                             <span className="text-3xl font-extrabold text-[#8B0000]">
                                                 {result?`${fmt(result.type==='internal'?(result.surcharge>0?result.baseBusCost:result.cost):0)}원`:''}
@@ -702,34 +773,90 @@
                                         </div>
                                         {result&&result.type==='internal'&&<div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium">(왕복 {fmt((result.surcharge>0?result.baseBusCost:result.cost)*2)}원)</span></div>}
                                     </div>
-                                    {/* 3. 농어촌버스 */}
-                                    {result&&result.type==='internal'&&result.surcharge>0&&<div className={`px-2 pb-2 ${result.shipCost>0?'border-b border-[#F0F0F0]':''}`}><div className="flex justify-between items-center h-8"><div className="flex items-center"><span className="font-bold text-[#059669] text-[15px]">농어촌버스</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-[17px] font-bold text-[#059669]">{fmt(result.surcharge)}원</span></div><div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium">(왕복 {fmt(result.surcharge*2)}원)</span></div></div>}
-                                    {/* 4. 여객선 */}
-                                    {result&&result.type==='internal'&&result.shipCost>0&&<div className="px-2 pb-2"><div className="flex justify-between items-center h-8"><div className="flex items-center"><span className="font-bold text-[#0284C7] text-[15px]">여객선</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-[17px] font-bold text-[#0284C7]">{fmt(result.shipCost)}원</span></div><div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium">(왕복 {fmt(result.shipCost*2)}원)</span></div></div>}
+
+                                    {/* 농어촌버스 */}
+                                    {result&&result.type==='internal'&&result.surcharge>0&&<div className={`px-2 pb-2 ${result.shipCost>0?'border-b border-[#F0F0F0]':''}`}>
+                                        <div className="flex justify-between items-center h-8">
+                                            <div className="flex flex-col items-start">
+                                                <div className="flex items-center">
+                                                    <span className="font-bold text-[#059669] text-[15px]">농어촌버스</span>
+                                                    <span className={`tag-side ${getTagStyles('편도')}`}>편도</span>
+                                                </div>
+                                                {result.routeLabels&&<RouteLabel route={result.routeLabels.ruralRoute}/>}
+                                            </div>
+                                            <span className="text-[17px] font-bold text-[#059669]">{fmt(result.surcharge)}원</span>
+                                        </div>
+                                        <div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium">(왕복 {fmt(result.surcharge*2)}원)</span></div>
+                                    </div>}
+
+                                    {/* 여객선 */}
+                                    {result&&result.type==='internal'&&result.shipCost>0&&<div className="px-2 pb-2">
+                                        <div className="flex justify-between items-center h-8">
+                                            <div className="flex flex-col items-start">
+                                                <div className="flex items-center">
+                                                    <span className="font-bold text-[#0284C7] text-[15px]">여객선</span>
+                                                    <span className={`tag-side ${getTagStyles('편도')}`}>편도</span>
+                                                </div>
+                                                {result.routeLabels&&<RouteLabel route={result.routeLabels.shipRoute}/>}
+                                            </div>
+                                            <span className="text-[17px] font-bold text-[#0284C7]">{fmt(result.shipCost)}원</span>
+                                        </div>
+                                        <div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium">(왕복 {fmt(result.shipCost*2)}원)</span></div>
+                                    </div>}
                                 </>)}
 
-                                {/* 경유지 있는 경우: 단일구간과 동일한 구조 */}
+                                {/* ── 경유지 있는 경우 ── */}
                                 {result&&result.segments&&(<>
-                                    {/* 1. 태그 */}
                                     <div className="flex flex-nowrap justify-center gap-1 mb-2 overflow-x-auto px-1" style={{scrollbarWidth:'none'}}>
                                         {routeTags.map((tag,i)=><span key={i} className={`tag-badge whitespace-nowrap px-2 py-0.5 text-[11px] ${getTagStyles(tag)}`}>{tag}</span>)}
                                     </div>
-                                    {/* 2. 요금 (육지 버스요금만) */}
+
+                                    {/* 요금 */}
                                     <div className={`px-2 pb-2 ${(result.surcharge>0||result.shipCost>0)?'border-b border-[#F0F0F0]':''}`}>
                                         <div className="flex justify-between items-center h-10">
-                                            <div className="flex items-center gap-1.5">
-                                                <span className="font-bold text-[#1C1C1E] text-xl">요금</span>
-                                                <span className={`tag-side ${getTagStyles('편도')}`}>편도</span>
+                                            <div className="flex flex-col items-start">
+                                                <div className="flex items-center gap-1.5">
+                                                    <span className="font-bold text-[#1C1C1E] text-xl">요금</span>
+                                                    <span className={`tag-side ${getTagStyles('편도')}`}>편도</span>
+                                                </div>
+                                                {result.routeLabels&&<RouteLabel route={result.routeLabels.fareRoute}/>}
                                             </div>
                                             <span className="text-3xl font-extrabold text-[#8B0000]">{fmt(result.baseBusCost)}원</span>
                                         </div>
                                         <div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium">(왕복 {fmt(result.baseBusCost*2)}원)</span></div>
                                     </div>
-                                    {/* 3. 농어촌버스 */}
-                                    {result.surcharge>0&&<div className={`px-2 pb-2 ${result.shipCost>0?'border-b border-[#F0F0F0]':''}`}><div className="flex justify-between items-center h-8"><div className="flex items-center"><span className="font-bold text-[#059669] text-[15px]">농어촌버스</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-[17px] font-bold text-[#059669]">{fmt(result.surcharge)}원</span></div><div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium">(왕복 {fmt(result.surcharge*2)}원)</span></div></div>}
-                                    {/* 4. 여객선 */}
-                                    {result.shipCost>0&&<div className="px-2 pb-2"><div className="flex justify-between items-center h-8"><div className="flex items-center"><span className="font-bold text-[#0284C7] text-[15px]">여객선</span><span className={`tag-side ${getTagStyles('편도')}`}>편도</span></div><span className="text-[17px] font-bold text-[#0284C7]">{fmt(result.shipCost)}원</span></div><div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium">(왕복 {fmt(result.shipCost*2)}원)</span></div></div>}
-                                    {/* 5. 경로 구간 표시 */}
+
+                                    {/* 농어촌버스 */}
+                                    {result.surcharge>0&&<div className={`px-2 pb-2 ${result.shipCost>0?'border-b border-[#F0F0F0]':''}`}>
+                                        <div className="flex justify-between items-center h-8">
+                                            <div className="flex flex-col items-start">
+                                                <div className="flex items-center">
+                                                    <span className="font-bold text-[#059669] text-[15px]">농어촌버스</span>
+                                                    <span className={`tag-side ${getTagStyles('편도')}`}>편도</span>
+                                                </div>
+                                                {result.routeLabels&&<RouteLabel route={result.routeLabels.ruralRoute}/>}
+                                            </div>
+                                            <span className="text-[17px] font-bold text-[#059669]">{fmt(result.surcharge)}원</span>
+                                        </div>
+                                        <div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium">(왕복 {fmt(result.surcharge*2)}원)</span></div>
+                                    </div>}
+
+                                    {/* 여객선 */}
+                                    {result.shipCost>0&&<div className="px-2 pb-2">
+                                        <div className="flex justify-between items-center h-8">
+                                            <div className="flex flex-col items-start">
+                                                <div className="flex items-center">
+                                                    <span className="font-bold text-[#0284C7] text-[15px]">여객선</span>
+                                                    <span className={`tag-side ${getTagStyles('편도')}`}>편도</span>
+                                                </div>
+                                                {result.routeLabels&&<RouteLabel route={result.routeLabels.shipRoute}/>}
+                                            </div>
+                                            <span className="text-[17px] font-bold text-[#0284C7]">{fmt(result.shipCost)}원</span>
+                                        </div>
+                                        <div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium">(왕복 {fmt(result.shipCost*2)}원)</span></div>
+                                    </div>}
+
+                                    {/* 구간 표시 */}
                                     <div className="mt-2 mx-2 rounded-2xl overflow-hidden border border-gray-100">
                                         {result.segments.map((seg,i)=>(
                                             <div key={i} className="via-result-row" style={{background: i%2===0?'#FAFAFA':'#F5F5F5'}}>
@@ -798,9 +925,7 @@
                         </div>
                     </nav>
 
-                    {/* 여비 상세 — 모바일: 풀스크린 모달 / 데스크탑(768px+): 사이드 패널 */}
-
-                    {/* 데스크탑 사이드 패널 */}
+                    {/* 여비 상세 — 데스크탑 사이드 패널 */}
                     {showDetail&&(
                         <div className="detail-side-panel">
                                 <div className="p-4 pb-3 flex justify-between items-center border-b border-gray-100">
