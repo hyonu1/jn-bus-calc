@@ -59,40 +59,13 @@
         .deduct-btn.active { background: linear-gradient(180deg,#E5E0D6 0%,#F5F0E6 100%); color: #8E8E93; border: 1px solid #D5D0C6; box-shadow: inset 0 2px 4px rgba(0,0,0,0.12),inset 0 1px 2px rgba(0,0,0,0.08); text-shadow: none; transform: translate(-50%,calc(-50% + 1px)); }
         input.ship-fare-input { text-align: right; background-color: #F8F9FA; width: 84px; font-family: var(--font-gmarket); font-weight: 700; outline: none; border: 1px solid #E5E5EA; border-radius: 8px; padding: 6px 8px; margin: 0; color: #8E8E93; font-size: 15px; transition: all 0.2s; }
         input.ship-fare-input:focus { border-color: var(--color-yellow); color: var(--color-black); background-color: #FFF; box-shadow: 0 2px 8px rgba(245,166,35,0.15); }
-
-        /* ── 제안 목록 ── */
-        .suggestions-box {
-            position: absolute; left: 0; right: 0; top: calc(100% + 8px);
-            background: rgba(255,255,255,0.97);
-            border: 1px solid rgba(139,0,0,0.08); border-radius: 20px;
-            z-index: 9999; box-shadow: 0 12px 32px rgba(0,0,0,0.12);
-            max-height: 240px; overflow-y: auto; font-family: var(--font-gmarket);
-            overscroll-behavior: contain;
-        }
+        .suggestions-box { position: absolute; left: 0; right: 0; top: calc(100% + 8px); background: rgba(255,255,255,0.97); border: 1px solid rgba(139,0,0,0.08); border-radius: 20px; z-index: 9999; box-shadow: 0 12px 32px rgba(0,0,0,0.12); max-height: 240px; overflow-y: auto; font-family: var(--font-gmarket); overscroll-behavior: contain; }
         .relative.w-full.group { overflow: visible !important; }
-        .suggestion-item {
-            padding: 14px 20px; cursor: pointer;
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: 15px; color: #1C1C1E; font-weight: 500;
-            border-bottom: 1px solid rgba(0,0,0,0.03);
-            -webkit-tap-highlight-color: rgba(245,166,35,0.15);
-            user-select: none;
-        }
+        .suggestion-item { padding: 14px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 15px; color: #1C1C1E; font-weight: 500; border-bottom: 1px solid rgba(0,0,0,0.03); -webkit-tap-highlight-color: rgba(245,166,35,0.15); user-select: none; }
         .suggestion-item:last-child { border-bottom: none; }
         .suggestion-item:hover, .suggestion-item.active { background-color: rgba(245,166,35,0.1); }
         .suggestion-item:active { background-color: rgba(245,166,35,0.2); }
-
-        /* ── 경로 레이블 ── */
-        .route-label {
-            font-size: 10px;
-            font-family: var(--font-pretendard);
-            font-weight: 600;
-            color: #AEAEB2;
-            letter-spacing: -0.2px;
-            margin-top: 1px;
-            line-height: 1.2;
-        }
-
+        .route-label { font-size: 10px; font-family: var(--font-pretendard); font-weight: 600; color: #AEAEB2; letter-spacing: -0.2px; margin-top: 1px; line-height: 1.2; }
         @keyframes bounce-custom { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-20%); } }
         .icon-bounce { display: inline-block; animation: bounce-custom 2s infinite; }
         .toggle-switch { width: 44px; height: 24px; border-radius: 99px; transition: 0.25s cubic-bezier(0.16,1,0.3,1); position: relative; }
@@ -127,21 +100,9 @@
         @keyframes dotBounce { 0%,80%,100% { transform: scale(0.6); opacity: 0.4; } 40% { transform: scale(1.2); opacity: 1; } }
         .confirm-btn-yellow { background: linear-gradient(180deg,#9B1111 0%,#8B0000 50%,#7A0000 100%) !important; color: #FFF !important; border: none !important; transition: all 0.15s !important; box-shadow: 0 4px 12px rgba(139,0,0,0.25),inset 0 1px 0 rgba(255,255,255,0.15) !important; }
         .confirm-btn-yellow:active { background: linear-gradient(180deg,#7A0000 0%,#6B0000 100%) !important; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2) !important; }
-
-        /* ── X 버튼 ── */
-        .clear-btn {
-            width: 30px; height: 30px; border-radius: 50%;
-            background: #E5E5EA; border: none;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; flex-shrink: 0;
-            transition: background 0.15s;
-            -webkit-tap-highlight-color: transparent;
-            touch-action: manipulation;
-        }
+        .clear-btn { width: 30px; height: 30px; border-radius: 50%; background: #E5E5EA; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: background 0.15s; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
         .clear-btn:hover { background: #C7C7CC; }
         .clear-btn:active { background: #AEAEB2; transform: scale(0.9); }
-
-        /* ── 경유지 ── */
         .add-via-btn { width: 100%; height: 32px; display: flex; align-items: center; justify-content: center; gap: 7px; border-radius: 12px; border: 1px solid #D8D8D8; background: linear-gradient(180deg,#EFEFEF 0%,#E8E8E8 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.8),0 1px 2px rgba(0,0,0,0.04); color: #8E8E93; font-size: 14px; font-weight: 700; font-family: var(--font-pretendard); cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
         .add-via-btn:hover { background: linear-gradient(180deg,#E8E0D8 0%,#E0D8D0 100%); border-color: rgba(139,0,0,0.2); color: #8B0000; }
         .add-via-btn:active { transform: scale(0.98); box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
@@ -150,33 +111,76 @@
         .remove-via-btn:hover svg { stroke: white; }
         .via-result-row { display: flex; justify-content: space-between; align-items: center; height: 32px; padding: 0 8px; }
 
-        /* ── 데스크탑 사이드 패널 ── */
+        /* ── 우등/일반 선택 카드 ── */
+        .fare-option-card {
+            border-radius: 14px;
+            padding: 11px 14px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.15s cubic-bezier(0.16,1,0.3,1);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            position: relative;
+        }
+        /* 경유지 2구간일 때 더 컴팩트하게 */
+        .fare-option-card.compact {
+            padding: 8px 12px;
+            border-radius: 11px;
+        }
+        .fare-option-card.premium {
+            background: linear-gradient(135deg, #FFF8F0 0%, #FFF3E6 100%);
+            border-color: rgba(245,166,35,0.25);
+        }
+        .fare-option-card.premium:hover, .fare-option-card.premium.selected {
+            border-color: #F5A623;
+            box-shadow: 0 3px 12px rgba(245,166,35,0.2);
+        }
+        .fare-option-card.general {
+            background: linear-gradient(135deg, #F8F9FF 0%, #F2F4FF 100%);
+            border-color: rgba(100,120,200,0.15);
+        }
+        .fare-option-card.general:hover, .fare-option-card.general.selected {
+            border-color: #6478C8;
+            box-shadow: 0 3px 12px rgba(100,120,200,0.15);
+        }
+        .fare-option-card:active { transform: scale(0.98); }
+        .fare-radio {
+            width: 18px; height: 18px; border-radius: 50%;
+            border: 2px solid #D0D0D8;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.15s;
+            flex-shrink: 0;
+        }
+        .fare-radio.premium-selected { border-color: #F5A623; background: #F5A623; }
+        .fare-radio.general-selected { border-color: #6478C8; background: #6478C8; }
+        .fare-radio-dot { width: 7px; height: 7px; border-radius: 50%; background: white; }
+
+        /* 구간 구분선 */
+        .segment-divider {
+            display: flex; align-items: center; gap: 8px;
+            margin: 2px 0;
+        }
+        .segment-divider::before, .segment-divider::after {
+            content: ''; flex: 1; height: 1px; background: rgba(139,0,0,0.08);
+        }
+
+        /* ── fare-side-panel: wrapper 안에서 static ── */
+        .fare-side-panel { overflow-y: auto; }
+
         @media (min-width: 768px) {
-            .detail-side-panel {
-                position: fixed;
-                left: calc(50% + 252px);
-                top: 50%;
-                transform: translateY(-50%);
-                width: 320px;
-                max-height: calc(100dvh - 64px);
-                overflow-y: auto;
-                background: linear-gradient(180deg,#FFFFFF 0%,#FAFAFA 100%);
-                border-radius: 28px;
-                border: 1px solid rgba(139,0,0,0.10);
-                box-shadow: 0 25px 50px rgba(0,0,0,0.18);
-                animation: slideInFromLeft 0.25s cubic-bezier(0.16,1,0.3,1) forwards;
-                z-index: 200;
-            }
+            .side-panel-wrapper { position: fixed; left: calc(50% + 252px); top: 50%; transform: translateY(-50%); width: 320px; display: flex; flex-direction: column; gap: 8px; max-height: calc(100dvh - 48px); }
+            .detail-side-panel { position: static; transform: none; width: 100%; overflow-y: auto; background: linear-gradient(180deg,#FFFFFF 0%,#FAFAFA 100%); border-radius: 28px; border: 1px solid rgba(139,0,0,0.10); box-shadow: 0 25px 50px rgba(0,0,0,0.18); animation: slideInFromLeft 0.25s cubic-bezier(0.16,1,0.3,1) forwards; z-index: 200; }
+            .fare-side-panel { position: static; transform: none; width: 100%; overflow-y: auto; background: linear-gradient(180deg,#FFFFFF 0%,#FAFAFA 100%); border-radius: 28px; border: 1px solid rgba(139,0,0,0.10); box-shadow: 0 25px 50px rgba(0,0,0,0.18); animation: slideInFromLeft 0.25s cubic-bezier(0.16,1,0.3,1) forwards; z-index: 210; }
             .detail-mobile-panel { display: none !important; }
+            .fare-mobile-modal { display: none !important; }
         }
         @media (max-width: 767px) {
+            .side-panel-wrapper { display: none !important; }
             .detail-side-panel { display: none !important; }
             .detail-mobile-panel { display: flex !important; }
+            .fare-side-panel { display: none !important; }
         }
-        @keyframes slideInFromLeft {
-            from { opacity: 0; transform: translateY(-50%) translateX(-16px); }
-            to   { opacity: 1; transform: translateY(-50%) translateX(0); }
-        }
+        @keyframes slideInFromLeft { from { opacity: 0; transform: translateX(-16px); } to { opacity: 1; transform: translateX(0); } }
     </style>
 </head>
 <body>
@@ -258,6 +262,7 @@
 
         const { useState, useEffect, useRef, useCallback } = React;
 
+        // ── AutocompleteInput ──────────────────────────────────────────
         const AutocompleteInput = ({ value, onChange, onSelect, placeholder, label, cityList }) => {
             const [suggestions, setSuggestions] = useState([]);
             const [isOpen, setIsOpen] = useState(false);
@@ -283,100 +288,49 @@
                 if (!isOpen) return;
                 const handler = (e) => {
                     if (containerRef.current && !containerRef.current.contains(e.target)) {
-                        setIsOpen(false);
-                        setActiveIndex(-1);
+                        setIsOpen(false); setActiveIndex(-1);
                     }
                 };
                 const usePointer = window.PointerEvent != null;
-                if (usePointer) {
-                    document.addEventListener('pointerdown', handler, false);
-                } else {
-                    document.addEventListener('touchstart', handler, { passive: true });
-                    document.addEventListener('mousedown', handler, false);
-                }
+                if (usePointer) document.addEventListener('pointerdown', handler, false);
+                else { document.addEventListener('touchstart', handler, { passive: true }); document.addEventListener('mousedown', handler, false); }
                 return () => {
-                    if (usePointer) {
-                        document.removeEventListener('pointerdown', handler, false);
-                    } else {
-                        document.removeEventListener('touchstart', handler);
-                        document.removeEventListener('mousedown', handler, false);
-                    }
+                    if (usePointer) document.removeEventListener('pointerdown', handler, false);
+                    else { document.removeEventListener('touchstart', handler); document.removeEventListener('mousedown', handler, false); }
                 };
             }, [isOpen]);
 
             const handleSelect = useCallback((city) => {
-                onSelect(city);
-                setIsOpen(false);
-                setSuggestions([]);
-                setActiveIndex(-1);
-                isSelectingRef.current = false;
+                onSelect(city); setIsOpen(false); setSuggestions([]); setActiveIndex(-1); isSelectingRef.current = false;
             }, [onSelect]);
 
             const handleClear = useCallback((e) => {
-                e.preventDefault();
-                e.stopPropagation();
+                e.preventDefault(); e.stopPropagation();
                 if (e.type === 'click' && e.detail === 0) return;
-                onChange('');
-                onSelect('');
-                setIsOpen(false);
-                setSuggestions([]);
-                setActiveIndex(-1);
+                onChange(''); onSelect(''); setIsOpen(false); setSuggestions([]); setActiveIndex(-1);
                 setTimeout(() => inputRef.current?.focus(), 0);
             }, [onChange, onSelect]);
 
             const handleChange = (e) => {
                 const raw = e.target.value;
-                onChange(raw);
-                setActiveIndex(-1);
+                onChange(raw); setActiveIndex(-1);
                 const normalized = raw.replace(/\s/g, '');
-                if (normalized && cityList.includes(normalized)) {
-                    onSelect(normalized);
-                    setIsOpen(false);
-                    setSuggestions([]);
-                } else {
-                    setIsOpen(true);
-                }
+                if (normalized && cityList.includes(normalized)) { onSelect(normalized); setIsOpen(false); setSuggestions([]); }
+                else setIsOpen(true);
             };
 
             const handleFocus = () => setIsOpen(true);
-
-            const handleBlur = () => {
-                setTimeout(() => {
-                    if (isSelectingRef.current) {
-                        isSelectingRef.current = false;
-                        return;
-                    }
-                    setIsOpen(false);
-                    setActiveIndex(-1);
-                }, 250);
-            };
-
+            const handleBlur = () => { setTimeout(() => { if (isSelectingRef.current) { isSelectingRef.current = false; return; } setIsOpen(false); setActiveIndex(-1); }, 250); };
             const handleKeyDown = (e) => {
                 if (isComposingRef.current) return;
                 if (!isOpen || suggestions.length === 0) return;
-                if (e.key === 'ArrowDown') {
-                    e.preventDefault();
-                    setActiveIndex(p => (p < suggestions.length - 1 ? p + 1 : 0));
-                } else if (e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    setActiveIndex(p => (p > 0 ? p - 1 : suggestions.length - 1));
-                } else if (e.key === 'Enter') {
-                    e.preventDefault();
-                    if (activeIndex >= 0) handleSelect(suggestions[activeIndex]);
-                    else if (suggestions.length > 0) handleSelect(suggestions[0]);
-                } else if (e.key === 'Escape') {
-                    setIsOpen(false);
-                    setActiveIndex(-1);
-                }
-            };
-
-            const handleCompositionStart = () => { isComposingRef.current = true; };
-            const handleCompositionEnd = (e) => {
-                setTimeout(() => { isComposingRef.current = false; }, 0);
+                if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIndex(p => (p < suggestions.length - 1 ? p + 1 : 0)); }
+                else if (e.key === 'ArrowUp') { e.preventDefault(); setActiveIndex(p => (p > 0 ? p - 1 : suggestions.length - 1)); }
+                else if (e.key === 'Enter') { e.preventDefault(); if (activeIndex >= 0) handleSelect(suggestions[activeIndex]); else if (suggestions.length > 0) handleSelect(suggestions[0]); }
+                else if (e.key === 'Escape') { setIsOpen(false); setActiveIndex(-1); }
             };
 
             const showList = isOpen && suggestions.length > 0;
-
             return (
                 <div className="relative w-full group" ref={containerRef}>
                     <div className="input-group">
@@ -384,58 +338,27 @@
                         <div className="flex-1 min-w-0 flex items-center gap-2">
                             <div className="flex-1 min-w-0">
                                 {label && <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-tighter mb-0.5">{label}</label>}
-                                <input
-                                    ref={inputRef}
-                                    type="text"
-                                    id={uniqueId.current}
-                                    name={uniqueId.current}
-                                    autoComplete="off"
-                                    autoCorrect="off"
-                                    autoCapitalize="off"
-                                    spellCheck="false"
+                                <input ref={inputRef} type="text" id={uniqueId.current} name={uniqueId.current} autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck="false"
                                     className="w-full bg-transparent outline-none font-gmarket font-bold text-gray-900 text-xl placeholder-gray-300"
-                                    placeholder={placeholder}
-                                    value={value || ''}
-                                    onChange={handleChange}
-                                    onFocus={handleFocus}
-                                    onBlur={handleBlur}
-                                    onKeyDown={handleKeyDown}
-                                    onCompositionStart={handleCompositionStart}
-                                    onCompositionEnd={handleCompositionEnd}
+                                    placeholder={placeholder} value={value || ''} onChange={handleChange} onFocus={handleFocus} onBlur={handleBlur} onKeyDown={handleKeyDown}
+                                    onCompositionStart={() => { isComposingRef.current = true; }} onCompositionEnd={() => { setTimeout(() => { isComposingRef.current = false; }, 0); }}
                                 />
                             </div>
-                            {value && REGION_ICONS[value.replace(/\s/g,"")] && (
-                                <span className="text-2xl icon-bounce" style={{flexShrink:0}}>{REGION_ICONS[value.replace(/\s/g,"")]}</span>
-                            )}
+                            {value && REGION_ICONS[value.replace(/\s/g,"")] && <span className="text-2xl icon-bounce" style={{flexShrink:0}}>{REGION_ICONS[value.replace(/\s/g,"")]}</span>}
                         </div>
                         <div className="flex items-center gap-2 shrink-0">
-                            {value && (
-                                <button
-                                    className="clear-btn"
-                                    onPointerDown={handleClear}
-                                    onClick={handleClear}
-                                    tabIndex={-1}
-                                    aria-label="입력 지우기"
-                                >
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6E6E73" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
-                                    </svg>
+                            {value ? (
+                                <button className="clear-btn" onPointerDown={handleClear} onClick={handleClear} tabIndex={-1} aria-label="입력 지우기">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6E6E73" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                                 </button>
-                            )}
-                            {!value && <div style={{width:'30px'}} />}
+                            ) : <div style={{width:'30px'}} />}
                         </div>
                     </div>
-
                     {showList && (
                         <div className="suggestions-box">
                             {suggestions.map((city, idx) => (
-                                <div
-                                    key={city}
-                                    className={`suggestion-item ${idx === activeIndex ? 'active' : ''}`}
-                                    onPointerDown={() => { isSelectingRef.current = true; }}
-                                    onClick={() => { handleSelect(city); }}
-                                    onPointerEnter={() => setActiveIndex(idx)}
-                                >
+                                <div key={city} className={`suggestion-item ${idx === activeIndex ? 'active' : ''}`}
+                                    onPointerDown={() => { isSelectingRef.current = true; }} onClick={() => { handleSelect(city); }} onPointerEnter={() => setActiveIndex(idx)}>
                                     <span className="text-[16px] font-bold">{city}</span>
                                     <span className="text-2xl">{REGION_ICONS[city.replace(/\s/g,"")]}</span>
                                 </div>
@@ -452,80 +375,127 @@
             </button>
         );
 
-        // ══════════════════════════════════════════════════════
-        // 경로 레이블 계산 헬퍼
-        // 반환: { fareRoute, ruralRoute, shipRoute }
-        //   fareRoute  : 요금 항목 아래 표시할 출발→도착 경로
-        //   ruralRoute : 농어촌버스 항목 아래 표시할 경로 (없으면 null)
-        //   shipRoute  : 여객선 항목 아래 표시할 경로 (없으면 null)
-        // ══════════════════════════════════════════════════════
-        // ══════════════════════════════════════════════════════════════
-        //  calcRouteLabels  ―  출발지·도착지 양방향 완전 처리
-        //
-        //  핵심 원칙:
-        //  · 요금(시외버스)은 항상 hub→hub 구간만 표시
-        //    (섬/연륙지는 hub로 치환, 일반지는 그대로)
-        //  · 농어촌버스: 출발/도착이 신안연륙지(connected,!special)일 때 발생
-        //    복수 구간은 쉼표로 한 줄 표시
-        //  · 여객선: 출발/도착이 ship 타입일 때 발생
-        //    비금 특수케이스(암태 경유) 별도 처리
-        //    복수 구간은 쉼표로 한 줄 표시
-        // ══════════════════════════════════════════════════════════════
+        // ── 경로 레이블 계산 ──────────────────────────────────────────
         const calcRouteLabels = (fromRaw, toRaw) => {
-            const to   = normalize(toRaw);
-            const from = normalize(fromRaw);
-            const toI   = ISLAND_DB[to];
-            const fromI = ISLAND_DB[from];
-
-            const destHub = toI   ? toI.hub   : to;
-            const origHub = fromI ? fromI.hub : from;
-
-            // ── 요금 경로: origHub→destHub (실제 시외버스 구간) ──
+            const to = normalize(toRaw); const from = normalize(fromRaw);
+            const toI = ISLAND_DB[to]; const fromI = ISLAND_DB[from];
+            const destHub = toI ? toI.hub : to; const origHub = fromI ? fromI.hub : from;
             const fareRoute = `${origHub}→${destHub}`;
-
-            // ── 농어촌버스 경로 ──
-            // 출발지가 신안연륙지(connected, !special)면 → "출발지→origHub"
-            // 도착지가 신안연륙지(connected, !special)면 → "destHub→도착지"
-            // 비금 출발: "출발지→암태" (비금은 암태 경유 연륙)
-            // 비금 도착: "목포→암태"
             const ruralParts = [];
-            if (fromI && fromI.type === 'connected' && !fromI.special) {
-                ruralParts.push(`${fromRaw}→${origHub}`);
-            } else if (from === '비금') {
-                ruralParts.push(`비금→암태`);
-            }
-            if (toI && toI.type === 'connected' && !toI.special) {
-                ruralParts.push(`${destHub}→${toRaw}`);
-            } else if (to === '비금') {
-                ruralParts.push(`목포→암태`);
-            }
+            if (fromI && fromI.type === 'connected' && !fromI.special) ruralParts.push(`${fromRaw}→${origHub}`);
+            else if (from === '비금') ruralParts.push(`비금→암태`);
+            if (toI && toI.type === 'connected' && !toI.special) ruralParts.push(`${destHub}→${toRaw}`);
+            else if (to === '비금') ruralParts.push(`목포→암태`);
             const ruralRoute = ruralParts.length > 0 ? ruralParts.join(', ') : null;
-
-            // ── 여객선 경로 ──
-            // 출발지가 ship이면 → "출발지→origHub"
-            // 비금 출발: "암태→비금" (역방향이므로 암태에서 타는 것)
-            // 도착지가 ship이면 → "destHub→도착지"
-            // 비금 도착: "암태→비금"
             const shipParts = [];
-            if (fromI && fromI.type === 'ship') {
-                if (from === '비금') {
-                    shipParts.push(`암태→비금`);
-                } else {
-                    shipParts.push(`${fromRaw}→${origHub}`);
-                }
-            }
-            if (toI && toI.type === 'ship') {
-                if (to === '비금') {
-                    shipParts.push(`암태→비금`);
-                } else {
-                    shipParts.push(`${destHub}→${toRaw}`);
-                }
-            }
+            if (fromI && fromI.type === 'ship') { if (from === '비금') shipParts.push(`암태→비금`); else shipParts.push(`${fromRaw}→${origHub}`); }
+            if (toI && toI.type === 'ship') { if (to === '비금') shipParts.push(`암태→비금`); else shipParts.push(`${destHub}→${toRaw}`); }
             const shipRoute = shipParts.length > 0 ? shipParts.join(', ') : null;
-
             return { fareRoute, ruralRoute, shipRoute };
         };
 
+        const FareCardGroup = ({ segments, selections, onSelect }) => {
+            const isSingle = segments.length === 1;
+            return (
+                <div style={{display:'flex', flexDirection:'column', gap: isSingle ? '8px' : '12px'}}>
+                    {segments.map((seg, segIdx) => (
+                        <div key={segIdx}>
+                            {!isSingle && (
+                                <div className="segment-divider" style={{margin:'0 0 6px'}}>
+                                    <span className="text-[10px] font-bold text-gray-400 tracking-wide">
+                                        구간 {segIdx + 1} · {seg.from} → {seg.to}
+                                    </span>
+                                </div>
+                            )}
+                            {isSingle && (
+                                <div className="flex items-center gap-2" style={{marginBottom:'6px'}}>
+                                    <span className="text-[12px] font-bold text-gray-500">{seg.from}</span>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C7C7CC" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                                    <span className="text-[12px] font-bold text-[#8B0000]">{seg.to}</span>
+                                </div>
+                            )}
+                            <div style={{display:'flex', flexDirection:'column', gap:'5px'}}>
+                                {/* 우등 카드 */}
+                                <div className={`fare-option-card premium compact ${selections[segIdx] === 'pre' ? 'selected' : ''}`}
+                                    onClick={() => onSelect(segIdx, 'pre')}>
+                                    <div className="flex items-center gap-2.5">
+                                        <div className={`fare-radio ${selections[segIdx] === 'pre' ? 'premium-selected' : ''}`}>
+                                            {selections[segIdx] === 'pre' && <div className="fare-radio-dot"/>}
+                                        </div>
+                                        <div className="flex items-baseline gap-1.5">
+                                            <span className="font-black text-[#1C1C1E] text-[13px]">우등요금</span>
+                                            <span className="font-black text-[#F5A623] text-[18px]">{fmt(seg.pre)}</span>
+                                            <span className="font-bold text-[#B45309] text-[11px]">원</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* 일반 카드 */}
+                                <div className={`fare-option-card general compact ${selections[segIdx] === 'gen' ? 'selected' : ''}`}
+                                    onClick={() => onSelect(segIdx, 'gen')}>
+                                    <div className="flex items-center gap-2.5">
+                                        <div className={`fare-radio ${selections[segIdx] === 'gen' ? 'general-selected' : ''}`}>
+                                            {selections[segIdx] === 'gen' && <div className="fare-radio-dot"/>}
+                                        </div>
+                                        <div className="flex items-baseline gap-1.5">
+                                            <span className="font-black text-[#1C1C1E] text-[13px]">일반요금</span>
+                                            <span className="font-black text-[#6478C8] text-[18px]">{fmt(seg.gen)}</span>
+                                            <span className="font-bold text-[#4B5AB0] text-[11px]">원</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            );
+        };
+
+        // ── 모바일 전용 팝업 (탭 즉시 반영 후 자동 닫힘) ─────────────
+        const FareMobileModal = ({ segments, selections, onSelect, onClose }) => (
+            <div className="fare-mobile-modal fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={onClose}>
+                <div className="bg-white w-full max-w-sm rounded-[28px] overflow-hidden"
+                    style={{background:'linear-gradient(180deg,#FFFFFF 0%,#FAFAFA 100%)',boxShadow:'0 25px 50px rgba(0,0,0,0.25)',animation:'slideUpModal 0.25s cubic-bezier(0.16,1,0.3,1) forwards'}}
+                    onClick={e => e.stopPropagation()}>
+                    <div style={{background:'linear-gradient(180deg,#9B1111 0%,#8B0000 100%)'}} className="px-5 py-4 flex justify-between items-center">
+                        <div>
+                            <h3 className="font-black text-white text-[17px] tracking-tight">버스 등급 선택</h3>
+                            <p className="text-[10px] text-red-200 font-medium mt-0.5">해당 구간에 우등버스가 운행됩니다</p>
+                        </div>
+                        <button onClick={onClose} className="text-red-200 hover:text-white transition-colors"><Icons.X size={20}/></button>
+                    </div>
+                    <div className="p-3">
+                        <FareCardGroup
+                            segments={segments}
+                            selections={selections}
+                            onSelect={(segIdx, type) => { onSelect(segIdx, type); }}
+                        />
+                    </div>
+                </div>
+            </div>
+        );
+
+        // ── 데스크탑 전용 사이드 패널 ────────────────────────────────
+        const FareSidePanel = ({ segments, selections, onSelect, onClose, panelRef }) => (
+            <div className="fare-side-panel" ref={panelRef}>
+                <div style={{background:'linear-gradient(180deg,#9B1111 0%,#8B0000 100%)'}} className="px-5 py-3 flex justify-between items-center rounded-t-[28px]">
+                    <div>
+                        <h3 className="font-black text-white text-[16px] tracking-tight">버스 등급 선택</h3>
+                        <p className="text-[10px] text-red-200 font-medium mt-0.5">해당 구간에 우등버스가 운행됩니다</p>
+                    </div>
+                    <button onClick={onClose} className="text-red-200 hover:text-white transition-colors"><Icons.X size={20}/></button>
+                </div>
+                <div style={{padding: segments.length === 1 ? '10px 12px 8px' : '10px 12px 8px'}}>
+                    <FareCardGroup
+                        segments={segments}
+                        selections={selections}
+                        onSelect={onSelect}
+                    />
+                    <p className="text-center text-[10px] text-gray-400 font-medium mt-2">항목을 선택하면 즉시 반영됩니다</p>
+                </div>
+            </div>
+        );
+
+        // ── 메인 앱 ──────────────────────────────────────────────────
         const App = () => {
             const [origin, setOrigin] = useState('');
             const [waypoint, setWaypoint] = useState('');
@@ -544,25 +514,18 @@
             const [history, setHistory] = useState(() => { try { return JSON.parse(localStorage.getItem('yeobi_history')||'[]'); } catch { return []; } });
             const [calcStatus, setCalcStatus] = useState('idle');
 
+            // ── 우등/일반 팝업 state ──
+            // fareModal: { segments, pendingResult, seg1(경유지용), seg2(경유지용) } | null
+            const [fareModal, setFareModal] = useState(null);
+            // selections: 현재 선택된 우등/일반 배열 ['pre'|'gen', ...]
+            const [fareSelections, setFareSelections] = useState([]);
+
             const resetDeductions = () => setDeductions({gov_vehicle:false,meal_1:false,meal_2:false,meal_3:false,meal_half:false,transport_proof:false,transport_gov_vehicle:false,transport_passenger:false});
 
             const ISLAND_HUB_FOR_VIA = {
-                "신안":"목포","신안교육청":"목포","압해":"목포","지도":"목포","증도":"목포",
-                "임자":"목포","팔금":"목포","암태":"목포","자은":"목포","안좌":"목포",
-                "비금":"목포","도초":"목포","장산":"목포","하의":"목포","신의":"목포",
-                "흑산":"목포","홍도":"목포","가거도":"목포","만재도":"목포",
-                "완도":"완도","군외":"완도","신지":"완도","고금":"완도","약산":"완도",
-                "청산":"완도","노화":"완도","보길":"완도","소안":"완도","여서도":"완도",
-                "금일":"완도","생일":"완도","금당":"완도",
-                "진도조도":"진도","진도관매도":"진도","진도서거차도":"진도",
-                "고흥득량도":"고흥","고흥쑥섬(애도)":"고흥",
-                "영광안마도":"영광","영광낙월":"영광","영광송이도":"영광",
-                "해남어룡도":"해남"
+                "신안":"목포","신안교육청":"목포","압해":"목포","지도":"목포","증도":"목포","임자":"목포","팔금":"목포","암태":"목포","자은":"목포","안좌":"목포","비금":"목포","도초":"목포","장산":"목포","하의":"목포","신의":"목포","흑산":"목포","홍도":"목포","가거도":"목포","만재도":"목포","완도":"완도","군외":"완도","신지":"완도","고금":"완도","약산":"완도","청산":"완도","노화":"완도","보길":"완도","소안":"완도","여서도":"완도","금일":"완도","생일":"완도","금당":"완도","진도조도":"진도","진도관매도":"진도","진도서거차도":"진도","고흥득량도":"고흥","고흥쑥섬(애도)":"고흥","영광안마도":"영광","영광낙월":"영광","영광송이도":"영광","해남어룡도":"해남"
             };
-            const getViaHub = (city) => {
-                const n = (city||'').replace(/\s/g,'');
-                return ISLAND_HUB_FOR_VIA[n] || n;
-            };
+            const getViaHub = (city) => { const n = (city||'').replace(/\s/g,''); return ISLAND_HUB_FOR_VIA[n] || n; };
 
             const calculateDetailedCost = () => {
                 if (!result) return { total: 0 };
@@ -573,6 +536,7 @@
                 return { daily, meal, transport, surchargeTotal, total: daily+meal+transport+surchargeTotal+(shipFare||0) };
             };
 
+            // ── 구간 계산 (gen/pre 모두 반환) ──
             const calcSegment = (fromRaw, toRaw) => {
                 const from = normalize(fromRaw); const to = normalize(toRaw);
                 if (!from || !to) return null;
@@ -580,19 +544,93 @@
                 let sFrom=from, sTo=to, surcharge=0, shipCost=0, viaPoint=null;
                 if (fromI) { sFrom=fromI.hub; shipCost+=(fromI.shipCost||0); surcharge+=(fromI.cost||0); viaPoint=fromI.via||fromI.hub; }
                 if (toI)   { sTo=toI.hub;   shipCost+=(toI.shipCost||0);   surcharge+=(toI.cost||0); }
-                if (sFrom===sTo) return { cost:0, base:0, surcharge:0, shipCost:0, viaPoint, sameArea:true };
+                if (sFrom===sTo) return { cost:0, base:0, gen:0, pre:null, surcharge:0, shipCost:0, viaPoint, sameArea:true };
                 const bd = INITIAL_DATA[sFrom]?.[sTo] || INITIAL_DATA[sTo]?.[sFrom];
                 if (!bd) return null;
-                const base = bd.pre||bd.gen||0;
-                // 경로 레이블 추가
+                const gen = bd.gen || 0;
+                const pre = bd.pre || null; // null = 우등 없음
+                const base = pre || gen; // 기본값은 우등 우선 (기존 동작 유지)
                 const routeLabels = calcRouteLabels(fromRaw, toRaw);
-                return { cost: base+surcharge, base, surcharge, shipCost, viaPoint, isShip: (fromI?.type==='ship'||toI?.type==='ship'), routeLabels };
+                return { cost: base+surcharge, base, gen, pre, surcharge, shipCost, viaPoint, isShip: (fromI?.type==='ship'||toI?.type==='ship'), routeLabels };
             };
+
+            // ── 우등/일반 즉시 반영 핸들러 ──────────────────────────
+            // segIdx: 몇 번째 구간, type: 'pre'|'gen'
+            // 선택 즉시 result/manualMainTransport 갱신, 모바일은 선택 후 자동 닫힘
+            const handleFareSelect = useCallback((segIdx, type) => {
+                if (!fareModal) return;
+
+                const newSelections = [...fareSelections];
+                newSelections[segIdx] = type;
+                setFareSelections(newSelections);
+
+                const { segments: fareSegs, pendingResult, seg1, seg2 } = fareModal;
+
+                if (!pendingResult.segments) {
+                    // ── 단일 구간 ──
+                    const seg = fareSegs[0];
+                    const chosen = type === 'pre' ? seg.pre : seg.gen;
+                    const newResult = {
+                        ...pendingResult,
+                        baseBusCost: chosen,
+                        cost: chosen + (pendingResult.surcharge || 0)
+                    };
+                    setResult(newResult);
+                    setManualMainTransport(chosen * 2);
+                    setHistory(prev => {
+                        const entry = { origin, destination, cost: newResult.cost, ts: Date.now() };
+                        const next = [entry, ...prev.filter(h => !(h.origin===origin && h.destination===destination))].slice(0, 3);
+                        try { localStorage.setItem('yeobi_history', JSON.stringify(next)); } catch {}
+                        return next;
+                    });
+                    setCalcStatus('done');
+                    // 모바일: 선택 즉시 닫힘
+                    if (window.innerWidth < 768) setFareModal(null);
+
+                } else {
+                    // ── 경유지 구간 ──
+                    // newSelections 기준으로 각 구간 base 결정
+                    // fareSegs[i].from으로 seg1/seg2 매핑
+                    let base1 = seg1.pre || seg1.gen;
+                    let base2 = seg2.pre || seg2.gen;
+
+                    fareSegs.forEach((fs, i) => {
+                        const sel = i === segIdx ? type : newSelections[i];
+                        const chosen = sel === 'gen' ? fs.gen : (fs.pre || fs.gen);
+                        // fareSegs의 from이 origin과 같으면 seg1, 아니면 seg2
+                        const isFirst = normalize(fs.from) === normalize(origin) || fs.from === normalize(origin) || fs.from === origin;
+                        if (isFirst) base1 = chosen;
+                        else base2 = chosen;
+                    });
+
+                    // fareSegs에 없는 구간(pre 없는 구간)은 gen 그대로 유지
+                    // seg1에 pre 없으면 base1은 이미 seg1.gen
+                    // seg2에 pre 없으면 base2는 이미 seg2.gen
+
+                    const totalBase = base1 + base2;
+                    const newResult = {
+                        ...pendingResult,
+                        baseBusCost: totalBase,
+                        cost: totalBase + (pendingResult.surcharge || 0),
+                        segments: [
+                            { ...pendingResult.segments[0], base: base1, cost: base1 + (pendingResult.segments[0].surcharge || 0) },
+                            { ...pendingResult.segments[1], base: base2, cost: base2 + (pendingResult.segments[1].surcharge || 0) }
+                        ]
+                    };
+                    setResult(newResult);
+                    setManualMainTransport(totalBase * 2);
+                    setCalcStatus('done');
+                    // 모바일: 마지막 구간 선택 시 닫힘
+                    if (window.innerWidth < 768) {
+                        const allSelected = newSelections.every(s => s);
+                        if (allSelected) setFareModal(null);
+                    }
+                }
+            }, [fareModal, fareSelections, origin, destination]);
 
             const performCalculation = (o=origin, d=destination, isForce=false, via=waypoint) => {
                 const from = normalize(o); const to = normalize(d);
-                resetDeductions();
-                setShipFare(0); setManualMainTransport(null);
+                resetDeductions(); setShipFare(0); setManualMainTransport(null);
                 if (from && to) setCalcStatus('working');
                 const fromN = o.replace(/\s/g,""); const toN = d.replace(/\s/g,"");
                 if (!isForce) {
@@ -602,72 +640,127 @@
                 if (!from || !to) return;
 
                 const viaN = normalize(via);
+
                 if (!viaN) {
                     for (const g of SAME_AREA_GROUPS) { if (g.has(from) && g.has(to)) { setIntraCityOpen(true); return; } }
                     const seg = calcSegment(o, d);
                     if (seg) {
                         setShipFare(seg.shipCost*2);
-                        setManualMainTransport(seg.base*2);
-                        setResult({ type:'internal', cost:seg.cost, baseBusCost:seg.base, surcharge:seg.surcharge, shipCost:seg.shipCost, isShipOnlyRoute:seg.isShip, viaPoint:seg.viaPoint, segments:null, routeLabels:seg.routeLabels });
-                        setTimeout(()=>setCalcStatus('done'),300);
-                        setHistory(prev => {
-                            const entry={origin:o,destination:d,cost:seg.cost,ts:Date.now()};
-                            const next=[entry,...prev.filter(h=>!(h.origin===o&&h.destination===d))].slice(0,3);
-                            try{localStorage.setItem('yeobi_history',JSON.stringify(next));}catch{}
-                            return next;
-                        });
+
+                        // 우등/일반 분기 ★
+                        if (seg.pre) {
+                            // 팝업 트리거 — pendingResult는 pre 기준으로 임시 세팅
+                            const pendingResult = {
+                                type:'internal', cost:seg.cost, baseBusCost:seg.pre,
+                                surcharge:seg.surcharge, shipCost:seg.shipCost,
+                                isShipOnlyRoute:seg.isShip, viaPoint:seg.viaPoint,
+                                segments:null, routeLabels:seg.routeLabels
+                            };
+                            const toI_check = ISLAND_DB[normalize(d)];
+                            const busDestHub = toI_check ? toI_check.hub : normalize(d);
+                            const fromI_check = ISLAND_DB[normalize(o)];
+                            const busOrigHub = fromI_check ? fromI_check.hub : normalize(o);
+                            const fareSegs = [{ from: busOrigHub, to: busDestHub, gen: seg.gen, pre: seg.pre }];
+                            setFareSelections(['pre']); // 기본값: 우등
+                            setFareModal({ segments: fareSegs, pendingResult });
+                            // 즉시 pre 기준 result 세팅 (데스크탑 실시간 반영용)
+                            setResult(pendingResult);
+                            setManualMainTransport(seg.pre * 2);
+                            setCalcStatus('done');
+                            setHistory(prev => {
+                                const entry={origin:o,destination:d,cost:seg.cost,ts:Date.now()};
+                                const next=[entry,...prev.filter(h=>!(h.origin===o&&h.destination===d))].slice(0,3);
+                                try{localStorage.setItem('yeobi_history',JSON.stringify(next));}catch{}
+                                return next;
+                            });
+                        } else {
+                            // 우등 없음 — 기존 그대로
+                            setManualMainTransport(seg.base*2);
+                            setResult({ type:'internal', cost:seg.cost, baseBusCost:seg.base, surcharge:seg.surcharge, shipCost:seg.shipCost, isShipOnlyRoute:seg.isShip, viaPoint:seg.viaPoint, segments:null, routeLabels:seg.routeLabels });
+                            setTimeout(()=>setCalcStatus('done'),300);
+                            setHistory(prev => {
+                                const entry={origin:o,destination:d,cost:seg.cost,ts:Date.now()};
+                                const next=[entry,...prev.filter(h=>!(h.origin===o&&h.destination===d))].slice(0,3);
+                                try{localStorage.setItem('yeobi_history',JSON.stringify(next));}catch{}
+                                return next;
+                            });
+                        }
                     } else { setResult({type:'external'}); setTimeout(()=>setCalcStatus('done'),300); }
                     return;
                 }
 
+                // 경유지 있는 경우
                 const viaHub = getViaHub(via);
-                const viaHubRaw = viaHub;
-
-                const seg1 = calcSegment(o, viaHubRaw);
-                const seg2 = calcSegment(viaHubRaw, d);
+                const seg1 = calcSegment(o, viaHub);
+                const seg2 = calcSegment(viaHub, d);
 
                 if (seg1 && seg2) {
-                    const totalBase = seg1.base + seg2.base;
                     const totalSurcharge = seg1.surcharge + seg2.surcharge;
                     const totalShip = seg1.shipCost + seg2.shipCost;
                     setShipFare(totalShip*2);
-                    setManualMainTransport(totalBase*2);
-                    // 경유지 있을 때: 출발지·도착지 양방향 레이블 합산
-                    const origLabels = calcRouteLabels(o, viaHubRaw);
-                    const destRouteLabels = calcRouteLabels(viaHubRaw, d);
-                    setResult({
-                        type:'internal',
-                        cost: totalBase + totalSurcharge,
-                        baseBusCost: seg1.base + seg2.base,
-                        surcharge: seg1.surcharge + seg2.surcharge,
-                        shipCost: totalShip,
+
+                    const origLabels = calcRouteLabels(o, viaHub);
+                    const destRouteLabels = calcRouteLabels(viaHub, d);
+                    const fromN2 = normalize(o); const toN2 = normalize(d);
+                    const fromI2 = ISLAND_DB[fromN2]; const toI2 = ISLAND_DB[toN2];
+                    const origHub2 = fromI2 ? fromI2.hub : fromN2;
+                    const destHub2 = toI2 ? toI2.hub : toN2;
+                    const ruralAll = [origLabels.ruralRoute, destRouteLabels.ruralRoute].filter(Boolean).join(', ') || null;
+                    const shipAll  = [origLabels.shipRoute, destRouteLabels.shipRoute].filter(Boolean).join(', ') || null;
+                    const combinedRouteLabels = {
+                        fareRoute: `${origHub2}→${viaHub}→${destHub2}`,
+                        ruralRoute: ruralAll, shipRoute: shipAll
+                    };
+
+                    const hasPre = seg1.pre || seg2.pre;
+                    const totalBase = (seg1.pre||seg1.gen) + (seg2.pre||seg2.gen);
+
+                    const pendingResult = {
+                        type:'internal', cost: totalBase + totalSurcharge, baseBusCost: totalBase,
+                        surcharge: totalSurcharge, shipCost: totalShip,
                         isShipOnlyRoute: seg1.isShip || seg2.isShip,
-                        viaPoint: viaHub !== viaN ? viaHub : null,
+                        viaPoint: viaHub,
                         segments: [
-                            { from:o, to:viaHubRaw, cost:seg1.cost, base:seg1.base, surcharge:seg1.surcharge, shipCost:seg1.shipCost },
-                            { from:viaHubRaw, to:d, cost:seg2.cost, base:seg2.base, surcharge:seg2.surcharge, shipCost:seg2.shipCost }
+                            { from:o, to:viaHub, cost:seg1.cost, base:seg1.pre||seg1.gen, surcharge:seg1.surcharge, shipCost:seg1.shipCost },
+                            { from:viaHub, to:destHub2, cost:seg2.cost, base:seg2.pre||seg2.gen, surcharge:seg2.surcharge, shipCost:seg2.shipCost }
                         ],
-                        viaLabel: viaHub,
-                        // 경유지 있는 경우: 요금 origHub→viaHub→destHub, 농어촌/여객선은 양쪽 합산
-                        routeLabels: (() => {
-                            const fromN2 = normalize(o); const toN2 = normalize(d);
-                            const fromI2 = ISLAND_DB[fromN2]; const toI2 = ISLAND_DB[toN2];
-                            const origHub2 = fromI2 ? fromI2.hub : fromN2;
-                            const destHub2 = toI2   ? toI2.hub   : toN2;
-                            const ruralAll = [origLabels.ruralRoute, destRouteLabels.ruralRoute].filter(Boolean).join(', ') || null;
-                            const shipAll  = [origLabels.shipRoute,  destRouteLabels.shipRoute ].filter(Boolean).join(', ') || null;
-                            return {
-                                fareRoute: `${origHub2}→${viaHub}→${destHub2}`,
-                                ruralRoute: ruralAll,
-                                shipRoute: shipAll
-                            };
-                        })()
-                    });
-                    setTimeout(()=>setCalcStatus('done'),300);
-                } else {
-                    setResult({type:'external'}); setTimeout(()=>setCalcStatus('done'),300);
-                }
+                        viaLabel: viaHub, routeLabels: combinedRouteLabels
+                    };
+
+                    if (hasPre) {
+                        // 경유지 팝업 — 각 구간에 pre 있는 것만 선택지 제공
+                        const fareSegs = [];
+                        if (seg1.pre) fareSegs.push({ from: normalize(o), to: viaHub, gen: seg1.gen, pre: seg1.pre });
+                        if (seg2.pre) fareSegs.push({ from: viaHub, to: destHub2, gen: seg2.gen, pre: seg2.pre });
+                        const initSelections = fareSegs.map(() => 'pre');
+                        setFareSelections(initSelections);
+                        setFareModal({ segments: fareSegs, pendingResult, seg1, seg2 });
+                        // 즉시 pre 기준 result 세팅
+                        setResult(pendingResult);
+                        setManualMainTransport(totalBase * 2);
+                        setCalcStatus('done');
+                    } else {
+                        setManualMainTransport(totalBase*2);
+                        setResult(pendingResult);
+                        setTimeout(()=>setCalcStatus('done'),300);
+                    }
+                } else { setResult({type:'external'}); setTimeout(()=>setCalcStatus('done'),300); }
             };
+
+            const farePanelRef = useRef(null);
+            const [fareBottom, setFareBottom] = useState(null);
+
+            useEffect(() => {
+                if (!fareModal || !farePanelRef.current) { setFareBottom(null); return; }
+                const update = () => {
+                    const rect = farePanelRef.current?.getBoundingClientRect();
+                    if (rect) setFareBottom(rect.bottom + 8);
+                };
+                update();
+                const ro = new ResizeObserver(update);
+                ro.observe(farePanelRef.current);
+                return () => ro.disconnect();
+            }, [fareModal]);
 
             const detailCosts = calculateDetailedCost();
 
@@ -692,13 +785,62 @@
 
             const getMealLabel=()=>{if(deductions.meal_1)return"(-8,330)";if(deductions.meal_2)return"(-16,670)";if(deductions.meal_3)return"(-25,000)";if(deductions.meal_half)return"(-12,500)";return"";};
 
-            // 경로 레이블 렌더링 컴포넌트
             const RouteLabel = ({ route }) => {
                 if (!route) return null;
-                return (
-                    <div className="route-label">{route}</div>
-                );
+                return <div className="route-label">{route}</div>;
             };
+
+            // ── 여비 상세 내용 (모바일/데스크탑 공유) ──
+            const DetailContent = () => (
+                <div className="p-4 space-y-3">
+                    <div className="relative flex items-center justify-between h-12">
+                        <span className="font-bold text-gray-700 text-[18px] w-24">일비</span>
+                        <button onClick={()=>setActiveModal('daily')} className={`deduct-btn ${deductions.gov_vehicle?'active':''}`}><span>감액</span></button>
+                        <div className="flex flex-col items-end flex-1"><span className="text-xl font-bold text-[#1C1C1E]">{fmt(detailCosts.daily)}원</span>{deductions.gov_vehicle&&<span className="text-[11px] text-[#8B0000] font-bold leading-none mt-1">(-12,500)</span>}</div>
+                    </div>
+                    <div className="relative flex items-center justify-between h-12">
+                        <span className="font-bold text-gray-700 text-[18px] w-24">식비</span>
+                        <button onClick={()=>setActiveModal('meal')} className={`deduct-btn ${(deductions.meal_1||deductions.meal_2||deductions.meal_3||deductions.meal_half)?'active':''}`}><span>감액</span></button>
+                        <div className="flex flex-col items-end flex-1"><span className="text-xl font-bold text-[#1C1C1E]">{fmt(detailCosts.meal)}원</span><span className="text-[11px] text-[#8B0000] font-bold leading-none mt-1">{getMealLabel()}</span></div>
+                    </div>
+                    <div className="pt-4 border-t border-dashed border-gray-200">
+                        <div className="relative flex items-center justify-between h-12">
+                            <div className="flex items-center"><span className="font-bold text-gray-700 text-[18px]">교통비</span><span className={`tag-side ${getTagStyles('왕복')}`}>왕복</span></div>
+                            <button onClick={()=>setActiveModal('transport')} className={`deduct-btn ${deductions.transport_proof||deductions.transport_gov_vehicle||deductions.transport_passenger?'active':''}`}><span>감액</span></button>
+                            <div className="text-right flex-1">
+                                {!(deductions.transport_proof||deductions.transport_gov_vehicle||deductions.transport_passenger)?(
+                                    <div className="flex items-center justify-end gap-1.5">
+                                        <input type="tel" value={manualMainTransport===null||manualMainTransport===0?'':fmt(manualMainTransport)} onFocus={e=>e.target.select()} onChange={e=>{const v=e.target.value.replace(/,/g,'');setManualMainTransport(v===''?null:Number(v));}} className="ship-fare-input !py-1.5 !text-[16px]" placeholder="0"/>
+                                        <span className="text-xl font-bold text-gray-900">원</span>
+                                    </div>
+                                ):<span className="text-xl font-bold text-gray-400">0원</span>}
+                            </div>
+                        </div>
+                        {result&&result.surcharge>0&&!(deductions.transport_proof||deductions.transport_gov_vehicle||deductions.transport_passenger)&&(
+                            <div className="flex items-center justify-between h-10 mt-1 px-1">
+                                <div className="flex items-center gap-1"><span className="text-[15px] font-bold text-[#059669]">농어촌버스</span><span className="text-[11px] text-[#AEAEB2]">(자동합산)</span></div>
+                                <span className="text-[17px] font-bold text-[#059669]">+{fmt(result.surcharge*2)}원</span>
+                            </div>
+                        )}
+                        {result&&(shipFare>0||result.isShipOnlyRoute||result.shipCost>0)&&(
+                            <div className="relative flex items-center justify-between h-12 mt-4">
+                                <span className="font-bold text-gray-700 text-[18px]">기타교통비</span>
+                                <div className="text-right flex-1">
+                                    <div className="flex items-center justify-end gap-1.5">
+                                        <input type="tel" value={shipFare===0?'':fmt(shipFare)} onFocus={e=>e.target.select()} onChange={e=>{const v=e.target.value.replace(/,/g,'');setShipFare(v===''?0:Number(v));}} className="ship-fare-input !py-1.5 !text-[16px]" placeholder="0"/>
+                                        <span className="text-xl font-bold text-gray-900">원</span>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                    <div className="pt-3 border-t-2 border-gray-200 flex justify-between items-center">
+                        <span className="font-bold text-[#1C1C1E] text-[18px]">합계</span>
+                        <span className="text-[28px] font-black text-[#8B0000]">{fmt(detailCosts.total)}<span className="text-[18px] ml-1.5">원</span></span>
+                    </div>
+                    <button onClick={()=>setShowDetail(false)} className="w-full mt-4 h-12 rounded-[20px] font-bold text-[18px] confirm-btn-yellow">닫기</button>
+                </div>
+            );
 
             return (
                 <div className="main-wrapper font-pretendard">
@@ -707,7 +849,7 @@
                             <h1 className="font-gmarket font-black text-[#8B0000] tracking-tighter" style={{fontSize:'22px'}}>yeobi-easy</h1>
                             <p className="font-bold text-gray-500 tracking-tight" style={{fontSize:'10px',marginTop:'1px'}}>by JHn · for all my fellas</p>
                         </div>
-                        <div className="mode-switch-container" onClick={()=>{setIntraCityOpen(!intraCityOpen);}}>
+                        <div className="mode-switch-container" onClick={()=>setIntraCityOpen(!intraCityOpen)}>
                             <div className={`mode-switch-slider ${intraCityOpen?'intra':'extra'}`}></div>
                             <div className={`mode-text ${!intraCityOpen?'active':'inactive'}`}>관외</div>
                             <div className={`mode-text ${intraCityOpen?'active':'inactive'}`}>관내</div>
@@ -716,7 +858,7 @@
 
                     <div className="scroll-area content-main px-7 pt-7 pb-8 space-y-3">
                         <AutocompleteInput label="출발지" placeholder="출발지를 입력하세요." value={origin}
-                            onChange={(v)=>{ setOrigin(v); }}
+                            onChange={(v)=>setOrigin(v)}
                             onSelect={(city)=>{ setOrigin(city); performCalculation(city, destination, false, waypoint); }}
                             cityList={ALLOWED_CITIES} />
 
@@ -729,7 +871,7 @@
                             <div className="flex items-center gap-2">
                                 <div className="flex-1 min-w-0">
                                     <AutocompleteInput label="경유지" placeholder="경유지를 입력하세요." value={waypoint}
-                                        onChange={(v)=>{ setWaypoint(v); }}
+                                        onChange={(v)=>setWaypoint(v)}
                                         onSelect={(city)=>{ setWaypoint(city); performCalculation(origin, destination, false, city); }}
                                         cityList={ALLOWED_CITIES} />
                                 </div>
@@ -740,7 +882,7 @@
                         )}
 
                         <AutocompleteInput label="도착지" placeholder="도착지를 입력하세요." value={destination}
-                            onChange={(v)=>{ setDestination(v); }}
+                            onChange={(v)=>setDestination(v)}
                             onSelect={(city)=>{ setDestination(city); performCalculation(origin, city, false, waypoint); }}
                             cityList={ALLOWED_CITIES} />
 
@@ -751,13 +893,11 @@
                         <div className="pb-6 mt-4 rounded-[32px] overflow-hidden flex flex-col" style={{background:'linear-gradient(180deg,#FFFFFF 0%,#FAFAFA 100%)',boxShadow:'0 4px 16px rgba(0,0,0,0.04),0 8px 32px rgba(0,0,0,0.02),inset 0 1px 0 rgba(255,255,255,1)',border:'1px solid rgba(0,0,0,0.04)'}}>
                             <div className="text-center pt-5 px-4 flex-1">
 
-                                {/* ── 경유지 없는 경우 ── */}
+                                {/* 경유지 없는 경우 */}
                                 {(!result||!result.segments) && (<>
                                     {result&&<div className="flex flex-nowrap justify-center gap-1 mb-2 overflow-x-auto px-1" style={{scrollbarWidth:'none'}}>
                                         {routeTags.map((tag,i)=><span key={i} className={`tag-badge whitespace-nowrap px-2 py-0.5 text-[11px] ${getTagStyles(tag)}`}>{tag}</span>)}
                                     </div>}
-
-                                    {/* 요금 */}
                                     <div className={`px-2 pb-2 ${result&&result.type==='internal'&&(result.surcharge>0||result.shipCost>0)?'border-b border-[#F0F0F0]':''}`}>
                                         <div className="flex justify-between items-center h-10">
                                             <div className="flex flex-col items-start">
@@ -773,8 +913,6 @@
                                         </div>
                                         {result&&result.type==='internal'&&<div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium">(왕복 {fmt((result.surcharge>0?result.baseBusCost:result.cost)*2)}원)</span></div>}
                                     </div>
-
-                                    {/* 농어촌버스 */}
                                     {result&&result.type==='internal'&&result.surcharge>0&&<div className={`px-2 pb-2 ${result.shipCost>0?'border-b border-[#F0F0F0]':''}`}>
                                         <div className="flex justify-between items-center h-8">
                                             <div className="flex flex-col items-start">
@@ -788,8 +926,6 @@
                                         </div>
                                         <div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium">(왕복 {fmt(result.surcharge*2)}원)</span></div>
                                     </div>}
-
-                                    {/* 여객선 */}
                                     {result&&result.type==='internal'&&result.shipCost>0&&<div className="px-2 pb-2">
                                         <div className="flex justify-between items-center h-8">
                                             <div className="flex flex-col items-start">
@@ -805,13 +941,11 @@
                                     </div>}
                                 </>)}
 
-                                {/* ── 경유지 있는 경우 ── */}
+                                {/* 경유지 있는 경우 */}
                                 {result&&result.segments&&(<>
                                     <div className="flex flex-nowrap justify-center gap-1 mb-2 overflow-x-auto px-1" style={{scrollbarWidth:'none'}}>
                                         {routeTags.map((tag,i)=><span key={i} className={`tag-badge whitespace-nowrap px-2 py-0.5 text-[11px] ${getTagStyles(tag)}`}>{tag}</span>)}
                                     </div>
-
-                                    {/* 요금 */}
                                     <div className={`px-2 pb-2 ${(result.surcharge>0||result.shipCost>0)?'border-b border-[#F0F0F0]':''}`}>
                                         <div className="flex justify-between items-center h-10">
                                             <div className="flex flex-col items-start">
@@ -825,8 +959,6 @@
                                         </div>
                                         <div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium">(왕복 {fmt(result.baseBusCost*2)}원)</span></div>
                                     </div>
-
-                                    {/* 농어촌버스 */}
                                     {result.surcharge>0&&<div className={`px-2 pb-2 ${result.shipCost>0?'border-b border-[#F0F0F0]':''}`}>
                                         <div className="flex justify-between items-center h-8">
                                             <div className="flex flex-col items-start">
@@ -840,8 +972,6 @@
                                         </div>
                                         <div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium">(왕복 {fmt(result.surcharge*2)}원)</span></div>
                                     </div>}
-
-                                    {/* 여객선 */}
                                     {result.shipCost>0&&<div className="px-2 pb-2">
                                         <div className="flex justify-between items-center h-8">
                                             <div className="flex flex-col items-start">
@@ -855,8 +985,6 @@
                                         </div>
                                         <div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium">(왕복 {fmt(result.shipCost*2)}원)</span></div>
                                     </div>}
-
-                                    {/* 구간 표시 */}
                                     <div className="mt-2 mx-2 rounded-2xl overflow-hidden border border-gray-100">
                                         {result.segments.map((seg,i)=>(
                                             <div key={i} className="via-result-row" style={{background: i%2===0?'#FAFAFA':'#F5F5F5'}}>
@@ -892,7 +1020,7 @@
                         </a>
                         <div className="home-btn-wrap" onClick={()=>{
                             setWaypoint('');setDestination('');setShowWaypoint(false);setResult(null);setShipFare(0);setManualMainTransport(null);setShowDetail(false);
-                            resetDeductions();setShowHistory(false);setCalcStatus('idle');
+                            resetDeductions();setShowHistory(false);setCalcStatus('idle');setFareModal(null);setFareSelections([]);
                         }}>
                             <div className="home-btn"/>
                         </div>
@@ -903,16 +1031,8 @@
                                     {history.length===0
                                         ?<div className="tooltip-empty">최근 기록이 없습니다</div>
                                         :history.map((h,i)=>(
-                                            <div key={i} className="tooltip-item" onClick={()=>{
-                                                setOrigin(h.origin);setDestination(h.destination);
-                                                setShowHistory(false);
-                                                setTimeout(()=>performCalculation(h.origin,h.destination,true),0);
-                                            }}>
-                                                <div>
-                                                    <span style={{fontSize:'13px',fontWeight:700,color:'#1C1C1E'}}>{h.origin}</span>
-                                                    <span style={{fontSize:'12px',color:'#8E8E93',margin:'0 4px'}}>→</span>
-                                                    <span style={{fontSize:'13px',fontWeight:700,color:'#8B0000'}}>{h.destination}</span>
-                                                </div>
+                                            <div key={i} className="tooltip-item" onClick={()=>{ setOrigin(h.origin);setDestination(h.destination); setShowHistory(false); setTimeout(()=>performCalculation(h.origin,h.destination,true),0); }}>
+                                                <div><span style={{fontSize:'13px',fontWeight:700,color:'#1C1C1E'}}>{h.origin}</span><span style={{fontSize:'12px',color:'#8E8E93',margin:'0 4px'}}>→</span><span style={{fontSize:'13px',fontWeight:700,color:'#8B0000'}}>{h.destination}</span></div>
                                                 <span style={{fontSize:'12px',fontWeight:700,color:'#8B0000',marginLeft:'8px'}}>{fmt(h.cost)}원</span>
                                             </div>
                                         ))
@@ -925,65 +1045,7 @@
                         </div>
                     </nav>
 
-                    {/* 여비 상세 — 데스크탑 사이드 패널 */}
-                    {showDetail&&(
-                        <div className="detail-side-panel">
-                                <div className="p-4 pb-3 flex justify-between items-center border-b border-gray-100">
-                                    <h3 className="font-black text-[20px] text-[#1C1C1E] tracking-tight">여비계산</h3>
-                                    <button onClick={()=>setShowDetail(false)} className="text-gray-400 hover:text-[#8B0000] transition-colors"><Icons.X size={22}/></button>
-                                </div>
-                                <div className="p-4 space-y-3">
-                                    <div className="relative flex items-center justify-between h-12">
-                                        <span className="font-bold text-gray-700 text-[18px] w-24">일비</span>
-                                        <button onClick={()=>setActiveModal('daily')} className={`deduct-btn ${deductions.gov_vehicle?'active':''}`}><span>감액</span></button>
-                                        <div className="flex flex-col items-end flex-1"><span className="text-xl font-bold text-[#1C1C1E]">{fmt(detailCosts.daily)}원</span>{deductions.gov_vehicle&&<span className="text-[11px] text-[#8B0000] font-bold leading-none mt-1">(-12,500)</span>}</div>
-                                    </div>
-                                    <div className="relative flex items-center justify-between h-12">
-                                        <span className="font-bold text-gray-700 text-[18px] w-24">식비</span>
-                                        <button onClick={()=>setActiveModal('meal')} className={`deduct-btn ${(deductions.meal_1||deductions.meal_2||deductions.meal_3||deductions.meal_half)?'active':''}`}><span>감액</span></button>
-                                        <div className="flex flex-col items-end flex-1"><span className="text-xl font-bold text-[#1C1C1E]">{fmt(detailCosts.meal)}원</span><span className="text-[11px] text-[#8B0000] font-bold leading-none mt-1">{getMealLabel()}</span></div>
-                                    </div>
-                                    <div className="pt-4 border-t border-dashed border-gray-200">
-                                        <div className="relative flex items-center justify-between h-12">
-                                            <div className="flex items-center"><span className="font-bold text-gray-700 text-[18px]">교통비</span><span className={`tag-side ${getTagStyles('왕복')}`}>왕복</span></div>
-                                            <button onClick={()=>setActiveModal('transport')} className={`deduct-btn ${deductions.transport_proof||deductions.transport_gov_vehicle||deductions.transport_passenger?'active':''}`}><span>감액</span></button>
-                                            <div className="text-right flex-1">
-                                                {!(deductions.transport_proof||deductions.transport_gov_vehicle||deductions.transport_passenger)?(
-                                                    <div className="flex items-center justify-end gap-1.5">
-                                                        <input type="tel" value={manualMainTransport===null||manualMainTransport===0?'':fmt(manualMainTransport)} onFocus={e=>e.target.select()} onChange={e=>{const v=e.target.value.replace(/,/g,'');setManualMainTransport(v===''?null:Number(v));}} className="ship-fare-input !py-1.5 !text-[16px]" placeholder="0"/>
-                                                        <span className="text-xl font-bold text-gray-900">원</span>
-                                                    </div>
-                                                ):<span className="text-xl font-bold text-gray-400">0원</span>}
-                                            </div>
-                                        </div>
-                                        {result.surcharge>0&&!(deductions.transport_proof||deductions.transport_gov_vehicle||deductions.transport_passenger)&&(
-                                            <div className="flex items-center justify-between h-10 mt-1 px-1">
-                                                <div className="flex items-center gap-1"><span className="text-[15px] font-bold text-[#059669]">농어촌버스</span><span className="text-[11px] text-[#AEAEB2]">(자동합산)</span></div>
-                                                <span className="text-[17px] font-bold text-[#059669]">+{fmt(result.surcharge*2)}원</span>
-                                            </div>
-                                        )}
-                                        {(shipFare>0||result.isShipOnlyRoute||result.shipCost>0)&&(
-                                            <div className="relative flex items-center justify-between h-12 mt-4">
-                                                <span className="font-bold text-gray-700 text-[18px]">기타교통비</span>
-                                                <div className="text-right flex-1">
-                                                    <div className="flex items-center justify-end gap-1.5">
-                                                        <input type="tel" value={shipFare===0?'':fmt(shipFare)} onFocus={e=>e.target.select()} onChange={e=>{const v=e.target.value.replace(/,/g,'');setShipFare(v===''?0:Number(v));}} className="ship-fare-input !py-1.5 !text-[16px]" placeholder="0"/>
-                                                        <span className="text-xl font-bold text-gray-900">원</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="pt-3 border-t-2 border-gray-200 flex justify-between items-center">
-                                        <span className="font-bold text-[#1C1C1E] text-[18px]">합계</span>
-                                        <span className="text-[28px] font-black text-[#8B0000]">{fmt(detailCosts.total)}<span className="text-[18px] ml-1.5">원</span></span>
-                                    </div>
-                                    <button onClick={()=>setShowDetail(false)} className="w-full mt-4 h-12 rounded-[20px] font-bold text-[18px] confirm-btn-yellow">닫기</button>
-                                </div>
-                        </div>
-                    )}
-
-                    {/* 모바일 모달 오버레이 */}
+                    {/* 모바일 여비 상세 */}
                     {showDetail&&(
                         <div className="detail-mobile-panel fixed inset-0 z-[130] items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={()=>setShowDetail(false)}>
                             <div className="bg-white w-full max-w-sm rounded-[28px] overflow-hidden border border-[#8B0000]/10" style={{background:'linear-gradient(180deg,#FFFFFF 0%,#FAFAFA 100%)',boxShadow:'0 25px 50px rgba(0,0,0,0.25)',animation:'slideUpModal 0.25s cubic-bezier(0.16,1,0.3,1) forwards'}} onClick={e=>e.stopPropagation()}>
@@ -991,54 +1053,7 @@
                                     <h3 className="font-black text-[20px] text-[#1C1C1E] tracking-tight">여비 상세 계산</h3>
                                     <button onClick={()=>setShowDetail(false)} className="text-gray-400 hover:text-[#8B0000] transition-colors"><Icons.X size={22}/></button>
                                 </div>
-                                <div className="p-4 space-y-3">
-                                    <div className="relative flex items-center justify-between h-12">
-                                        <span className="font-bold text-gray-700 text-[18px] w-24">일비</span>
-                                        <button onClick={()=>setActiveModal('daily')} className={`deduct-btn ${deductions.gov_vehicle?'active':''}`}><span>감액</span></button>
-                                        <div className="flex flex-col items-end flex-1"><span className="text-xl font-bold text-[#1C1C1E]">{fmt(detailCosts.daily)}원</span>{deductions.gov_vehicle&&<span className="text-[11px] text-[#8B0000] font-bold leading-none mt-1">(-12,500)</span>}</div>
-                                    </div>
-                                    <div className="relative flex items-center justify-between h-12">
-                                        <span className="font-bold text-gray-700 text-[18px] w-24">식비</span>
-                                        <button onClick={()=>setActiveModal('meal')} className={`deduct-btn ${(deductions.meal_1||deductions.meal_2||deductions.meal_3||deductions.meal_half)?'active':''}`}><span>감액</span></button>
-                                        <div className="flex flex-col items-end flex-1"><span className="text-xl font-bold text-[#1C1C1E]">{fmt(detailCosts.meal)}원</span><span className="text-[11px] text-[#8B0000] font-bold leading-none mt-1">{getMealLabel()}</span></div>
-                                    </div>
-                                    <div className="pt-4 border-t border-dashed border-gray-200">
-                                        <div className="relative flex items-center justify-between h-12">
-                                            <div className="flex items-center"><span className="font-bold text-gray-700 text-[18px]">교통비</span><span className={`tag-side ${getTagStyles('왕복')}`}>왕복</span></div>
-                                            <button onClick={()=>setActiveModal('transport')} className={`deduct-btn ${deductions.transport_proof||deductions.transport_gov_vehicle||deductions.transport_passenger?'active':''}`}><span>감액</span></button>
-                                            <div className="text-right flex-1">
-                                                {!(deductions.transport_proof||deductions.transport_gov_vehicle||deductions.transport_passenger)?(
-                                                    <div className="flex items-center justify-end gap-1.5">
-                                                        <input type="tel" value={manualMainTransport===null||manualMainTransport===0?'':fmt(manualMainTransport)} onFocus={e=>e.target.select()} onChange={e=>{const v=e.target.value.replace(/,/g,'');setManualMainTransport(v===''?null:Number(v));}} className="ship-fare-input !py-1.5 !text-[16px]" placeholder="0"/>
-                                                        <span className="text-xl font-bold text-gray-900">원</span>
-                                                    </div>
-                                                ):<span className="text-xl font-bold text-gray-400">0원</span>}
-                                            </div>
-                                        </div>
-                                        {result.surcharge>0&&!(deductions.transport_proof||deductions.transport_gov_vehicle||deductions.transport_passenger)&&(
-                                            <div className="flex items-center justify-between h-10 mt-1 px-1">
-                                                <div className="flex items-center gap-1"><span className="text-[15px] font-bold text-[#059669]">농어촌버스</span><span className="text-[11px] text-[#AEAEB2]">(자동합산)</span></div>
-                                                <span className="text-[17px] font-bold text-[#059669]">+{fmt(result.surcharge*2)}원</span>
-                                            </div>
-                                        )}
-                                        {(shipFare>0||result.isShipOnlyRoute||result.shipCost>0)&&(
-                                            <div className="relative flex items-center justify-between h-12 mt-4">
-                                                <span className="font-bold text-gray-700 text-[18px]">기타교통비</span>
-                                                <div className="text-right flex-1">
-                                                    <div className="flex items-center justify-end gap-1.5">
-                                                        <input type="tel" value={shipFare===0?'':fmt(shipFare)} onFocus={e=>e.target.select()} onChange={e=>{const v=e.target.value.replace(/,/g,'');setShipFare(v===''?0:Number(v));}} className="ship-fare-input !py-1.5 !text-[16px]" placeholder="0"/>
-                                                        <span className="text-xl font-bold text-gray-900">원</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="pt-3 border-t-2 border-gray-200 flex justify-between items-center">
-                                        <span className="font-bold text-[#1C1C1E] text-[18px]">합계</span>
-                                        <span className="text-[28px] font-black text-[#8B0000]">{fmt(detailCosts.total)}<span className="text-[18px] ml-1.5">원</span></span>
-                                    </div>
-                                    <button onClick={()=>setShowDetail(false)} className="w-full mt-4 h-12 rounded-[20px] font-bold text-[18px] confirm-btn-yellow">닫기</button>
-                                </div>
+                                <DetailContent/>
                             </div>
                         </div>
                     )}
@@ -1107,7 +1122,7 @@
                                                 if(modalState.type==='origin')setOrigin(name);else setDestination(name);
                                                 setModalState({type:null,data:[]});
                                                 setTimeout(()=>performCalculation(modalState.type==='origin'?name:origin,modalState.type==='destination'?name:destination,true),0);
-                                            }} className="flex flex-col items-center justify-center gap-1.5 px-2 py-4 rounded-[16px] bg-[#F8F9FA] border border-transparent transition-all hover:bg-white hover:border-[#F5A623] active:scale-95 outline-none -webkit-tap-highlight-color-transparent">
+                                            }} className="flex flex-col items-center justify-center gap-1.5 px-2 py-4 rounded-[16px] bg-[#F8F9FA] border border-transparent transition-all hover:bg-white hover:border-[#F5A623] active:scale-95 outline-none">
                                                 <span className="text-[26px]">{REGION_ICONS[name.replace(/\s/g,"")]}</span>
                                                 <span className="text-[13px] font-bold text-gray-700 text-center">{name}</span>
                                             </button>
@@ -1116,6 +1131,40 @@
                                 </div>
                             </div>
                         </div>
+                    )}
+
+                    {/* ★ 데스크탑: 버스등급 + 여비계산 wrapper로 묶어서 세로 중앙 정렬 ★ */}
+                    {(fareModal || showDetail) && (
+                        <div className="side-panel-wrapper">
+                            {fareModal && (
+                                <FareSidePanel
+                                    segments={fareModal.segments}
+                                    selections={fareSelections}
+                                    onSelect={handleFareSelect}
+                                    onClose={() => { setFareModal(null); }}
+                                    panelRef={farePanelRef}
+                                />
+                            )}
+                            {showDetail && (
+                                <div className="detail-side-panel">
+                                    <div className="p-4 pb-3 flex justify-between items-center border-b border-gray-100">
+                                        <h3 className="font-black text-[20px] text-[#1C1C1E] tracking-tight">여비계산</h3>
+                                        <button onClick={()=>setShowDetail(false)} className="text-gray-400 hover:text-[#8B0000] transition-colors"><Icons.X size={22}/></button>
+                                    </div>
+                                    <DetailContent/>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* ★ 모바일: 우등/일반 팝업 ★ */}
+                    {fareModal && (
+                        <FareMobileModal
+                            segments={fareModal.segments}
+                            selections={fareSelections}
+                            onSelect={handleFareSelect}
+                            onClose={() => { setFareModal(null); }}
+                        />
                     )}
                 </div>
             );
