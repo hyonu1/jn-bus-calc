@@ -43,7 +43,7 @@
         .input-group { background-color: #FFF; border-radius: 20px; padding: 0 16px 0 20px; display: flex; align-items: center; gap: 16px; width: 100%; box-sizing: border-box; height: 64px; border: 2px solid transparent; font-family: var(--font-gmarket); box-shadow: 0 4px 16px rgba(0,0,0,0.04); transition: all 0.2s cubic-bezier(0.16,1,0.3,1); }
         .input-group:focus-within { border-color: var(--color-crimson); box-shadow: 0 4px 16px rgba(139,0,0,0.10); }
         .tag-badge { display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: 800; margin: 0 2px; font-family: var(--font-gmarket); box-shadow: 0 1px 2px rgba(0,0,0,0.04); border: 1px solid transparent; }
-        .tag-side { display: inline-flex; align-items: center; justify-content: center; padding: 1px 4px; border-radius: 4px; font-size: 9px; font-weight: 700; margin-left: 2px; white-space: nowrap; font-family: var(--font-pretendard); border: 1px solid transparent; position: relative; top: -6px; }
+        .tag-side { display: inline-flex; align-items: center; justify-content: center; padding: 0px 3px; border-radius: 3px; font-size: 8px; font-weight: 700; margin-left: 3px; white-space: nowrap; font-family: var(--font-pretendard); border: 1px solid transparent; vertical-align: middle; line-height: 1.4; }
         .header-teal { background: var(--color-bg-base) !important; border-bottom: 1px solid rgba(139,0,0,0.10) !important; padding: 9px 18px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100% !important; box-sizing: border-box !important; position: static !important; }
         .header-teal h1 { font-size: 22px !important; }
         .header-teal p { margin-top: 1px !important; font-size: 10px !important; }
@@ -456,7 +456,7 @@
                     onClick={e => e.stopPropagation()}>
                     <div style={{background:'linear-gradient(180deg,#9B1111 0%,#8B0000 100%)'}} className="px-5 py-4 flex justify-between items-center">
                         <div>
-                            <h3 className="font-black text-white text-[17px] tracking-tight">버스 등급 선택</h3>
+                            <h3 className="font-black text-white text-[17px] tracking-tight">일반/우등 선택</h3>
                             <p className="text-[10px] text-red-200 font-medium mt-0.5">해당 구간에 우등버스가 운행됩니다</p>
                         </div>
                         <button onClick={onClose} className="text-red-200 hover:text-white transition-colors"><Icons.X size={20}/></button>
@@ -477,7 +477,7 @@
             <div className="fare-side-panel" ref={panelRef}>
                 <div style={{background:'linear-gradient(180deg,#9B1111 0%,#8B0000 100%)'}} className="px-3 py-2 flex justify-between items-center rounded-t-[20px]">
                     <div>
-                        <h3 className="font-black text-white text-[13px] tracking-tight">버스 등급 선택</h3>
+                        <h3 className="font-black text-white text-[13px] tracking-tight">일반/우등 선택</h3>
                         <p className="text-[9px] text-red-200 font-medium mt-0.5">해당 구간에 우등버스가 운행됩니다</p>
                     </div>
                     <button onClick={onClose} className="text-red-200 hover:text-white transition-colors"><Icons.X size={15}/></button>
@@ -513,6 +513,10 @@
             const [fareModal, setFareModal] = useState(null);
             // selections: 현재 선택된 우등/일반 배열 ['pre'|'gen', ...]
             const [fareSelections, setFareSelections] = useState([]);
+            // farePreference: 사용자가 마지막으로 선택한 등급 기억 ('gen'|'pre'), 기본 'gen'
+            const [farePreference, setFarePreference] = useState(() => {
+                try { return localStorage.getItem('yeobi_fare_pref') || 'gen'; } catch { return 'gen'; }
+            });
 
             const resetDeductions = () => setDeductions({gov_vehicle:false,meal_1:false,meal_2:false,meal_3:false,meal_half:false,transport_proof:false,transport_gov_vehicle:false,transport_passenger:false});
 
@@ -542,17 +546,19 @@
                 const bd = INITIAL_DATA[sFrom]?.[sTo] || INITIAL_DATA[sTo]?.[sFrom];
                 if (!bd) return null;
                 const gen = bd.gen || 0;
-                const pre = bd.pre || null; // null = 우등 없음
-                const base = pre || gen; // 기본값은 우등 우선 (기존 동작 유지)
+                const pre = bd.pre || null;
+                // base는 항상 gen 기준 (우등 선택은 farePreference로 별도 처리)
                 const routeLabels = calcRouteLabels(fromRaw, toRaw);
-                return { cost: base+surcharge, base, gen, pre, surcharge, shipCost, viaPoint, isShip: (fromI?.type==='ship'||toI?.type==='ship'), routeLabels };
+                return { cost: gen+surcharge, base: gen, gen, pre, surcharge, shipCost, viaPoint, isShip: (fromI?.type==='ship'||toI?.type==='ship'), routeLabels };
             };
 
             // ── 우등/일반 즉시 반영 핸들러 ──────────────────────────
-            // segIdx: 몇 번째 구간, type: 'pre'|'gen'
-            // 선택 즉시 result/manualMainTransport 갱신, 모바일은 선택 후 자동 닫힘
             const handleFareSelect = useCallback((segIdx, type) => {
                 if (!fareModal) return;
+
+                // 선택값 기억 저장
+                setFarePreference(type);
+                try { localStorage.setItem('yeobi_fare_pref', type); } catch {}
 
                 const newSelections = [...fareSelections];
                 newSelections[segIdx] = type;
@@ -563,7 +569,7 @@
                 if (!pendingResult.segments) {
                     // ── 단일 구간 ──
                     const seg = fareSegs[0];
-                    const chosen = type === 'pre' ? seg.pre : seg.gen;
+                    const chosen = type === 'pre' ? (seg.pre || seg.gen) : seg.gen;
                     const newResult = {
                         ...pendingResult,
                         baseBusCost: chosen,
@@ -578,28 +584,44 @@
                         return next;
                     });
                     setCalcStatus('done');
-                    // 모바일: 선택 즉시 닫힘
                     if (window.innerWidth < 768) setFareModal(null);
 
                 } else {
-                    // ── 경유지 구간 ──
-                    // newSelections 기준으로 각 구간 base 결정
-                    // fareSegs[i].from으로 seg1/seg2 매핑
-                    let base1 = seg1.pre || seg1.gen;
-                    let base2 = seg2.pre || seg2.gen;
+                    // ── 경유지 구간: fareSegs 인덱스로 seg1/seg2 매핑 ──
+                    // fareSegs[0]은 항상 seg1(출발→경유), fareSegs[1]은 seg2(경유→도착)
+                    // seg1/seg2가 undefined일 경우 안전하게 gen fallback
+                    const safeGen1 = seg1?.gen ?? 0;
+                    const safePre1 = seg1?.pre ?? null;
+                    const safeGen2 = seg2?.gen ?? 0;
+                    const safePre2 = seg2?.pre ?? null;
 
-                    fareSegs.forEach((fs, i) => {
-                        const sel = i === segIdx ? type : newSelections[i];
-                        const chosen = sel === 'gen' ? fs.gen : (fs.pre || fs.gen);
-                        // fareSegs의 from이 origin과 같으면 seg1, 아니면 seg2
-                        const isFirst = normalize(fs.from) === normalize(origin) || fs.from === normalize(origin) || fs.from === origin;
-                        if (isFirst) base1 = chosen;
-                        else base2 = chosen;
-                    });
+                    // fareSegs에 seg1 구간이 있는지 여부
+                    const hasSeg1InFareSegs = !!seg1?.pre;
+                    const hasSeg2InFareSegs = !!seg2?.pre;
 
-                    // fareSegs에 없는 구간(pre 없는 구간)은 gen 그대로 유지
-                    // seg1에 pre 없으면 base1은 이미 seg1.gen
-                    // seg2에 pre 없으면 base2는 이미 seg2.gen
+                    // 각 구간의 최종 선택값 결정
+                    let base1, base2;
+                    if (hasSeg1InFareSegs) {
+                        const sel1 = fareSegs.length === 2
+                            ? (segIdx === 0 ? type : newSelections[0])  // fareSegs[0]이 seg1
+                            : (hasSeg2InFareSegs ? safeGen1 : (segIdx === 0 ? type : newSelections[0]));
+                        // fareSegs가 1개이고 seg1에 pre 있는 경우 segIdx=0이 seg1
+                        const resolved1 = hasSeg2InFareSegs
+                            ? (segIdx === 0 ? type : newSelections[0])
+                            : (segIdx === 0 ? type : newSelections[0]);
+                        base1 = resolved1 === 'pre' ? (safePre1 || safeGen1) : safeGen1;
+                    } else {
+                        base1 = safeGen1;
+                    }
+
+                    if (hasSeg2InFareSegs) {
+                        // fareSegs에서 seg2의 인덱스: seg1도 있으면 1, 없으면 0
+                        const seg2FareIdx = hasSeg1InFareSegs ? 1 : 0;
+                        const resolved2 = segIdx === seg2FareIdx ? type : (newSelections[seg2FareIdx] || 'gen');
+                        base2 = resolved2 === 'pre' ? (safePre2 || safeGen2) : safeGen2;
+                    } else {
+                        base2 = safeGen2;
+                    }
 
                     const totalBase = base1 + base2;
                     const newResult = {
@@ -607,18 +629,14 @@
                         baseBusCost: totalBase,
                         cost: totalBase + (pendingResult.surcharge || 0),
                         segments: [
-                            { ...pendingResult.segments[0], base: base1, cost: base1 + (pendingResult.segments[0].surcharge || 0) },
-                            { ...pendingResult.segments[1], base: base2, cost: base2 + (pendingResult.segments[1].surcharge || 0) }
+                            { ...pendingResult.segments[0], base: base1, cost: base1 + (pendingResult.segments[0]?.surcharge || 0) },
+                            { ...pendingResult.segments[1], base: base2, cost: base2 + (pendingResult.segments[1]?.surcharge || 0) }
                         ]
                     };
                     setResult(newResult);
                     setManualMainTransport((totalBase + (pendingResult.surcharge||0)) * 2);
                     setCalcStatus('done');
-                    // 모바일: 마지막 구간 선택 시 닫힘
-                    if (window.innerWidth < 768) {
-                        const allSelected = newSelections.every(s => s);
-                        if (allSelected) setFareModal(null);
-                    }
+                    if (window.innerWidth < 768) setFareModal(null);
                 }
             }, [fareModal, fareSelections, origin, destination]);
 
@@ -642,33 +660,36 @@
                     if (seg) {
                         setShipFare(seg.shipCost*2);
 
-                        // 우등/일반 분기 ★
+                        // 우등/일반 분기
                         if (seg.pre) {
-                            // 팝업 트리거 — pendingResult는 pre 기준으로 임시 세팅
+                            // pendingResult는 gen 기준으로 세팅 (farePreference로 덮어씀)
                             const pendingResult = {
-                                type:'internal', cost:seg.cost, baseBusCost:seg.pre,
-                                surcharge:seg.surcharge, shipCost:seg.shipCost,
-                                isShipOnlyRoute:seg.isShip, viaPoint:seg.viaPoint,
-                                segments:null, routeLabels:seg.routeLabels
+                                type:'internal', cost: seg.gen + seg.surcharge, baseBusCost: seg.gen,
+                                surcharge: seg.surcharge, shipCost: seg.shipCost,
+                                isShipOnlyRoute: seg.isShip, viaPoint: seg.viaPoint,
+                                segments: null, routeLabels: seg.routeLabels
                             };
                             const toI_check = ISLAND_DB[normalize(d)];
                             const busDestHub = toI_check ? toI_check.hub : normalize(d);
                             const fromI_check = ISLAND_DB[normalize(o)];
                             const busOrigHub = fromI_check ? fromI_check.hub : normalize(o);
                             const fareSegs = [{ from: busOrigHub, to: busDestHub, gen: seg.gen, pre: seg.pre }];
-                            setFareSelections(['gen']); // 기본값: 일반
-                            setFareModal({ segments: fareSegs, pendingResult });
-                            // 즉시 gen 기준 result 세팅 (데스크탑 실시간 반영용)
-                            const genResult = { ...pendingResult, baseBusCost: seg.gen, cost: seg.gen + (seg.surcharge||0) };
-                            setResult(genResult);
-                            setManualMainTransport((seg.gen + (seg.surcharge||0)) * 2);
+                            const initFare = farePreference === 'pre' ? seg.pre : seg.gen;
+                            const initResult = { ...pendingResult, baseBusCost: initFare, cost: initFare + seg.surcharge };
+                            setFareSelections([farePreference]);
+                            setResult(initResult);
+                            setManualMainTransport((initFare + seg.surcharge) * 2);
                             setCalcStatus('done');
                             setHistory(prev => {
-                                const entry={origin:o,destination:d,cost:seg.cost,ts:Date.now()};
-                                const next=[entry,...prev.filter(h=>!(h.origin===o&&h.destination===d))].slice(0,3);
-                                try{localStorage.setItem('yeobi_history',JSON.stringify(next));}catch{}
+                                const entry = { origin:o, destination:d, cost: initResult.cost, ts: Date.now() };
+                                const next = [entry, ...prev.filter(h=>!(h.origin===o&&h.destination===d))].slice(0,3);
+                                try { localStorage.setItem('yeobi_history', JSON.stringify(next)); } catch {}
                                 return next;
                             });
+                            // 모바일: 팝업 없이 즉시 적용 완료. PC만 패널 표시
+                            if (window.innerWidth >= 768) {
+                                setFareModal({ segments: fareSegs, pendingResult });
+                            }
                         } else {
                             // 우등 없음 — 기존 그대로
                             setManualMainTransport((seg.base + (seg.surcharge||0)) * 2);
@@ -687,12 +708,25 @@
 
                 // 경유지 있는 경우
                 const viaHub = getViaHub(via);
+                // 경유지가 도착지 허브/도착지 자체와 같으면 단일구간으로 처리
+                const toIslandInfoVia = ISLAND_DB[normalize(d)];
+                const destHubForVia = toIslandInfoVia ? toIslandInfoVia.hub : normalize(d);
+                // 경유지가 출발지 허브/출발지 자체와 같아도 단일구간으로 처리
+                const fromIslandInfoVia = ISLAND_DB[normalize(o)];
+                const origHubForVia = fromIslandInfoVia ? fromIslandInfoVia.hub : normalize(o);
+                const viaHubN = normalize(viaHub);
+                if (viaHubN === normalize(destHubForVia) || viaHubN === normalize(d) ||
+                    viaHubN === normalize(origHubForVia) || viaHubN === normalize(o)) {
+                    setShowWaypoint(false); setWaypoint('');
+                    performCalculation(o, d, isForce, '');
+                    return;
+                }
+                // seg1/seg2 null 방어: 계산 불가 구간이면 external 처리
                 const seg1 = calcSegment(o, viaHub);
                 const seg2 = calcSegment(viaHub, d);
+                if (!seg1 || !seg2) { setResult({type:'external'}); setTimeout(()=>setCalcStatus('done'),300); return; }
 
-                if (seg1 && seg2) {
-                    const totalSurcharge = seg1.surcharge + seg2.surcharge;
-                    // 경유지가 도착지의 허브와 같을 때 seg2.shipCost가 0으로 잡히는 문제 보정
+                const totalSurcharge = seg1.surcharge + seg2.surcharge;
                     const toIslandInfo = ISLAND_DB[normalize(d)];
                     const destShipCost = toIslandInfo ? (toIslandInfo.shipCost || 0) : 0;
                     const totalShip = seg1.shipCost + Math.max(seg2.shipCost, destShipCost);
@@ -713,7 +747,8 @@
                     };
 
                     const hasPre = seg1.pre || seg2.pre;
-                    const totalBase = (seg1.pre||seg1.gen) + (seg2.pre||seg2.gen);
+                    // totalBase는 항상 gen 기준 (farePreference로 덮어씀)
+                    const totalBase = seg1.gen + seg2.gen;
 
                     const pendingResult = {
                         type:'internal', cost: totalBase + totalSurcharge, baseBusCost: totalBase,
@@ -721,42 +756,42 @@
                         isShipOnlyRoute: hasShip,
                         viaPoint: viaHub,
                         segments: [
-                            { from:o, to:viaHub, cost:seg1.cost, base:seg1.pre||seg1.gen, surcharge:seg1.surcharge, shipCost:seg1.shipCost },
-                            { from:viaHub, to:destHub2, cost:seg2.cost, base:seg2.pre||seg2.gen, surcharge:seg2.surcharge, shipCost:Math.max(seg2.shipCost, destShipCost) }
+                            { from:o, to:viaHub, cost:seg1.gen + seg1.surcharge, base:seg1.gen, surcharge:seg1.surcharge, shipCost:seg1.shipCost },
+                            { from:viaHub, to:destHub2, cost:seg2.gen + seg2.surcharge, base:seg2.gen, surcharge:seg2.surcharge, shipCost:Math.max(seg2.shipCost, destShipCost) }
                         ],
                         viaLabel: viaHub, routeLabels: combinedRouteLabels
                     };
 
                     if (hasPre) {
-                        // 경유지 팝업 — 각 구간에 pre 있는 것만 선택지 제공
                         const fareSegs = [];
                         if (seg1.pre) fareSegs.push({ from: normalize(o), to: viaHub, gen: seg1.gen, pre: seg1.pre });
                         if (seg2.pre) fareSegs.push({ from: viaHub, to: destHub2, gen: seg2.gen, pre: seg2.pre });
-                        const initSelections = fareSegs.map(() => 'gen'); // 기본값: 일반
-                        setFareSelections(initSelections);
-                        setFareModal({ segments: fareSegs, pendingResult, seg1, seg2 });
-                        // 즉시 gen 기준 result 세팅
-                        const genBase1 = seg1.gen;
-                        const genBase2 = seg2.gen;
-                        const genTotal = genBase1 + genBase2;
-                        const genResult = {
+                        const initSelections = fareSegs.map(() => farePreference);
+                        const initBase1 = farePreference === 'pre' ? (seg1.pre || seg1.gen) : seg1.gen;
+                        const initBase2 = farePreference === 'pre' ? (seg2.pre || seg2.gen) : seg2.gen;
+                        const initTotal = initBase1 + initBase2;
+                        const initResult = {
                             ...pendingResult,
-                            baseBusCost: genTotal,
-                            cost: genTotal + (pendingResult.surcharge||0),
+                            baseBusCost: initTotal,
+                            cost: initTotal + totalSurcharge,
                             segments: [
-                                { ...pendingResult.segments[0], base: genBase1, cost: genBase1 + (pendingResult.segments[0].surcharge||0) },
-                                { ...pendingResult.segments[1], base: genBase2, cost: genBase2 + (pendingResult.segments[1].surcharge||0) }
+                                { ...pendingResult.segments[0], base: initBase1, cost: initBase1 + seg1.surcharge },
+                                { ...pendingResult.segments[1], base: initBase2, cost: initBase2 + seg2.surcharge }
                             ]
                         };
-                        setResult(genResult);
-                        setManualMainTransport((genTotal + (pendingResult.surcharge||0)) * 2);
+                        setFareSelections(initSelections);
+                        setResult(initResult);
+                        setManualMainTransport((initTotal + totalSurcharge) * 2);
                         setCalcStatus('done');
+                        // PC만 패널 표시, 모바일은 즉시 적용 완료
+                        if (window.innerWidth >= 768) {
+                            setFareModal({ segments: fareSegs, pendingResult, seg1, seg2 });
+                        }
                     } else {
                         setManualMainTransport((totalBase + totalSurcharge) * 2);
                         setResult(pendingResult);
                         setTimeout(()=>setCalcStatus('done'),300);
                     }
-                } else { setResult({type:'external'}); setTimeout(()=>setCalcStatus('done'),300); }
             };
 
             const farePanelRef = useRef(null);
@@ -821,19 +856,16 @@
                             <button onClick={()=>setActiveModal('transport')} className={`deduct-btn ${deductions.transport_proof||deductions.transport_gov_vehicle||deductions.transport_passenger?'active':''}`}><span>감액</span></button>
                             <div className="text-right flex-1">
                                 {!(deductions.transport_proof||deductions.transport_gov_vehicle||deductions.transport_passenger)?(
-                                    <div className="flex items-center justify-end gap-1">
-                                        <input type="tel" value={manualMainTransport===null||manualMainTransport===0?'':fmt(manualMainTransport)} onFocus={e=>e.target.select()} onChange={e=>{const v=e.target.value.replace(/,/g,'');setManualMainTransport(v===''?null:Number(v));}} className="ship-fare-input !py-1 !text-[13px]" placeholder="0"/>
-                                        <span className="text-[14px] font-bold text-gray-900">원</span>
+                                    <div className="flex flex-col items-end gap-0.5">
+                                        <div className="flex items-center gap-1">
+                                            <input type="tel" value={manualMainTransport===null||manualMainTransport===0?'':fmt(manualMainTransport)} onFocus={e=>e.target.select()} onChange={e=>{const v=e.target.value.replace(/,/g,'');setManualMainTransport(v===''?null:Number(v));}} className="ship-fare-input !py-1 !text-[13px]" placeholder="0"/>
+                                            <span className="text-[14px] font-bold text-gray-900">원</span>
+                                        </div>
+                                        {result&&result.surcharge>0&&<span className="text-[10px] font-bold text-[#059669]">({fmt(result.surcharge*2)}원 포함)</span>}
                                     </div>
                                 ):<span className="text-[14px] font-bold text-gray-400">0원</span>}
                             </div>
                         </div>
-                        {result&&result.surcharge>0&&!(deductions.transport_proof||deductions.transport_gov_vehicle||deductions.transport_passenger)&&(
-                            <div className="flex items-center justify-between h-8 px-1">
-                                <div className="flex items-center gap-1"><span className="text-[12px] font-bold text-[#059669]">농어촌버스</span><span className="text-[10px] text-[#AEAEB2]">(자동합산)</span></div>
-                                <span className="text-[13px] font-bold text-[#059669]">+{fmt(result.surcharge*2)}원</span>
-                            </div>
-                        )}
                         {result&&(shipFare>0||result.isShipOnlyRoute||result.shipCost>0)&&(
                             <div className="relative flex items-center justify-between h-9 mt-2">
                                 <span className="font-bold text-gray-700 text-[13px]">기타교통비</span>
@@ -880,17 +912,10 @@
                                 경유지 추가
                             </button>
                         ) : (
-                            <div className="flex items-center gap-2">
-                                <div className="flex-1 min-w-0">
-                                    <AutocompleteInput label="경유지" placeholder="경유지를 입력하세요." value={waypoint}
-                                        onChange={(v)=>setWaypoint(v)}
-                                        onSelect={(city)=>{ setWaypoint(city); performCalculation(origin, destination, false, city); }}
-                                        cityList={ALLOWED_CITIES} />
-                                </div>
-                                <button className="remove-via-btn" onClick={()=>{ setShowWaypoint(false); setWaypoint(''); performCalculation(origin, destination, false, ''); }} aria-label="경유지 삭제">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6E6E73" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                                </button>
-                            </div>
+                            <AutocompleteInput label="경유지" placeholder="경유지를 입력하세요." value={waypoint}
+                                onChange={(v)=>{ setWaypoint(v); if(!v){ setShowWaypoint(false); performCalculation(origin, destination, false, ''); } }}
+                                onSelect={(city)=>{ if(!city){ setShowWaypoint(false); setWaypoint(''); performCalculation(origin, destination, false, ''); } else { setWaypoint(city); performCalculation(origin, destination, false, city); } }}
+                                cityList={ALLOWED_CITIES} />
                         )}
 
                         <AutocompleteInput label="도착지" placeholder="도착지를 입력하세요." value={destination}
