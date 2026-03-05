@@ -12,10 +12,10 @@
         window.tailwind.config = {
             theme: {
                 extend: {
-                    colors: { crimson: { 800: '#8B0000', 900: '#6B0000' }, tiger: { yellow: '#F5A623', black: '#1C1C1E', beige: '#F5F0E6' } },
+                    colors: { blue: { 800: '#007AFF', 900: '#0040B8' }, ios: { blue: '#007AFF', black: '#1C1C1E', light: '#EBF4FF' } },
                     animation: { 'pulse-spread': 'pulse-spread 2.5s infinite', 'slide-up': 'slideUpModal 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards' },
                     keyframes: {
-                        'pulse-spread': { '0%': { boxShadow: '0 0 0 0 rgba(139,0,0,0.4)' }, '70%': { boxShadow: '0 0 0 10px rgba(139,0,0,0)' }, '100%': { boxShadow: '0 0 0 0 rgba(139,0,0,0)' } },
+                        'pulse-spread': { '0%': { boxShadow: '0 0 0 0 rgba(0,122,255,0.4)' }, '70%': { boxShadow: '0 0 0 10px rgba(0,122,255,0)' }, '100%': { boxShadow: '0 0 0 0 rgba(0,122,255,0)' } },
                         'slideUpModal': { 'from': { transform: 'translateY(15px)', opacity: '0' }, 'to': { transform: 'translateY(0)', opacity: '1' } }
                     }
                 }
@@ -28,7 +28,7 @@
         :root {
             --font-gmarket: 'GmarketSansMedium', sans-serif;
             --font-pretendard: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-            --color-crimson: #8B0000; --color-yellow: #F5A623; --color-black: #1C1C1E;
+            --color-blue-main: #007AFF; --color-blue-light: #5AC8FA; --color-black: #1C1C1E;
             --color-bg-base: #F2F2F7; --color-text-main: #1C1C1E;
         }
         html, body { margin: 0; padding: 0; font-family: var(--font-pretendard); color: var(--color-text-main); -webkit-font-smoothing: antialiased; background-color: var(--color-bg-base); }
@@ -41,10 +41,10 @@
             .scroll-area { overflow-y: auto; overflow-x: visible; }
         }
         .input-group { background-color: #FFF; border-radius: 20px; padding: 0 16px 0 20px; display: flex; align-items: center; gap: 16px; width: 100%; box-sizing: border-box; height: 64px; border: 2px solid transparent; font-family: var(--font-gmarket); box-shadow: 0 4px 16px rgba(0,0,0,0.04); transition: all 0.2s cubic-bezier(0.16,1,0.3,1); }
-        .input-group:focus-within { border-color: var(--color-crimson); box-shadow: 0 4px 16px rgba(139,0,0,0.10); }
+        .input-group:focus-within { border-color: var(--color-blue-main); box-shadow: 0 4px 16px rgba(0,122,255,0.1); }
         .tag-badge { display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: 800; margin: 0 2px; font-family: var(--font-gmarket); box-shadow: 0 1px 2px rgba(0,0,0,0.04); border: 1px solid transparent; }
         .tag-side { display: inline-flex; align-items: center; justify-content: center; padding: 0px 3px; border-radius: 3px; font-size: 8px; font-weight: 700; margin-left: 3px; white-space: nowrap; font-family: var(--font-pretendard); border: 1px solid transparent; vertical-align: middle; line-height: 1.4; }
-        .header-teal { background: var(--color-bg-base) !important; border-bottom: 1px solid rgba(139,0,0,0.10) !important; padding: 9px 18px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100% !important; box-sizing: border-box !important; position: static !important; }
+        .header-teal { background: var(--color-bg-base) !important; border-bottom: 1px solid rgba(0,122,255,0.1) !important; padding: 9px 18px !important; display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100% !important; box-sizing: border-box !important; position: static !important; }
         .header-teal h1 { font-size: 22px !important; }
         .header-teal p { margin-top: 1px !important; font-size: 10px !important; }
         .content-main { padding-top: 24px !important; padding-bottom: 32px !important; }
@@ -53,15 +53,15 @@
         .mode-switch-slider.extra { left: 3px; }
         .mode-switch-slider.intra { left: calc(50%); }
         .mode-text { flex: 1; z-index: 10; text-align: center; font-size: 13px; font-weight: 800; transition: color 0.2s; }
-        .mode-text.active { color: var(--color-crimson); }
+        .mode-text.active { color: var(--color-blue-main); }
         .mode-text.inactive { color: #8E8E93; }
-        .deduct-btn { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); font-size: 12px; padding: 6px 14px; border-radius: 10px; font-weight: 800; cursor: pointer; z-index: 10; font-family: var(--font-gmarket); transition: all 0.15s cubic-bezier(0.4,0,0.2,1); background: linear-gradient(180deg,#9B1111 0%,#8B0000 50%,#7A0000 100%); color: #FFF; border: none; box-shadow: 0 2px 4px rgba(139,0,0,0.3),0 4px 8px rgba(0,0,0,0.1),inset 0 1px 0 rgba(255,255,255,0.2); text-shadow: 0 1px 1px rgba(0,0,0,0.2); }
-        .deduct-btn.active { background: linear-gradient(180deg,#E5E0D6 0%,#F5F0E6 100%); color: #8E8E93; border: 1px solid #D5D0C6; box-shadow: inset 0 2px 4px rgba(0,0,0,0.12),inset 0 1px 2px rgba(0,0,0,0.08); text-shadow: none; transform: translate(-50%,calc(-50% + 1px)); }
+        .deduct-btn { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); font-size: 12px; padding: 6px 14px; border-radius: 10px; font-weight: 800; cursor: pointer; z-index: 10; font-family: var(--font-gmarket); transition: all 0.15s cubic-bezier(0.4,0,0.2,1); background: linear-gradient(180deg,#288CFF 0%,#007AFF 50%,#0056D6 100%); color: #FFF; border: none; box-shadow: 0 2px 4px rgba(0,122,255,0.3),0 4px 8px rgba(0,0,0,0.1),inset 0 1px 0 rgba(255,255,255,0.2); text-shadow: 0 1px 1px rgba(0,0,0,0.2); }
+        .deduct-btn.active { background: linear-gradient(180deg,#C7DCFF 0%,#EBF4FF 100%); color: #8E8E93; border: 1px solid #B3CCFF; box-shadow: inset 0 2px 4px rgba(0,0,0,0.12),inset 0 1px 2px rgba(0,0,0,0.08); text-shadow: none; transform: translate(-50%,calc(-50% + 1px)); }
         input.ship-fare-input { text-align: right; background-color: #F8F9FA; width: 62px; font-family: var(--font-gmarket); font-weight: 700; outline: none; border: 1px solid #E5E5EA; border-radius: 8px; padding: 6px 6px; margin: 0; color: #8E8E93; font-size: 15px; transition: all 0.2s; }
-        input.ship-fare-input:focus { border-color: var(--color-yellow); color: var(--color-black); background-color: #FFF; box-shadow: 0 2px 8px rgba(245,166,35,0.15); }
-        .suggestions-box { position: absolute; left: 0; right: 0; top: calc(100% + 8px); background: rgba(255,255,255,0.97); border: 1px solid rgba(139,0,0,0.08); border-radius: 20px; z-index: 9999; box-shadow: 0 12px 32px rgba(0,0,0,0.12); max-height: 240px; overflow-y: auto; font-family: var(--font-gmarket); overscroll-behavior: contain; }
+        input.ship-fare-input:focus { border-color: var(--color-blue-main); color: var(--color-black); background-color: #FFF; box-shadow: 0 2px 8px rgba(0,122,255,0.15); }
+        .suggestions-box { position: absolute; left: 0; right: 0; top: calc(100% + 8px); background: rgba(255,255,255,0.97); border: 1px solid rgba(0,122,255,0.08); border-radius: 20px; z-index: 9999; box-shadow: 0 12px 32px rgba(0,0,0,0.12); max-height: 240px; overflow-y: auto; font-family: var(--font-gmarket); overscroll-behavior: contain; }
         .relative.w-full.group { overflow: visible !important; }
-        .suggestion-item { padding: 14px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 15px; color: #1C1C1E; font-weight: 500; border-bottom: 1px solid rgba(0,0,0,0.03); -webkit-tap-highlight-color: rgba(245,166,35,0.15); user-select: none; }
+        .suggestion-item { padding: 14px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 15px; color: #1C1C1E; font-weight: 500; border-bottom: 1px solid rgba(0,0,0,0.03); -webkit-tap-highlight-color: rgba(0,122,255,0.15); user-select: none; }
         .suggestion-item:last-child { border-bottom: none; }
         .suggestion-item:hover, .suggestion-item.active { background-color: rgba(245,166,35,0.1); }
         .suggestion-item:active { background-color: rgba(245,166,35,0.2); }
@@ -70,41 +70,63 @@
         .icon-bounce { display: inline-block; animation: bounce-custom 2s infinite; }
         .toggle-switch { width: 44px; height: 24px; border-radius: 99px; transition: 0.25s cubic-bezier(0.16,1,0.3,1); position: relative; }
         .toggle-knob { width: 20px; height: 20px; background: white; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: 0.25s cubic-bezier(0.16,1,0.3,1); box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-        .toggle-active { background: var(--color-yellow); }
+        .toggle-active { background: var(--color-blue-light); }
         .toggle-inactive { background: #E5E5EA; }
         .knob-active { transform: translateX(20px); }
-        .bottom-nav { width: 100%; height: 58px; background: var(--color-bg-base); border-top: 1px solid rgba(139,0,0,0.10); display: flex; align-items: center; justify-content: space-around; box-sizing: border-box; padding: 0 28px; padding-bottom: env(safe-area-inset-bottom,0px); position: static; flex-shrink: 0; }
-        .nav-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; background: none; border: none; outline: none; gap: 3px; padding: 6px 12px; color: #8B0000; transition: opacity 0.15s; -webkit-tap-highlight-color: transparent; }
-        .nav-btn:active { opacity: 0.5; }
+        .bottom-nav { width: 100%; height: 58px; background: var(--color-bg-base); border-top: 1px solid rgba(0,122,255,0.1); display: flex; align-items: center; justify-content: space-around; box-sizing: border-box; padding: 0 28px; padding-bottom: env(safe-area-inset-bottom,0px); position: static; flex-shrink: 0; }
+        .nav-btn {
+            width: 44px; height: 44px; border-radius: 50%;
+            background: linear-gradient(135deg, #F8F9FA 0%, #F1F3F5 100%);
+            color: #ADB5BD; display: flex; align-items: center; justify-content: center;
+            transition: all 0.15s ease; border: 1px solid rgba(0,0,0,0.04);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            cursor: pointer; text-decoration: none; outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .nav-btn:active { transform: scale(0.92); background: #E9ECEF; color: #007AFF; }
         .home-btn-wrap { position: relative; display: flex; flex-direction: column; align-items: center; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-        .home-btn { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(145deg,#e2e2e2 0%,#d8d8d8 30%,#c8c8c8 60%,#bcbcbc 100%); border: 1.5px solid rgba(0,0,0,0.20); box-shadow: 0 5px 10px rgba(0,0,0,0.25),0 2px 4px rgba(0,0,0,0.18),inset 0 2px 2px rgba(255,255,255,0.75),inset 0 -3px 6px rgba(0,0,0,0.18),inset 0 0 0 8px rgba(0,0,0,0.04); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; transition: all 0.12s cubic-bezier(0.16,1,0.3,1); }
-        .home-btn::before { content: ''; width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(150deg,#d0d0d0 0%,#c0c0c0 40%,#b4b4b4 70%,#acacac 100%); border: 1px solid rgba(0,0,0,0.14); box-shadow: inset 0 3px 6px rgba(0,0,0,0.22),inset 0 1px 3px rgba(0,0,0,0.14),0 1px 0 rgba(255,255,255,0.55); position: absolute; }
-        .home-btn::after { content: ''; width: 20px; height: 20px; border-radius: 5px; background: transparent; border: 2.5px solid rgba(139,0,0,0.70); box-shadow: 0 1px 2px rgba(0,0,0,0.15),inset 0 1px 1px rgba(255,255,255,0.08); position: absolute; z-index: 1; filter: drop-shadow(0 1px 1px rgba(139,0,0,0.3)); }
-        .home-btn:active { box-shadow: 0 1px 3px rgba(0,0,0,0.28),inset 0 3px 7px rgba(0,0,0,0.22),inset 0 1px 3px rgba(0,0,0,0.15); transform: scale(0.92); }
-        .history-tooltip { position: absolute; bottom: calc(100% + 10px); right: -8px; background: rgba(245,240,230,0.99); border: 1px solid rgba(139,0,0,0.15); border-radius: 14px; padding: 8px 0; min-width: 220px; box-shadow: 0 8px 28px rgba(0,0,0,0.16),0 2px 6px rgba(0,0,0,0.08); z-index: 300; animation: tooltipIn 0.18s cubic-bezier(0.16,1,0.3,1) forwards; }
-        .history-tooltip::after { content: ''; position: absolute; bottom: -7px; right: 18px; width: 14px; height: 14px; background: rgba(245,240,230,0.99); border-right: 1px solid rgba(139,0,0,0.15); border-bottom: 1px solid rgba(139,0,0,0.15); transform: rotate(45deg); border-radius: 2px; }
+        .home-btn {
+            width: 50px; height: 50px; border-radius: 50%;
+            background: linear-gradient(135deg, #F0F8FF 0%, #E6F2FF 100%);
+            border: 1.5px solid rgba(0, 122, 255, 0.15);
+            box-shadow: 0 2px 8px rgba(0,122,255,0.15), inset 0 1px 2px rgba(255,255,255,0.8);
+            position: relative; cursor: pointer; transition: all 0.15s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .home-btn::after {
+            content: ""; width: 24px; height: 24px;
+            border: 2px solid rgba(0, 122, 255, 0.5);
+            border-radius: 4px; transition: all 0.15s;
+        }
+        .home-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 1px 4px rgba(0,122,255,0.2), inset 0 1px 3px rgba(0,122,255,0.1);
+        }
+        .home-btn:active::after { border-color: rgba(0,122,255,0.8); }
+        .history-tooltip { position: absolute; bottom: calc(100% + 10px); right: -8px; background: rgba(245,240,230,0.99); border: 1px solid rgba(0,122,255,0.15); border-radius: 14px; padding: 8px 0; min-width: 220px; box-shadow: 0 8px 28px rgba(0,0,0,0.16),0 2px 6px rgba(0,0,0,0.08); z-index: 300; animation: tooltipIn 0.18s cubic-bezier(0.16,1,0.3,1) forwards; }
+        .history-tooltip::after { content: ''; position: absolute; bottom: -7px; right: 18px; width: 14px; height: 14px; background: rgba(245,240,230,0.99); border-right: 1px solid rgba(0,122,255,0.15); border-bottom: 1px solid rgba(0,122,255,0.15); transform: rotate(45deg); border-radius: 2px; }
         @keyframes tooltipIn { from { opacity: 0; transform: translateY(6px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        .tooltip-item { padding: 9px 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: background 0.1s; border-bottom: 1px solid rgba(139,0,0,0.07); -webkit-tap-highlight-color: rgba(139,0,0,0.1); }
+        .tooltip-item { padding: 9px 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: background 0.1s; border-bottom: 1px solid rgba(0,122,255,0.07); -webkit-tap-highlight-color: rgba(0,122,255,0.1); }
         .tooltip-item:last-child { border-bottom: none; }
-        .tooltip-item:hover { background: rgba(139,0,0,0.06); }
+        .tooltip-item:hover { background: rgba(0,122,255,0.06); }
         .tooltip-empty { padding: 12px 16px; text-align: center; font-size: 12px; color: #8E8E93; font-weight: 600; }
         @keyframes statusPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
         .status-bar-idle { width: 100%; height: 38px; border-radius: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 12px; font-weight: 700; font-family: var(--font-pretendard); color: #8E8E93; background: linear-gradient(180deg,#EFEFEF 0%,#E8E8E8 100%); border: 1px solid #D8D8D8; box-shadow: inset 0 1px 0 rgba(255,255,255,0.8),0 1px 2px rgba(0,0,0,0.04); }
-        .status-bar-working { width: 100%; height: 38px; border-radius: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 12px; font-weight: 700; font-family: var(--font-pretendard); color: #8B0000; background: linear-gradient(180deg,#F5EFE6 0%,#EDE5D8 100%); border: 1px solid rgba(139,0,0,0.18); box-shadow: inset 0 1px 0 rgba(255,255,255,0.9),0 1px 3px rgba(139,0,0,0.08); animation: statusPulse 1.4s ease-in-out infinite; }
-        .status-bar-done { width: 100%; height: 38px; border-radius: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 12px; font-weight: 700; font-family: var(--font-pretendard); color: #8B0000; background: linear-gradient(180deg,#F7F2E8 0%,#F5F0E6 50%,#EDE8DE 100%); border: 1px solid rgba(139,0,0,0.14); box-shadow: inset 0 1px 0 rgba(255,255,255,0.9),0 2px 4px rgba(139,0,0,0.06); cursor: default; }
+        .status-bar-working { width: 100%; height: 38px; border-radius: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 12px; font-weight: 700; font-family: var(--font-pretendard); color: #007AFF; background: linear-gradient(180deg,#EBF4FF 0%,#D6EBFF 100%); border: 1px solid rgba(0,122,255,0.18); box-shadow: inset 0 1px 0 rgba(255,255,255,0.9),0 1px 3px rgba(0,122,255,0.08); animation: statusPulse 1.4s ease-in-out infinite; }
+        .status-bar-done { width: 100%; height: 38px; border-radius: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 12px; font-weight: 700; font-family: var(--font-pretendard); color: #007AFF; background: linear-gradient(180deg,#F0F7FF 0%,#EBF4FF 50%,#DFF0FF 100%); border: 1px solid rgba(0,122,255,0.14); box-shadow: inset 0 1px 0 rgba(255,255,255,0.9),0 2px 4px rgba(0,122,255,0.06); cursor: default; }
         .dots-anim { display: inline-flex; gap: 3px; align-items: center; }
-        .dots-anim span { width: 4px; height: 4px; border-radius: 50%; background: #8B0000; }
+        .dots-anim span { width: 4px; height: 4px; border-radius: 50%; background: #007AFF; }
         .dots-anim span:nth-child(1) { animation: dotBounce 1.2s 0s infinite; }
         .dots-anim span:nth-child(2) { animation: dotBounce 1.2s 0.2s infinite; }
         .dots-anim span:nth-child(3) { animation: dotBounce 1.2s 0.4s infinite; }
         @keyframes dotBounce { 0%,80%,100% { transform: scale(0.6); opacity: 0.4; } 40% { transform: scale(1.2); opacity: 1; } }
-        .confirm-btn-yellow { background: linear-gradient(180deg,#9B1111 0%,#8B0000 50%,#7A0000 100%) !important; color: #FFF !important; border: none !important; transition: all 0.15s !important; box-shadow: 0 4px 12px rgba(139,0,0,0.25),inset 0 1px 0 rgba(255,255,255,0.15) !important; }
-        .confirm-btn-yellow:active { background: linear-gradient(180deg,#7A0000 0%,#6B0000 100%) !important; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2) !important; }
+        .confirm-btn-yellow { background: linear-gradient(180deg,#288CFF 0%,#007AFF 50%,#0056D6 100%) !important; color: #FFF !important; border: none !important; transition: all 0.15s !important; box-shadow: 0 4px 12px rgba(0,122,255,0.25),inset 0 1px 0 rgba(255,255,255,0.15) !important; }
+        .confirm-btn-yellow:active { background: linear-gradient(180deg,#0056D6 0%,#0040B8 100%) !important; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2) !important; }
         .clear-btn { width: 30px; height: 30px; border-radius: 50%; background: #E5E5EA; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: background 0.15s; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
         .clear-btn:hover { background: #C7C7CC; }
         .clear-btn:active { background: #AEAEB2; transform: scale(0.9); }
         .add-via-btn { width: 100%; height: 32px; display: flex; align-items: center; justify-content: center; gap: 7px; border-radius: 12px; border: 1px solid #D8D8D8; background: linear-gradient(180deg,#EFEFEF 0%,#E8E8E8 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.8),0 1px 2px rgba(0,0,0,0.04); color: #8E8E93; font-size: 14px; font-weight: 700; font-family: var(--font-pretendard); cursor: pointer; transition: all 0.15s; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-        .add-via-btn:hover { background: linear-gradient(180deg,#E8E0D8 0%,#E0D8D0 100%); border-color: rgba(139,0,0,0.2); color: #8B0000; }
+        .add-via-btn:hover { background: linear-gradient(180deg,#D6EAFF 0%,#C7DCFF 100%); border-color: rgba(0,122,255,0.2); color: #007AFF; }
         .add-via-btn:active { transform: scale(0.98); box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
         .remove-via-btn { width: 26px; height: 26px; border-radius: 50%; background: #E5E5EA; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: background 0.15s; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
         .remove-via-btn:hover { background: #FF3B30; }
@@ -128,7 +150,7 @@
             border-radius: 11px;
         }
         .fare-option-card.premium {
-            background: linear-gradient(135deg, #FFF8F0 0%, #FFF3E6 100%);
+            background: linear-gradient(135deg, #F0F8FF 0%, #EBF5FF 100%);
             border-color: rgba(245,166,35,0.25);
         }
         .fare-option-card.premium:hover, .fare-option-card.premium.selected {
@@ -161,7 +183,7 @@
             margin: 2px 0;
         }
         .segment-divider::before, .segment-divider::after {
-            content: ''; flex: 1; height: 1px; background: rgba(139,0,0,0.08);
+            content: ''; flex: 1; height: 1px; background: rgba(0,122,255,0.08);
         }
 
         /* ── fare-side-panel: wrapper 안에서 static ── */
@@ -169,8 +191,8 @@
 
         @media (min-width: 768px) {
             .side-panel-wrapper { position: fixed; left: calc(50% + 252px); top: 50%; transform: translateY(-50%); width: 256px; display: flex; flex-direction: column; gap: 8px; max-height: calc(100dvh - 48px); }
-            .detail-side-panel { position: static; transform: none; width: 100%; overflow-y: auto; background: linear-gradient(180deg,#FFFFFF 0%,#FAFAFA 100%); border-radius: 28px; border: 1px solid rgba(139,0,0,0.10); box-shadow: 0 25px 50px rgba(0,0,0,0.18); animation: slideInFromLeft 0.25s cubic-bezier(0.16,1,0.3,1) forwards; z-index: 200; }
-            .fare-side-panel { position: static; transform: none; width: 100%; overflow-y: auto; background: linear-gradient(180deg,#FFFFFF 0%,#FAFAFA 100%); border-radius: 28px; border: 1px solid rgba(139,0,0,0.10); box-shadow: 0 25px 50px rgba(0,0,0,0.18); animation: slideInFromLeft 0.25s cubic-bezier(0.16,1,0.3,1) forwards; z-index: 210; }
+            .detail-side-panel { position: static; transform: none; width: 100%; overflow-y: auto; background: linear-gradient(180deg,#FFFFFF 0%,#FAFAFA 100%); border-radius: 28px; border: 1px solid rgba(0,122,255,0.1); box-shadow: 0 25px 50px rgba(0,0,0,0.18); animation: slideInFromLeft 0.25s cubic-bezier(0.16,1,0.3,1) forwards; z-index: 200; }
+            .fare-side-panel { position: static; transform: none; width: 100%; overflow-y: auto; background: linear-gradient(180deg,#FFFFFF 0%,#FAFAFA 100%); border-radius: 28px; border: 1px solid rgba(0,122,255,0.1); box-shadow: 0 25px 50px rgba(0,0,0,0.18); animation: slideInFromLeft 0.25s cubic-bezier(0.16,1,0.3,1) forwards; z-index: 210; }
             .detail-mobile-panel { display: none !important; }
             .fare-mobile-modal { display: none !important; }
         }
@@ -334,7 +356,7 @@
             return (
                 <div className="relative w-full group" ref={containerRef}>
                     <div className="input-group">
-                        <Icons.MapPin className="text-gray-400 group-focus-within:text-[#8B0000] transition-colors shrink-0" />
+                        <Icons.MapPin className="text-gray-400 group-focus-within:text-[#007AFF] transition-colors shrink-0" />
                         <div className="flex-1 min-w-0 flex items-center gap-2">
                             <div className="flex-1 min-w-0">
                                 {label && <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-tighter mb-0.5">{label}</label>}
@@ -411,7 +433,7 @@
                                 <div className="flex items-center gap-1.5" style={{marginBottom:'4px'}}>
                                     <span className="text-[10px] font-bold text-gray-500">{seg.from}</span>
                                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#C7C7CC" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                                    <span className="text-[10px] font-bold text-[#8B0000]">{seg.to}</span>
+                                    <span className="text-[10px] font-bold text-[#007AFF]">{seg.to}</span>
                                 </div>
                             )}
                             <div style={{display:'flex', flexDirection:'column', gap:'4px'}}>
@@ -454,7 +476,7 @@
                 <div className="bg-white w-full max-w-sm rounded-[28px] overflow-hidden"
                     style={{background:'linear-gradient(180deg,#FFFFFF 0%,#FAFAFA 100%)',boxShadow:'0 25px 50px rgba(0,0,0,0.25)',animation:'slideUpModal 0.25s cubic-bezier(0.16,1,0.3,1) forwards'}}
                     onClick={e => e.stopPropagation()}>
-                    <div style={{background:'linear-gradient(180deg,#9B1111 0%,#8B0000 100%)'}} className="px-5 py-4 flex justify-between items-center">
+                    <div style={{background:'linear-gradient(180deg,#288CFF 0%,#007AFF 100%)'}} className="px-5 py-4 flex justify-between items-center">
                         <div>
                             <h3 className="font-black text-white text-[17px] tracking-tight">일반/우등 선택</h3>
                             <p className="text-[10px] text-red-200 font-medium mt-0.5">해당 구간에 우등버스가 운행됩니다</p>
@@ -475,7 +497,7 @@
         // ── 데스크탑 전용 사이드 패널 ────────────────────────────────
         const FareSidePanel = ({ segments, selections, onSelect, onClose, panelRef }) => (
             <div className="fare-side-panel" ref={panelRef}>
-                <div style={{background:'linear-gradient(180deg,#9B1111 0%,#8B0000 100%)'}} className="px-3 py-2 flex justify-between items-center rounded-t-[20px]">
+                <div style={{background:'linear-gradient(180deg,#288CFF 0%,#007AFF 100%)'}} className="px-3 py-2 flex justify-between items-center rounded-t-[20px]">
                     <div>
                         <h3 className="font-black text-white text-[13px] tracking-tight">일반/우등 선택</h3>
                         <p className="text-[9px] text-red-200 font-medium mt-0.5">해당 구간에 우등버스가 운행됩니다</p>
@@ -484,7 +506,7 @@
                 </div>
                 <div style={{padding:'8px 10px 6px'}}>
                     <FareCardGroup segments={segments} selections={selections} onSelect={onSelect}/>
-                    <p className="text-center text-[9px] text-gray-400 font-medium mt-1.5">항목을 선택하면 즉시 반영됩니다</p>
+
                 </div>
             </div>
         );
@@ -843,12 +865,12 @@
                     <div className="relative flex items-center justify-between h-9">
                         <span className="font-bold text-gray-700 text-[13px] w-16">일비</span>
                         <button onClick={()=>setActiveModal('daily')} className={`deduct-btn ${deductions.gov_vehicle?'active':''}`}><span>감액</span></button>
-                        <div className="flex flex-col items-end flex-1"><span className="text-[14px] font-bold text-[#1C1C1E]">{fmt(detailCosts.daily)}원</span>{deductions.gov_vehicle&&<span className="text-[10px] text-[#8B0000] font-bold leading-none mt-0.5">(-12,500)</span>}</div>
+                        <div className="flex flex-col items-end flex-1"><span className="text-[14px] font-bold text-[#1C1C1E]">{fmt(detailCosts.daily)}원</span>{deductions.gov_vehicle&&<span className="text-[10px] text-[#007AFF] font-bold leading-none mt-0.5">(-12,500)</span>}</div>
                     </div>
                     <div className="relative flex items-center justify-between h-9">
                         <span className="font-bold text-gray-700 text-[13px] w-16">식비</span>
                         <button onClick={()=>setActiveModal('meal')} className={`deduct-btn ${(deductions.meal_1||deductions.meal_2||deductions.meal_3||deductions.meal_half)?'active':''}`}><span>감액</span></button>
-                        <div className="flex flex-col items-end flex-1"><span className="text-[14px] font-bold text-[#1C1C1E]">{fmt(detailCosts.meal)}원</span><span className="text-[10px] text-[#8B0000] font-bold leading-none mt-0.5">{getMealLabel()}</span></div>
+                        <div className="flex flex-col items-end flex-1"><span className="text-[14px] font-bold text-[#1C1C1E]">{fmt(detailCosts.meal)}원</span><span className="text-[10px] text-[#007AFF] font-bold leading-none mt-0.5">{getMealLabel()}</span></div>
                     </div>
                     <div className="pt-2 border-t border-dashed border-gray-200">
                         <div className="relative flex items-center justify-between h-9">
@@ -880,7 +902,7 @@
                     </div>
                     <div className="pt-2 border-t-2 border-gray-200 flex justify-between items-center">
                         <span className="font-bold text-[#1C1C1E] text-[13px]">합계</span>
-                        <span className="text-[22px] font-black text-[#8B0000]">{fmt(detailCosts.total)}<span className="text-[13px] ml-1">원</span></span>
+                        <span className="text-[22px] font-black text-[#007AFF]">{fmt(detailCosts.total)}<span className="text-[13px] ml-1">원</span></span>
                     </div>
                     <button onClick={()=>setShowDetail(false)} className="w-full mt-2 h-9 rounded-[14px] font-bold text-[14px] confirm-btn-yellow">닫기</button>
                 </div>
@@ -890,7 +912,7 @@
                 <div className="main-wrapper font-pretendard">
                     <header className="header-teal">
                         <div className="flex flex-col">
-                            <h1 className="font-gmarket font-black text-[#8B0000] tracking-tighter" style={{fontSize:'22px'}}>yeobi-easy</h1>
+                            <h1 className="font-gmarket font-black text-3xl text-[#007AFF] tracking-tighter">yeobi-easy</h1>
                             <p className="font-bold text-gray-500 tracking-tight" style={{fontSize:'10px',marginTop:'1px'}}>by JHn · for all my fellas</p>
                         </div>
                         <div className="mode-switch-container" onClick={()=>setIntraCityOpen(!intraCityOpen)}>
@@ -925,7 +947,7 @@
 
                         {calcStatus==='idle' && <div className="status-bar-idle"><span style={{fontSize:'13px'}}>○</span><span>예: 남악, 신안, 담양, 해남 등(+ 초성 입력 후 선택 가능)</span></div>}
                         {calcStatus==='working' && <div className="status-bar-working"><div className="dots-anim"><span/><span/><span/></div><span>2026.1.1.자 국내여비기준표 조회 중</span></div>}
-                        {calcStatus==='done' && <div className="status-bar-done"><span style={{fontSize:'13px',color:'#8B0000'}}>✓</span><span>crafted with passion by 전현우@우수영초등학교</span></div>}
+                        {calcStatus==='done' && <div className="status-bar-done"><span style={{fontSize:'13px',color:'#007AFF'}}>✓</span><span>crafted with passion by 전현우@우수영초등학교</span></div>}
 
                         <div className="pb-6 mt-4 rounded-[32px] overflow-hidden flex flex-col" style={{background:'linear-gradient(180deg,#FFFFFF 0%,#FAFAFA 100%)',boxShadow:'0 4px 16px rgba(0,0,0,0.04),0 8px 32px rgba(0,0,0,0.02),inset 0 1px 0 rgba(255,255,255,1)',border:'1px solid rgba(0,0,0,0.04)'}}>
                             <div className="text-center pt-5 px-4 flex-1">
@@ -944,7 +966,7 @@
                                                 </div>
                                                 {result&&result.type==='internal'&&result.routeLabels&&<RouteLabel route={result.routeLabels.fareRoute}/>}
                                             </div>
-                                            <span className="text-3xl font-extrabold text-[#8B0000]">
+                                            <span className="text-3xl font-extrabold text-[#007AFF]">
                                                 {result?`${fmt(result.type==='internal'?(result.surcharge>0?result.baseBusCost:result.cost):0)}원`:''}
                                             </span>
                                         </div>
@@ -992,7 +1014,7 @@
                                                 </div>
                                                 {result.routeLabels&&<RouteLabel route={result.routeLabels.fareRoute}/>}
                                             </div>
-                                            <span className="text-3xl font-extrabold text-[#8B0000]">{fmt(result.baseBusCost)}원</span>
+                                            <span className="text-3xl font-extrabold text-[#007AFF]">{fmt(result.baseBusCost)}원</span>
                                         </div>
                                         <div className="flex justify-end"><span className="text-[11px] text-[#AEAEB2] font-medium">(왕복 {fmt(result.baseBusCost*2)}원)</span></div>
                                     </div>
@@ -1032,18 +1054,18 @@
                                                     {seg.surcharge>0&&<span className="text-[10px] text-[#059669] font-bold">+농어촌</span>}
                                                     {seg.shipCost>0&&<span className="text-[10px] text-[#0284C7] font-bold">+여객선</span>}
                                                 </div>
-                                                <span className="text-[14px] font-extrabold text-[#8B0000]">{fmt(seg.base)}원</span>
+                                                <span className="text-[14px] font-extrabold text-[#007AFF]">{fmt(seg.base)}원</span>
                                             </div>
                                         ))}
                                     </div>
                                 </>)}
 
                                 <div className="flex gap-2.5 mt-5">
-                                    <a href="https://padlet.com/jbyhee/hyonu-s-padlet-4m26339lwedx23dc" target="_blank" rel="noopener noreferrer" className="flex-1 h-[56px] border border-[#E5E0D6] text-[#1C1C1E] rounded-[16px] flex flex-col items-center justify-center no-underline transition-all cursor-pointer" style={{background:'linear-gradient(180deg,#F7F2E8 0%,#F5F0E6 100%)',boxShadow:'0 2px 4px rgba(0,0,0,0.03),inset 0 1px 0 rgba(255,255,255,0.8)',touchAction:'manipulation',WebkitTapHighlightColor:'rgba(139,0,0,0.08)'}}>
-                                        <div className="flex items-center gap-1.5"><Icons.Send size={15} className="text-[#8B0000]"/><span className="text-[13px] font-bold">피드백 남기기</span></div>
+                                    <a href="https://padlet.com/jbyhee/hyonu-s-padlet-4m26339lwedx23dc" target="_blank" rel="noopener noreferrer" className="flex-1 h-[56px] border border-[#C7DCFF] text-[#1C1C1E] rounded-[16px] flex flex-col items-center justify-center no-underline transition-all cursor-pointer" style={{background:'linear-gradient(180deg,#F0F7FF 0%,#EBF4FF 100%)',boxShadow:'0 2px 4px rgba(0,0,0,0.03),inset 0 1px 0 rgba(255,255,255,0.8)',touchAction:'manipulation',WebkitTapHighlightColor:'rgba(0,122,255,0.08)'}}>
+                                        <div className="flex items-center gap-1.5"><Icons.Send size={15} className="text-[#007AFF]"/><span className="text-[13px] font-bold">피드백 남기기</span></div>
                                         <span className="text-[9px] font-medium text-gray-500 mt-0.5">to jhn@usyes</span>
                                     </a>
-                                    <button onClick={()=>{if(result)setShowDetail(true);}} disabled={!result} className={`flex-1 h-[56px] rounded-[16px] font-bold text-[15px] flex items-center justify-center gap-1.5 transition-all ${result?'text-white':'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'}`} style={result?{background:'linear-gradient(180deg,#9B1111 0%,#8B0000 50%,#7A0000 100%)',boxShadow:'0 4px 12px rgba(139,0,0,0.25),0 2px 4px rgba(0,0,0,0.1),inset 0 1px 0 rgba(255,255,255,0.15)'}:{}}>
+                                    <button onClick={()=>{if(result)setShowDetail(true);}} disabled={!result} className={`flex-1 h-[56px] rounded-[16px] font-bold text-[15px] flex items-center justify-center gap-1.5 transition-all ${result?'text-white':'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'}`} style={result?{background:'linear-gradient(180deg,#288CFF 0%,#007AFF 50%,#0056D6 100%)',boxShadow:'0 4px 12px rgba(0,122,255,0.25),0 2px 4px rgba(0,0,0,0.1),inset 0 1px 0 rgba(255,255,255,0.15)'}:{}}>
                                         <Icons.Calculator size={18} className={result?"text-[#F5A623]":"text-gray-300"}/><span>여비 계산</span>
                                     </button>
                                 </div>
@@ -1069,15 +1091,15 @@
                                         ?<div className="tooltip-empty">최근 기록이 없습니다</div>
                                         :history.map((h,i)=>(
                                             <div key={i} className="tooltip-item" onClick={()=>{ setOrigin(h.origin);setDestination(h.destination); setShowHistory(false); setTimeout(()=>performCalculation(h.origin,h.destination,true),0); }}>
-                                                <div><span style={{fontSize:'13px',fontWeight:700,color:'#1C1C1E'}}>{h.origin}</span><span style={{fontSize:'12px',color:'#8E8E93',margin:'0 4px'}}>→</span><span style={{fontSize:'13px',fontWeight:700,color:'#8B0000'}}>{h.destination}</span></div>
-                                                <span style={{fontSize:'12px',fontWeight:700,color:'#8B0000',marginLeft:'8px'}}>{fmt(h.cost)}원</span>
+                                                <div><span style={{fontSize:'13px',fontWeight:700,color:'#1C1C1E'}}>{h.origin}</span><span style={{fontSize:'12px',color:'#8E8E93',margin:'0 4px'}}>→</span><span style={{fontSize:'13px',fontWeight:700,color:'#007AFF'}}>{h.destination}</span></div>
+                                                <span style={{fontSize:'12px',fontWeight:700,color:'#007AFF',marginLeft:'8px'}}>{fmt(h.cost)}원</span>
                                             </div>
                                         ))
                                     }
                                 </div>
                             </>)}
                             <button className="nav-btn" onClick={()=>setShowHistory(v=>!v)}>
-                                <Icons.Clock style={{color:'#8B0000',opacity:showHistory?1:0.7}}/>
+                                <Icons.Clock style={{color:'#007AFF',opacity:showHistory?1:0.7}}/>
                             </button>
                         </div>
                     </nav>
@@ -1085,10 +1107,10 @@
                     {/* 모바일 여비 상세 */}
                     {showDetail&&(
                         <div className="detail-mobile-panel fixed inset-0 z-[130] items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={()=>setShowDetail(false)}>
-                            <div className="bg-white w-full max-w-sm rounded-[28px] overflow-hidden border border-[#8B0000]/10" style={{background:'linear-gradient(180deg,#FFFFFF 0%,#FAFAFA 100%)',boxShadow:'0 25px 50px rgba(0,0,0,0.25)',animation:'slideUpModal 0.25s cubic-bezier(0.16,1,0.3,1) forwards'}} onClick={e=>e.stopPropagation()}>
+                            <div className="bg-white w-full max-w-sm rounded-[28px] overflow-hidden border border-[#007AFF]/10" style={{background:'linear-gradient(180deg,#FFFFFF 0%,#FAFAFA 100%)',boxShadow:'0 25px 50px rgba(0,0,0,0.25)',animation:'slideUpModal 0.25s cubic-bezier(0.16,1,0.3,1) forwards'}} onClick={e=>e.stopPropagation()}>
                                 <div className="p-4 pb-3 flex justify-between items-center border-b border-gray-100">
                                     <h3 className="font-black text-[20px] text-[#1C1C1E] tracking-tight">여비 상세 계산</h3>
-                                    <button onClick={()=>setShowDetail(false)} className="text-gray-400 hover:text-[#8B0000] transition-colors"><Icons.X size={22}/></button>
+                                    <button onClick={()=>setShowDetail(false)} className="text-gray-400 hover:text-[#007AFF] transition-colors"><Icons.X size={22}/></button>
                                 </div>
                                 <DetailContent/>
                             </div>
@@ -1106,8 +1128,8 @@
                                         <div className="flex justify-between items-center"><span className="text-[16px] font-bold text-gray-800">4시간 미만</span><Toggle checked={intraDeductions.shortTime} onChange={v=>setIntraDeductions(p=>({...p,shortTime:v}))}/></div>
                                         <div className="flex justify-between items-center"><span className="text-[16px] font-bold text-gray-800">관용차량 이용</span><Toggle checked={intraDeductions.govVehicle} onChange={v=>setIntraDeductions(p=>({...p,govVehicle:v}))}/></div>
                                     </div>
-                                    <div className="mt-4 flex justify-between items-center"><span className="text-[18px] font-bold text-[#1C1C1E]">지급액</span><span className="text-[24px] font-black text-[#8B0000]">{fmt(20000-(intraDeductions.shortTime?10000:0)-(intraDeductions.govVehicle?10000:0))}원</span></div>
-                                    <button onClick={()=>setIntraCityOpen(false)} className="w-full mt-5 h-12 rounded-[20px] font-bold text-[17px] transition-all border border-[#E5E0D6] text-[#8B0000]" style={{background:'linear-gradient(180deg,#F7F2E8 0%,#F5F0E6 50%,#EDE8DE 100%)',boxShadow:'0 2px 4px rgba(0,0,0,0.04),inset 0 1px 0 rgba(255,255,255,0.8)'}}>닫기</button>
+                                    <div className="mt-4 flex justify-between items-center"><span className="text-[18px] font-bold text-[#1C1C1E]">지급액</span><span className="text-[24px] font-black text-[#007AFF]">{fmt(20000-(intraDeductions.shortTime?10000:0)-(intraDeductions.govVehicle?10000:0))}원</span></div>
+                                    <button onClick={()=>setIntraCityOpen(false)} className="w-full mt-5 h-12 rounded-[20px] font-bold text-[17px] transition-all border border-[#C7DCFF] text-[#007AFF]" style={{background:'linear-gradient(180deg,#F0F7FF 0%,#EBF4FF 50%,#DFF0FF 100%)',boxShadow:'0 2px 4px rgba(0,0,0,0.04),inset 0 1px 0 rgba(255,255,255,0.8)'}}>닫기</button>
                                 </div>
                             </div>
                         </div>
@@ -1137,7 +1159,7 @@
                                                 })}/>
                                             </div>
                                         ))}</div>
-                                        <button onClick={()=>setActiveModal(null)} className="w-full mt-4 h-12 rounded-[20px] font-bold text-[17px] transition-all border border-[#E5E0D6] text-[#8B0000]" style={{background:'linear-gradient(180deg,#F7F2E8 0%,#F5F0E6 50%,#EDE8DE 100%)',boxShadow:'0 2px 4px rgba(0,0,0,0.04),inset 0 1px 0 rgba(255,255,255,0.8)'}}>확인</button>
+                                        <button onClick={()=>setActiveModal(null)} className="w-full mt-4 h-12 rounded-[20px] font-bold text-[17px] transition-all border border-[#C7DCFF] text-[#007AFF]" style={{background:'linear-gradient(180deg,#F0F7FF 0%,#EBF4FF 50%,#DFF0FF 100%)',boxShadow:'0 2px 4px rgba(0,0,0,0.04),inset 0 1px 0 rgba(255,255,255,0.8)'}}>확인</button>
                                     </div>
                                 </div>
                             </div>
@@ -1148,7 +1170,7 @@
                     {modalState.type&&(
                         <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={()=>{setModalState({type:null,data:[]});setTimeout(()=>performCalculation(origin,destination,true),0);}}>
                             <div className="bg-white rounded-[28px] w-full max-w-sm shadow-2xl overflow-hidden" style={{animation:'slideUpModal 0.25s cubic-bezier(0.16,1,0.3,1) forwards'}} onClick={e=>e.stopPropagation()}>
-                                <div style={{background:'linear-gradient(180deg,#9B1111 0%,#8B0000 100%)'}} className="p-5 text-white flex justify-between items-center font-bold text-[18px]">
+                                <div style={{background:'linear-gradient(180deg,#288CFF 0%,#007AFF 100%)'}} className="p-5 text-white flex justify-between items-center font-bold text-[18px]">
                                     세부 지역 선택
                                     <button onClick={()=>{setModalState({type:null,data:[]});setTimeout(()=>performCalculation(origin,destination,true),0);}} className="hover:opacity-70 transition-opacity"><Icons.X size={22}/></button>
                                 </div>
@@ -1186,7 +1208,7 @@
                                 <div className="detail-side-panel">
                                     <div className="px-3 py-2 flex justify-between items-center border-b border-gray-100">
                                         <h3 className="font-black text-[15px] text-[#1C1C1E] tracking-tight">여비계산</h3>
-                                        <button onClick={()=>setShowDetail(false)} className="text-gray-400 hover:text-[#8B0000] transition-colors"><Icons.X size={16}/></button>
+                                        <button onClick={()=>setShowDetail(false)} className="text-gray-400 hover:text-[#007AFF] transition-colors"><Icons.X size={16}/></button>
                                     </div>
                                     <DetailContent/>
                                 </div>
