@@ -558,7 +558,13 @@
                 let sFrom=from, sTo=to, surcharge=0, shipCost=0, viaPoint=null;
                 if (fromI) { sFrom=fromI.hub; shipCost+=(fromI.shipCost||0); surcharge+=(fromI.cost||0); viaPoint=fromI.via||fromI.hub; }
                 if (toI)   { sTo=toI.hub;   shipCost+=(toI.shipCost||0);   surcharge+=(toI.cost||0); }
-                if (sFrom===sTo) return { cost:0, base:0, gen:0, pre:null, surcharge:0, shipCost:0, viaPoint, sameArea:true };
+                // 비금/도초처럼 island이면서 hub와 목적지가 같아도 여객선 요금이 있으면 sameArea로 처리하지 않음
+                const hasActualCost = shipCost > 0 || surcharge > 0;
+                if (sFrom===sTo && !hasActualCost) return { cost:0, base:0, gen:0, pre:null, surcharge:0, shipCost:0, viaPoint, sameArea:true };
+                if (sFrom===sTo && hasActualCost) {
+                    const routeLabels = calcRouteLabels(fromRaw, toRaw);
+                    return { cost: surcharge, base: 0, gen: 0, pre: null, surcharge, shipCost, viaPoint, isShip: shipCost > 0, routeLabels };
+                }
                 const bd = INITIAL_DATA[sFrom]?.[sTo] || INITIAL_DATA[sTo]?.[sFrom];
                 if (!bd) return null;
                 const gen = bd.gen || 0;
@@ -886,7 +892,7 @@
                     <header className="header-teal">
                         <div className="flex flex-col">
                             <h1 className="font-gmarket font-black text-3xl text-[#007AFF] tracking-tighter">yeobi-easy</h1>
-                            <p className="font-bold text-gray-500 tracking-tight" style={{fontSize:'10px',marginTop:'1px'}}>by jhn · for all my fellows</p>
+                            <p className="font-bold text-gray-500 tracking-tight" style={{fontSize:'10px',marginTop:'1px'}}>by JHn · for all my fellas</p>
                         </div>
                         <div className="mode-switch-container" onClick={()=>setIntraCityOpen(!intraCityOpen)}>
                             <div className={`mode-switch-slider ${intraCityOpen?'intra':'extra'}`}></div>
