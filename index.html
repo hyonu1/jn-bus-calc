@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YBEZ by JHNI</title>
+    <title>YBEZ by JHN</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -892,7 +892,7 @@
                     <header className="header-teal">
                         <div className="flex flex-col">
                             <h1 className="font-gmarket font-black text-3xl text-[#007AFF] tracking-tighter">YBEZ</h1>
-                            <p className="font-bold text-gray-500 tracking-tight" style={{fontSize:'10px',marginTop:'1px'}}>by JHNI · for All My Fellas</p>
+                            <p className="font-bold text-gray-500 tracking-tight" style={{fontSize:'10px',marginTop:'1px'}}>by JHN · for All My Fellas</p>
                         </div>
                         <div className="mode-switch-container" onClick={()=>setIntraCityOpen(!intraCityOpen)}>
                             <div className={`mode-switch-slider ${intraCityOpen?'intra':'extra'}`}></div>
@@ -1040,7 +1040,7 @@
                                 <div className="flex gap-2.5 mt-5">
                                     <a href="https://padlet.com/jbyhee/hyonu-s-padlet-4m26339lwedx23dc" target="_blank" rel="noopener noreferrer" className="flex-1 h-[56px] border border-[#C7DCFF] text-[#1C1C1E] rounded-[16px] flex flex-col items-center justify-center no-underline transition-all cursor-pointer" style={{background:'linear-gradient(180deg,#F0F7FF 0%,#EBF4FF 100%)',boxShadow:'0 2px 4px rgba(0,0,0,0.03),inset 0 1px 0 rgba(255,255,255,0.8)',touchAction:'manipulation',WebkitTapHighlightColor:'rgba(0,122,255,0.08)'}}>
                                         <div className="flex items-center gap-1.5"><Icons.Send size={15} className="text-[#007AFF]"/><span className="text-[13px] font-bold">피드백 남기기</span></div>
-                                        <span className="text-[9px] font-medium text-gray-500 mt-0.5">to JHNI@USYES</span>
+                                        <span className="text-[9px] font-medium text-gray-500 mt-0.5">to JHN's Padlet</span>
                                     </a>
                                     <button onClick={()=>{if(result)setShowDetail(true);}} disabled={!result} className={`flex-1 h-[56px] rounded-[16px] font-bold text-[15px] flex items-center justify-center gap-1.5 transition-all ${result?'text-white':'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'}`} style={result?{background:'linear-gradient(180deg,#288CFF 0%,#007AFF 50%,#0056D6 100%)',boxShadow:'0 4px 12px rgba(0,122,255,0.25),0 2px 4px rgba(0,0,0,0.1),inset 0 1px 0 rgba(255,255,255,0.15)'}:{}}>
                                         <Icons.Calculator size={18} className={result?"text-[#F5A623]":"text-gray-300"}/><span>여비 계산</span>
