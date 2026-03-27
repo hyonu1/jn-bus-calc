@@ -544,11 +544,12 @@
 
             const calculateDetailedCost = () => {
                 if (!result) return { total: 0 };
+                if (result.type !== 'internal') return { daily: 0, meal: 0, transport: 0, surchargeTotal: 0, total: 0 };
                 const daily = deductions.gov_vehicle ? 12500 : 25000;
                 const meal = deductions.meal_3 ? 0 : deductions.meal_1 ? 16670 : deductions.meal_2 ? 8330 : deductions.meal_half ? 12500 : 25000;
-                const transport = (deductions.transport_proof||deductions.transport_gov_vehicle||deductions.transport_passenger) ? 0 : (result.type==='internal'?(manualMainTransport||0):0);
-                const surchargeTotal = (deductions.transport_proof||deductions.transport_gov_vehicle||deductions.transport_passenger) ? 0 : (result.type==='internal'?(result.surcharge||0)*2:0);
-                return { daily, meal, transport, surchargeTotal, total: daily+meal+transport+surchargeTotal+(shipFare||0) };
+                // manualMainTransport는 이미 surcharge를 포함하므로 surchargeTotal을 별도로 더하지 않음
+                const transport = (deductions.transport_proof||deductions.transport_gov_vehicle||deductions.transport_passenger) ? 0 : (manualMainTransport||0);
+                return { daily, meal, transport, surchargeTotal: 0, total: daily+meal+transport+(shipFare||0) };
             };
 
             const calcSegment = (fromRaw, toRaw) => {
@@ -660,15 +661,15 @@
                 if (from && to) setCalcStatus('working');
                 const fromN = o.replace(/\s/g,""); const toN = d.replace(/\s/g,"");
                 if (!isForce) {
-                    if (POPUP_REGIONS[fromN] && !modalState.type) { setModalState({ type:'origin', data:POPUP_REGIONS[fromN] }); return; }
-                    if (POPUP_REGIONS[toN] && !modalState.type) { setModalState({ type:'destination', data:POPUP_REGIONS[toN] }); return; }
+                    if (POPUP_REGIONS[fromN] && !modalState.type) { setCalcStatus('idle'); setModalState({ type:'origin', data:POPUP_REGIONS[fromN] }); return; }
+                    if (POPUP_REGIONS[toN] && !modalState.type) { setCalcStatus('idle'); setModalState({ type:'destination', data:POPUP_REGIONS[toN] }); return; }
                 }
                 if (!from || !to) return;
 
                 const viaN = normalize(via);
 
                 if (!viaN) {
-                    for (const g of SAME_AREA_GROUPS) { if (g.has(from) && g.has(to)) { setIntraCityOpen(true); return; } }
+                    for (const g of SAME_AREA_GROUPS) { if (g.has(from) && g.has(to)) { setCalcStatus('idle'); setIntraCityOpen(true); return; } }
                     const seg = calcSegment(o, d);
                     if (seg) {
                         setShipFare(seg.shipCost*2);
