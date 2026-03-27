@@ -479,7 +479,7 @@
                     <div style={{background:'linear-gradient(180deg,#288CFF 0%,#007AFF 100%)'}} className="px-5 py-4 flex justify-between items-center">
                         <div>
                             <h3 className="font-black text-white text-[17px] tracking-tight">일반/우등 선택</h3>
-                            <p className="text-[10px] text-red-200 font-medium mt-0.5">해당 구간에 우등버스가 운행됩니다</p>
+                            <p className="text-[10px] text-red-200 font-medium mt-0.5">해당 구간은 일빈/우등버스가 운행됩니다</p>
                         </div>
                         <button onClick={onClose} className="text-red-200 hover:text-white transition-colors"><Icons.X size={20}/></button>
                     </div>
@@ -500,7 +500,7 @@
                 <div style={{background:'linear-gradient(180deg,#288CFF 0%,#007AFF 100%)'}} className="px-3 py-2 flex justify-between items-center rounded-t-[20px]">
                     <div>
                         <h3 className="font-black text-white text-[13px] tracking-tight">일반/우등 선택</h3>
-                        <p className="text-[9px] text-red-200 font-medium mt-0.5">해당 구간에 우등버스가 운행됩니다</p>
+                        <p className="text-[9px] text-red-200 font-medium mt-0.5">해당 구간은 일반/우등버스가 운행됩니다</p>
                     </div>
                     <button onClick={onClose} className="text-red-200 hover:text-white transition-colors"><Icons.X size={15}/></button>
                 </div>
@@ -927,7 +927,7 @@
 
                         {calcStatus==='idle' && <div className="status-bar-idle"><span style={{fontSize:'13px'}}>○</span><span>예: 남악, 신안, 담양, 해남 등(+ 초성 입력 후 선택 가능)</span></div>}
                         {calcStatus==='working' && <div className="status-bar-working"><div className="dots-anim"><span/><span/><span/></div><span>2026.1.1.자 국내여비기준표 조회 중</span></div>}
-                        {calcStatus==='done' && <div className="status-bar-done"><span style={{fontSize:'13px',color:'#007AFF'}}>✓</span><span>전현우@우수영초등학교(📞050-6966-6696)</span></div>}
+                        {calcStatus==='done' && <div className="status-bar-done"><span style={{fontSize:'13px',color:'#007AFF'}}>✓</span><span>전현우@우수영초등학교(건의 및 제보📱050-6966-6696)</span></div>}
 
                         <div className="pb-6 mt-4 rounded-[32px] overflow-hidden flex flex-col" style={{background:'linear-gradient(180deg,#FFFFFF 0%,#FAFAFA 100%)',boxShadow:'0 4px 16px rgba(0,0,0,0.04),0 8px 32px rgba(0,0,0,0.02),inset 0 1px 0 rgba(255,255,255,1)',border:'1px solid rgba(0,0,0,0.04)'}}>
                             <div className="text-center pt-5 px-4 flex-1">
